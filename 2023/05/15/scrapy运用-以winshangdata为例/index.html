@@ -6,30 +6,20 @@
   <meta name="keywords" content=" web爬虫 , scrapy ">
   <meta name="description" content="scrapy运用-以winshangdata为例 | cthousand">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="一、目标 地址：http:&#x2F;&#x2F;www.winshangdata.com&#x2F;brandList 需求：用scrapy框架采集本站数据，至少抓取5个分类，数据量要求5000以上 采集字段：标题、创建时间、开店方式、合作期限、面积要求  二、思路 通过F12抓包分析，发现 其无加密防护 翻页参数在前一页的返回里 页面结构为列表页+详情页   spider文件中重写start_requests方法，用5个分">
-<meta property="og:type" content="article">
-<meta property="og:title" content="scrapy运用-以winshangdata为例">
-<meta property="og:url" content="http://example.com/2023/05/15/scrapy%E8%BF%90%E7%94%A8-%E4%BB%A5winshangdata%E4%B8%BA%E4%BE%8B/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="cthousand">
+<meta property="og:url" content="http://example.com/categories/%E7%88%AC%E8%99%AB/index.html">
 <meta property="og:site_name" content="cthousand">
-<meta property="og:description" content="一、目标 地址：http:&#x2F;&#x2F;www.winshangdata.com&#x2F;brandList 需求：用scrapy框架采集本站数据，至少抓取5个分类，数据量要求5000以上 采集字段：标题、创建时间、开店方式、合作期限、面积要求  二、思路 通过F12抓包分析，发现 其无加密防护 翻页参数在前一页的返回里 页面结构为列表页+详情页   spider文件中重写start_requests方法，用5个分">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/1d8e17dbec8c48d29d9f3b1a038707e6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/21167986002049c7b3e5488dca21c46d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/a06acc2c5a8e4002bf54a4bb531e631c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="article:published_time" content="2023-05-15T07:48:57.000Z">
-<meta property="article:modified_time" content="2023-05-16T00:52:32.771Z">
 <meta property="article:author" content="Cthousand">
-<meta property="article:tag" content="web爬虫">
-<meta property="article:tag" content="scrapy">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/1d8e17dbec8c48d29d9f3b1a038707e6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
 
 
 <link rel="icon" href="/img/avatar.jpg">
 
 <link href="/css/style.css?v=1.1.0" rel="stylesheet">
 
-<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+<link href="/css/hl_theme/darcula.css?v=1.1.0" rel="stylesheet">
 
 <link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
 
@@ -270,7 +260,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-05-16 08:52:32'>2023-05-15 15:48</time>
+            发布时间 : <time class="date" title='最后更新: 2023-05-16 10:08:28'>2023-05-15 15:48</time>
         
     </div>
     <div class="article-meta">
@@ -335,7 +325,7 @@
 <li>parse_index中解析并构造详情页的Request对象，回调为parse_detail;<br>解析并构造下一页的列表页Requset对象，回调为parse_index</li>
 <li>用pipeline中间件写mongodb保存类，用middleware写随机ua和代理</li>
 </ol>
-<div style="display: flex">
+<div style="display: flex;justify-content:center" >
 <img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/1d8e17dbec8c48d29d9f3b1a038707e6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="" />
 <img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/21167986002049c7b3e5488dca21c46d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="" />
 </div>
@@ -500,7 +490,7 @@ class RandomProxyMiddleware:
 <ol start="4">
 <li>结果</li>
 </ol>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/a06acc2c5a8e4002bf54a4bb531e631c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="iShot_2023-05-15_15.47.31.png"></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/a06acc2c5a8e4002bf54a4bb531e631c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="结果.png"></p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本案列考察了scrapy中:</p>
 <ol>
 <li>嵌套页面的处理</li>
@@ -675,16 +665,6 @@ class RandomProxyMiddleware:
     /*文章列表背景图*/
     
 
-    
-    #post .pjax article :not(pre) > code {
-        color: #24292e;
-        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
-        background-color: rgba(27,31,35,.05);
-        border-radius: 3px;
-        font-size: 85%;
-        margin: 0;
-        padding: .2em .4em;
-    }
     
 </style>
 
