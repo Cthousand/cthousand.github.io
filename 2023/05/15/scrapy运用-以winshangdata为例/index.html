@@ -6,15 +6,23 @@
   <meta name="keywords" content=" web爬虫 , scrapy ">
   <meta name="description" content="scrapy运用-以winshangdata为例 | cthousand">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="一、目标 地址：http:&#x2F;&#x2F;www.winshangdata.com&#x2F;brandList 需求：用scrapy框架采集本站数据，至少抓取5个分类，数据量要求5000以上 采集字段：标题、创建时间、开店方式、合作期限、面积要求  二、思路 通过F12抓包分析，发现 其无加密防护 翻页参数在前一页的返回里 页面结构为列表页+详情页   spider文件中重写start_requests方法，用5个分">
 <meta property="og:type" content="article">
-<meta property="og:title" content="debug">
-<meta property="og:url" content="http://example.com/2023/05/15/debug/index.html">
+<meta property="og:title" content="scrapy运用-以winshangdata为例">
+<meta property="og:url" content="http://example.com/2023/05/15/scrapy%E8%BF%90%E7%94%A8-%E4%BB%A5winshangdata%E4%B8%BA%E4%BE%8B/index.html">
 <meta property="og:site_name" content="cthousand">
+<meta property="og:description" content="一、目标 地址：http:&#x2F;&#x2F;www.winshangdata.com&#x2F;brandList 需求：用scrapy框架采集本站数据，至少抓取5个分类，数据量要求5000以上 采集字段：标题、创建时间、开店方式、合作期限、面积要求  二、思路 通过F12抓包分析，发现 其无加密防护 翻页参数在前一页的返回里 页面结构为列表页+详情页   spider文件中重写start_requests方法，用5个分">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-05-15T10:05:25.000Z">
-<meta property="article:modified_time" content="2023-05-15T10:16:18.428Z">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/1d8e17dbec8c48d29d9f3b1a038707e6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/21167986002049c7b3e5488dca21c46d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/a06acc2c5a8e4002bf54a4bb531e631c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="article:published_time" content="2023-05-15T07:48:57.000Z">
+<meta property="article:modified_time" content="2023-05-16T00:52:32.771Z">
 <meta property="article:author" content="Cthousand">
+<meta property="article:tag" content="web爬虫">
+<meta property="article:tag" content="scrapy">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/1d8e17dbec8c48d29d9f3b1a038707e6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -112,7 +120,7 @@
     <li>
         <div class="all active" data-rel="全部文章">全部文章
             
-                <small>(3)</small>
+                <small>(2)</small>
             
         </div>
     </li>
@@ -144,7 +152,7 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="3">
+<input type="hidden" id="yelog_site_posts_number" value="2">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -207,15 +215,6 @@
         
         
         
-        <a  class="全部文章 "
-           href="/2023/05/15/hello-world/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Hello World">Hello World</span>
-            <span class="post-date" title="2023-05-15 17:47:57">2023/05/15</span>
-        </a>
-        
-        
         <a  class="全部文章 爬虫 "
            href="/2023/05/15/scrapy%E8%BF%90%E7%94%A8-%E4%BB%A5winshangdata%E4%B8%BA%E4%BE%8B/"
            data-tag="web爬虫,scrapy"
@@ -271,7 +270,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-05-15 16:08:12'>2023-05-15 15:48</time>
+            发布时间 : <time class="date" title='最后更新: 2023-05-16 08:52:32'>2023-05-15 15:48</time>
         
     </div>
     <div class="article-meta">
@@ -304,7 +303,7 @@
     
     <div class="toc-ref">
     
-        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%9B%AE%E6%A0%87"><span class="toc-text">一、目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%80%9D%E8%B7%AF"><span class="toc-text">二、思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BB%A3%E7%A0%81"><span class="toc-text">三、代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -320,21 +319,193 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>一、目标</p>
-<ol>
+        <h3 id="一、目标"><a href="#一、目标" class="headerlink" title="一、目标"></a>一、目标</h3><ol>
 <li>地址：<a target="_blank" rel="noopener" href="http://www.winshangdata.com/brandList">http://www.winshangdata.com/brandList</a></li>
 <li>需求：用scrapy框架采集本站数据，至少抓取5个分类，数据量要求5000以上</li>
 <li>采集字段：标题、创建时间、开店方式、合作期限、面积要求</li>
 </ol>
-<p>二、思路</p>
-<ol>
+<h3 id="二、思路"><a href="#二、思路" class="headerlink" title="二、思路"></a>二、思路</h3><ol>
 <li>通过F12抓包分析，发现<ol>
 <li>其无加密防护</li>
 <li>翻页参数在前一页的返回里</li>
 <li>页面结构为列表页+详情页</li>
 </ol>
 </li>
-<li>spider文件中重写start_urls()</li>
+<li>spider文件中重写start_requests方法，用5个分类构造5个初始Request对象,<br>回调为parse_index</li>
+<li>parse_index中解析并构造详情页的Request对象，回调为parse_detail;<br>解析并构造下一页的列表页Requset对象，回调为parse_index</li>
+<li>用pipeline中间件写mongodb保存类，用middleware写随机ua和代理</li>
+</ol>
+<div style="display: flex">
+<img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/1d8e17dbec8c48d29d9f3b1a038707e6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="" />
+<img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/21167986002049c7b3e5488dca21c46d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="" />
+</div>
+
+<h3 id="三、代码"><a href="#三、代码" class="headerlink" title="三、代码"></a>三、代码</h3><ol>
+<li>spider</li>
+</ol>
+<pre><code class="python">import json
+
+import scrapy
+from jmespath import search
+from tuling_test.items import TulingTestItem
+from scrapy import cmdline
+
+
+class WinshangdataSpider(scrapy.Spider):
+    name = &quot;winshangdata&quot;
+    allowed_domains = [&quot;www.winshangdata.com&quot;]
+
+    def start_requests(self):
+        for i in [&#39;餐饮&#39;, &#39;儿童亲子&#39;, &#39;文体娱&#39;, &#39;零售&#39;, &#39;生活服务&#39;]:
+            headers = &#123;
+                &quot;Content-Type&quot;: &quot;application/json;charset=UTF-8&quot;,
+                &quot;Referer&quot;: &quot;http://www.winshangdata.com/brandList&quot;,
+            &#125;
+            url = &quot;http://www.winshangdata.com/wsapi/brand/list3_4&quot;
+            data = &#123;
+                &quot;isHaveLink&quot;: &quot;&quot;,
+                &quot;isTuozhan&quot;: &quot;&quot;,
+                &quot;pageNum&quot;: 1,
+                &quot;pageSize&quot;: 60,
+                &quot;pid&quot;: &quot;&quot;,
+                &quot;qy_p&quot;: &quot;&quot;,
+                &quot;qy_r&quot;: &quot;&quot;,
+                &quot;xqMj&quot;: &quot;&quot;,
+                &quot;ytlb1&quot;: i,
+                &quot;ytlb2&quot;: &quot;&quot;
+            &#125;
+            yield scrapy.Request(url, method=&#39;POST&#39;, headers=headers, body=json.dumps(data), callback=self.parse_index,
+                                 meta=&#123;&#39;sort&#39;: i&#125;)
+
+    def parse_index(self, response):
+        # 拿到详情页url,构造详情页请求
+        # 拿到下一页，构造列表页请求
+        data = response.json()
+        items = search(&#39;data.list&#39;, data)
+        for item in items:
+            brandId = search(&#39;brandId&#39;, item)
+            url = &#39;https://www.winshangdata.com&#39; + f&#39;/brandDetail?brandId=&#123;brandId&#125;&#39;
+            yield scrapy.Request(url, callback=self.parse_detail, meta=&#123;&#39;sort&#39;: response.meta[&#39;sort&#39;]&#125;)
+        nex_page = search(&#39;data.nextPage&#39;, data)
+        if nex_page &lt; 3:
+            headers = &#123;
+                &quot;Content-Type&quot;: &quot;application/json;charset=UTF-8&quot;,
+                &quot;Referer&quot;: &quot;http://www.winshangdata.com/brandList&quot;,
+            &#125;
+            url = &quot;http://www.winshangdata.com/wsapi/brand/list3_4&quot;
+            data = &#123;
+                &quot;isHaveLink&quot;: &quot;&quot;,
+                &quot;isTuozhan&quot;: &quot;&quot;,
+                &quot;isXxPp&quot;: &quot;&quot;,
+                &quot;kdfs&quot;: &quot;&quot;,
+                &quot;key&quot;: &quot;&quot;,
+                &quot;orderBy&quot;: &quot;1&quot;,
+                &quot;pageNum&quot;: nex_page,
+                &quot;pageSize&quot;: 60,
+                &quot;pid&quot;: &quot;&quot;,
+                &quot;qy_p&quot;: &quot;&quot;,
+                &quot;qy_r&quot;: &quot;&quot;,
+                &quot;xqMj&quot;: &quot;&quot;,
+                &quot;ytlb1&quot;: response.meta[&#39;sort&#39;],
+                &quot;ytlb2&quot;: &quot;&quot;
+            &#125;
+            yield scrapy.Request(url, method=&#39;POST&#39;, headers=headers, body=json.dumps(data), callback=self.parse_index,
+                                 meta=&#123;&#39;sort&#39;: response.meta[&#39;sort&#39;]&#125;)
+
+    def parse_detail(self, response):
+        # 从列表页中解析出所需要的数据
+        item = TulingTestItem()
+        item[&#39;sort&#39;] = response.meta[&#39;sort&#39;]
+        item[&#39;title&#39;] = response.xpath(&#39;//h1[@class=&quot;detail-one-tit&quot;]/text()&#39;).extract_first().strip()
+        item[&#39;create_data&#39;] = response.xpath(
+            &#39;//span[@class=&quot;detail-option-name&quot; and contains(text(),&quot;创立时间&quot;)]/following-sibling::span/text()&#39;).extract_first()
+        item[&#39;shop_mode&#39;] = response.xpath(
+            &#39;//span[@class=&quot;detail-option-name&quot; and contains(text(),&quot;开店方式&quot;)]/following-sibling::span/text()&#39;).extract_first()
+        item[&#39;cooperation_term&#39;] = response.xpath(
+            &#39;//span[@class=&quot;detail-option-name&quot; and contains(text(),&quot;合作期限&quot;)]/following-sibling::span/text()&#39;).extract_first()
+        item[&#39;area_req&#39;] = response.xpath(
+            &#39;//span[@class=&quot;detail-option-name&quot; and contains(text(),&quot;面积要求&quot;)]/following-sibling::span/text()&#39;).extract_first()
+        yield item
+
+
+if __name__ == &#39;__main__&#39;:
+    cmdline.execute(&quot;scrapy crawl winshangdata&quot;.split())
+</code></pre>
+<ol start="2">
+<li>pipeline</li>
+</ol>
+<pre><code class="python">import pymongo
+
+
+class MongoDBPipeline:
+    def __init__(self, mongo_host, mongo_port, mongo_dbname, mongo_docname):
+        self.mongo_host = mongo_host
+        self.mongo_port = mongo_port
+        self.mongo_dbname = mongo_dbname
+        self.mongo_docname = mongo_docname
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        host = crawler.settings.get(&#39;MONGODB_HOST&#39;)
+        port = crawler.settings.get(&#39;MONGODB_PORT&#39;)
+        dbname = crawler.settings.get(&#39;MONGODB_DBNAME&#39;)
+        docname = crawler.settings.get(&#39;MONGODB_DOCNAME&#39;)
+
+        return cls(host, port, dbname, docname)
+
+    def open_spider(self, spider):
+        self.client = pymongo.MongoClient(self.mongo_host, self.mongo_port)
+        self.db = self.client[self.mongo_dbname]
+
+    def close_spider(self, spider):
+        self.client.close()
+
+    def process_item(self, item, spider):
+        self.db[self.mongo_docname].insert_one(dict(item))
+        self.db[self.mongo_docname].update_one(&#123;
+            &#39;sort&#39;: item[&#39;sort&#39;],
+            &#39;title&#39;: item[&#39;title&#39;]
+        &#125;, &#123;&#39;$set&#39;: dict(item)&#125;, True)
+        return item
+</code></pre>
+<ol start="3">
+<li>middleware</li>
+</ol>
+<pre><code class="python">import random
+
+
+class RandomUserAgentMiddleware:
+    def __init__(self, agents):
+        self.agents = agents
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler.settings.getlist(&#39;USER_AGENTS&#39;))
+
+    def process_request(self, request, spider):
+        request.headers[&#39;User-Agent&#39;] = random.choice(self.agents)
+
+
+class RandomProxyMiddleware:
+    def __init__(self, proxy_pool):
+        self.proxy_pool = proxy_pool
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler.settings.getlist(&#39;PROXY_POOL&#39;))
+
+    def process_request(self, request, spider):
+        request.meta[&#39;proxy&#39;] = random.choice(self.proxy_pool)
+</code></pre>
+<ol start="4">
+<li>结果</li>
+</ol>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/a06acc2c5a8e4002bf54a4bb531e631c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="iShot_2023-05-15_15.47.31.png"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本案列考察了scrapy中:</p>
+<ol>
+<li>嵌套页面的处理</li>
+<li>pipeline与mongodb数据保存</li>
+<li>middleware随机更换ua和proxy</li>
 </ol>
 
       
