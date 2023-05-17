@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>cookie加密-以hefei为例 | cthousand</title>
+  <meta name="keywords" content=" web爬虫 , 加速乐 , cookie加密 ">
+  <meta name="description" content="cookie加密-以hefei为例 | cthousand">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="debug">
+<meta property="og:url" content="http://example.com/2023/05/15/debug/index.html">
+<meta property="og:site_name" content="cthousand">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-05-15T10:05:25.000Z">
+<meta property="article:modified_time" content="2023-05-15T10:16:18.428Z">
+<meta property="article:author" content="Cthousand">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/darcula.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>Cthousand</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="github"
+               href="https://github.com/Cthousand"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="email"
+               href="mailto:2454612285@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=2454612285&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(3)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                <li>
+                    <div data-rel="爬虫">
+                        
+                        爬虫
+                        <small>(2)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="3">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>加速乐</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>cookie加密</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>scrapy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>web爬虫</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/05/17/cookie%E5%8A%A0%E5%AF%86-%E4%BB%A5hefei%E4%B8%BA%E4%BE%8B/"
+           data-tag="web爬虫,加速乐,cookie加密"
+           data-author="" >
+            <span class="post-title" title="cookie加密-以hefei为例">cookie加密-以hefei为例</span>
+            <span class="post-date" title="2023-05-17 13:50:48">2023/05/17</span>
+        </a>
+        
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/05/15/scrapy%E8%BF%90%E7%94%A8-%E4%BB%A5winshangdata%E4%B8%BA%E4%BE%8B/"
+           data-tag="web爬虫,scrapy"
+           data-author="" >
+            <span class="post-title" title="scrapy运用-以winshangdata为例">scrapy运用-以winshangdata为例</span>
+            <span class="post-date" title="2023-05-15 15:48:57">2023/05/15</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-cookie加密-以hefei为例" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">cookie加密-以hefei为例</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="爬虫">爬虫</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">web爬虫</a>
+            
+            <a class="color4">加速乐</a>
+            
+            <a class="color4">cookie加密</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2023-05-17 16:40:17'>2023-05-17 13:50</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+        <span class="top-comment" title="跳转至评论区">
+            <a href="#comments">
+                评论 :<span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </a>
+        </span>
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%9B%AE%E6%A0%87"><span class="toc-text">一、目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%80%9D%E8%B7%AF"><span class="toc-text">二、思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BB%A3%E7%A0%81"><span class="toc-text">三、代码</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、目标"><a href="#一、目标" class="headerlink" title="一、目标"></a>一、目标</h3><ol>
+<li>地址：<a target="_blank" rel="noopener" href="https://credit.hefei.gov.cn/credit-website/publicity/search-result/xyxx-list.do">https://credit.hefei.gov.cn/credit-website/publicity/search-result/xyxx-list.do</a></li>
+<li>需求：抓取该页面下站点数据2000个<br>采集字段：标题、信用代码、工商注册码</li>
+</ol>
+<h3 id="二、思路"><a href="#二、思路" class="headerlink" title="二、思路"></a>二、思路</h3><ol>
+<li><p>通过F12抓包分析，找到目标接口:<code>https://credit.hefei.gov.cn/credit-website/publicity/topSearch/getXYXXPageInfo.do</code></p>
+</li>
+<li><p>这是一个post请求,请求参数有:</p>
+ <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/2d8140aef5fe49cb827b167252f41389.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="请求体" md-pos="387-574" /></p></li>
+<li><p>通过python模拟请求后发现，必须要携带cookie才能够请求成功，排查后发现主要是这两个cookie</p>
+<blockquote>
+<p>__jsl_clearance_s<br>__jsluid_s</p>
+</blockquote>
+</li>
+<li><p>cookie加密一般有2种来源</p>
+<blockquote>
+<p>后端接口返回<br>前端document.cookie生成</p>
+</blockquote>
+</li>
+<li><p>首先尝试第一种，打开proxyman(抓包工具), 浏览器清掉网站缓存</p>
+<p><img
+src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/48c7e91b11aa4c7080a78f98733c88bd.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"
+alt="清除网站缓存" /></p><p></p><img
+src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/c44a00572ef54cc08242646053d9def3.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"
+alt="proxyman界面" </p></li>
+<li><p>在proxyman中的filter添加过滤条件，搜索 <code>__jsluid_s</code>和<code>__jsl_clearance_s</code></p>
+</li>
+<li><p>__jsluid_s成功搜索到,但<code>__jsl_clearance_s</code>未搜索到<br/><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/db763cdd561140908644a4b3b95ec437.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="__jsluid_s搜索结果"></p>
+</li>
+<li><p>但是发现有个可疑之处，怀疑这便是<code>__jsl_clearance_s</code>的来源 <br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/f95670f573564651bef3a49ef15be034.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="__jsl_clearance_s可疑来源"></p>
+</li>
+<li><p>在控制台执行这段脚本，验证了的猜想,这也给我提供了一种思路，也就是在response_body搜索<code>document.cookie</code>关键词来查找cookie设置位置,document不属于变量,无法被混淆!<br/><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/e4feb6010aac4aa9b6a00789c9f4a960.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="控制台执行js"></p>
+</li>
+<li><p>紧接着带入这两个cookie，放入测试请求中验证，结果仍然是不对的,返回状态码是521，这时候意识到，可能这个cookie在中间还产生过变化</p>
+</li>
+<li><p>仔细对比了cookie后发现，<code>__jsl_clearance_s</code>是不一致的<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/873b998cc65b47bf9621a0873164ac5b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="cookie不一致"></p>
+</li>
+<li><p>那么什么时候发生的呢? 仔细看一下抓包请求<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/0d1a1b005ae24fcebc6c9f616cd838c4.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="可疑的脚本"></p>
+</li>
+<li><p>打开一个空白页面执行下该段js，果然如此!<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/a28926a1823f4daeb1c3c28fbb05226c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="执行js验证猜想"></p>
+</li>
+<li><p>接下来准备扣出加密算法,<br>先尝试打断点调试，断不住,为什么,因为这是动态返回的代码，可以考虑替换，在替换文件中首行写下debugger;<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/8c118619861a41f2a0c77242990c3a4c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="手动写下debugger"><br>然后使用proxyman提供的替换功能<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/8a4c288dc1154c7ca912d942ce857c0b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="proxyman替换html"><br>成功断住<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/4e1926af2faf42b09189cfe735d253d9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="成功断住"></p>
+</li>
+<li><p>js代码经过了混淆处理，但不影响寻找目标，在脚本内搜索document(必然会调用document.cookie),发现了一处可疑的地方<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/645aae5cbd514f9d802e116d46265cdf.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="搜索document"></p>
+</li>
+<li><p>把这句代码复制出来，稍微认真一下<br></p>
+<pre><code class="javascript">function foo() &#123;
+    document[_0x49d1(&#39;0x40&#39;, &#39;4Kd0&#39;) + &#39;ie&#39;] = _0xa88405[_0x49d1(&#39;0xa0&#39;, &#39;oT!N&#39;) + &#39;z&#39;](_0xa88405[_0x49d1(&#39;0x5b&#39;, &#39;UOyd&#39;) + &#39;J&#39;](_0xa88405[_0x49d1(&#39;0x63&#39;, &#39;x*XD&#39;) + &#39;Y&#39;](_0xa88405[_0x49d1(&#39;0x93&#39;, &#39;!3a3&#39;) + &#39;Y&#39;](_0x4af155[&#39;tn&#39;], &#39;=&#39;), _0x38ba7c[0x0]), _0xa88405[_0x49d1(&#39;0x53&#39;, &#39;e@Cg&#39;) + &#39;s&#39;]) + _0x4af155[&#39;vt&#39;], _0x49d1(&#39;0x35&#39;, &#39;x*XD&#39;) + _0x49d1(&#39;0x3&#39;, &#39;]#Kf&#39;) + &#39;\x20/&#39;);
+&#125;
+/* 
+_0x49d1(&#39;0x40&#39;, &#39;4Kd0&#39;) + &#39;ie&#39; 控制台执行结果为&#39;cookie&#39;
+ _0x49d1(&#39;0xa0&#39;, &#39;oT!N&#39;) + &#39;z&#39; 控制台执行结果为&#39;lvLxz&#39;
+ ...
+ 这里没什么技巧，混淆就是这样，考验的耐心
+*/
+//最后发现了核心代码
+</code></pre>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/f70b7acd5be94ed694642c0452e5b99b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="寻找核心代码"></p>
+<pre><code class="javascript">let __jsl_clearance_s=_0x38ba7c[0]
+//容易发现_0x38ba7c这是一个数组，搜索寻找其定位的地方
+</code></pre>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/f0664ec418ab4095870025e13ed26413.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="搜索_0x38ba7c"></p>
+<pre><code class="javascript">var _0x38ba7c = _0x213920(_0x4af155[&#39;ct&#39;], _0x4af155[&#39;bts&#39;]);
+//方法里面传了2个参数，先参数后方法，控制台还原参数
+</code></pre>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/8d03b7446c9d4bbf9e1cde0ff1f580c9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="控制台还原参数"><br><br>源代码搜索_0x4af155，没有找到其赋值的地方，估计中途换了马甲，上栈台<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/113b339055154a99b2aa8a0ae211d352.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="下断"><br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/b2cc9bfcdb9543049ac35353b716c3bd.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="跟栈"><br><br>好嘛，原来是原住名，先暂时固定住<br></p>
+<pre><code class="javascript">var _0x4af155 = &#123;
+&quot;bts&quot;: [&quot;1684211908.462|0|864&quot;, &quot;4kitzYBW4tT9ZMt6O%2BYZMo%3D&quot;],
+&quot;chars&quot;: &quot;hCLxUnaKoldwolXHfOYoAC&quot;,
+&quot;ct&quot;: &quot;9039b0cf78bae628fe5e482dd5048e35d34fa598&quot;,
+&quot;ha&quot;: &quot;sha1&quot;,
+&quot;tn&quot;: &quot;__jsl_clearance_s&quot;,
+&quot;vt&quot;: &quot;3600&quot;,
+&quot;wt&quot;: &quot;1500&quot;
+&#125;
+</code></pre>
+<p>接下来来看看这个方法做了什么</p>
+</li>
+<li><p>逆向加密方法逻辑<br></p>
+<pre><code class="javascript">//点击_0x213920进入方法内部，不多，直接复制下来
+function _0x213920(_0x4166ab, _0x319b42) &#123;
+        var _0x31fe7f = _0x4af155[_0x49d1(&#39;0x4c&#39;, &#39;6yLo&#39;) + &#39;s&#39;][_0x49d1(&#39;0x95&#39;, &#39;!dKZ&#39;) + &#39;th&#39;];
+        for (var _0x282885 = 0x0; _0x282885 &lt; _0x31fe7f; _0x282885++) &#123;
+            for (var _0x494272 = 0x0; _0xa88405[_0x49d1(&#39;0x2e&#39;, &#39;x*XD&#39;) + &#39;T&#39;](_0x494272, _0x31fe7f); _0x494272++) &#123;
+                var _0x587cf2 = _0xa88405[_0x49d1(&#39;0x4e&#39;, &#39;4SZE&#39;) + &#39;I&#39;](_0x319b42[0x0] + _0x4af155[_0x49d1(&#39;0x7e&#39;, &#39;#HAO&#39;) + &#39;s&#39;][_0x49d1(&#39;0x15&#39;, &#39;DN7@&#39;) + &#39;tr&#39;](_0x282885, 0x1) + _0x4af155[_0x49d1(&#39;0x58&#39;, &#39;UOyd&#39;) + &#39;s&#39;][_0x49d1(&#39;0x51&#39;, &#39;P(7z&#39;) + &#39;tr&#39;](_0x494272, 0x1), _0x319b42[0x1]);
+                if (_0xa88405[_0x49d1(&#39;0x5c&#39;, &#39;DjgR&#39;) + &#39;W&#39;](hash(_0x587cf2), _0x4166ab)) &#123;
+                    return [_0x587cf2, new Date() - _0x2d647a];
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    
+//又到了考验耐心的时刻，控制台还原一下
+
+function _0x213920(_0x4166ab, _0x319b42) &#123;
+    var _0x31fe7f = _0x4af155[&#39;chars&#39;][&#39;length&#39;];
+    for (var _0x282885 = 0; _0x282885 &lt; _0x31fe7f; _0x282885++) &#123;
+        for (var _0x494272 = 0; _0x494272 &lt; _0x31fe7f; _0x494272++) &#123;
+            var _0x587cf2 = (_0x319b42[0] + _0x4af155[&#39;chars&#39;][&#39;substr&#39;](_0x282885, 1) + _0x4af155[&#39;chars&#39;][&#39;substr&#39;](_0x494272, 1)) + _0x319b42[1];
+            if (hash(_0x587cf2) === _0x4166ab) &#123;
+                return _0x587cf2;
+            &#125;
+        &#125;
+    &#125;
+&#125;  
+/*
+这里除了hash这个方法未能还原出来，其余均还原出来了，简单说下逻辑
+_0x4166ab参数是_0x4af155参数中的&#39;ct&#39;属性,拿上面的例子就是&quot;9039b0cf78bae628fe5e482dd5048e35d34fa598&quot;
+_0x319b42参数是_0x4af155参数中的&#39;bts&#39;属性,拿上面的例子就是[&quot;1684211908.462|0|864&quot;, &quot;4kitzYBW4tT9ZMt6O%2BYZMo%3D&quot;],
+
+第一行将_0x4af155参数中的&#39;chars&#39;属性的长度赋值给_0x31fe7f
+接下来定义了2个for循环，起点都是0，步增1，条件是小于值_0x31fe7f
+
+循环内部是这么一个逻辑
+1. 将bts列表的第一个值拼接_0x4af155中&#39;chars&#39;在当前2个循环指针指向的那个字符(就是再➕2个字符）,拼接bts列表的第二个值，赋值给_0x587cf2
+2. 如果_0x587cf2经过了名为hash的处理(大概率是分组哈希加密，就md5、sha那些),如果其值等于第一个参数也就是_0x4af155参数中的&#39;ct&#39;属性值，那么返回_0x587cf2，也就是最终要的cookie值
+那么到底是哪一种hash算法呢(先假定没有魔改，经验概率较小),在_0x4af155变量中找到了可疑点&quot;ha&quot;: &quot;sha1&quot;,那就先假定是sha1
+搞清楚了逻辑，就在本地node.js环境中做验证
+*/
+</code></pre>
+</li>
+<li><p>验证加密逻辑能否跑通</p>
+<p>代码如下:</p>
+<pre><code class="javascript">let crypto = require(&#39;crypto-js&#39;)
+
+
+function hash(method, data) &#123;
+    switch (method) &#123;
+        case &#39;sha1&#39;:
+            return crypto.SHA1(data).toString();
+        default:
+            throw &quot;未记录的method: &quot; + method
+    &#125;
+&#125;
+
+function _0x213920(_0x4166ab, _0x319b42) &#123;
+    var _0x31fe7f = _0x4af155[&#39;chars&#39;][&#39;length&#39;];
+    for (var _0x282885 = 0; _0x282885 &lt; _0x31fe7f; _0x282885++) &#123;
+        for (var _0x494272 = 0; _0x494272 &lt; _0x31fe7f; _0x494272++) &#123;
+            var _0x587cf2 = (_0x319b42[0] + _0x4af155[&#39;chars&#39;][&#39;substr&#39;](_0x282885, 1) + _0x4af155[&#39;chars&#39;][&#39;substr&#39;](_0x494272, 1)) + _0x319b42[1];
+            if (hash(_0x4af155[&#39;ha&#39;], _0x587cf2) === _0x4166ab) &#123;
+                return _0x587cf2;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+
+function encrypt_cookie(_0x4af155) &#123;
+    global._0x4af155 = _0x4af155; //这是因为_0x213920方法中也用到了这个变量，因此挂在全局上
+    return _0x213920(_0x4af155[&#39;ct&#39;], _0x4af155[&#39;bts&#39;])
+&#125;
+
+let _0x4af155 = &#123;
+    &quot;bts&quot;: [&quot;1684211908.462|0|864&quot;, &quot;4kitzYBW4tT9ZMt6O%2BYZMo%3D&quot;],
+    &quot;chars&quot;: &quot;hCLxUnaKoldwolXHfOYoAC&quot;,
+    &quot;ct&quot;: &quot;9039b0cf78bae628fe5e482dd5048e35d34fa598&quot;,
+    &quot;ha&quot;: &quot;sha1&quot;,
+    &quot;tn&quot;: &quot;__jsl_clearance_s&quot;,
+    &quot;vt&quot;: &quot;3600&quot;,
+    &quot;wt&quot;: &quot;1500&quot;
+&#125;
+
+console.log(encrypt_cookie(_0x4af155));
+</code></pre>
+<br>
+![返回结果](https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/c923ed2371ca411b91fbd825b6a5bea0.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg)
+<br>
+这证明假设正确
+</li>
+<li><p>用python完整的模拟一次请求后发现有时成功有时不成功，估计这是因为动态html返回的参数中<code>&quot;ha&quot;: &quot;sha1&quot;,</code>，并不是每次都是sha1，经过多次尝试，发现主要是这三种<code>md5,sha1,sha256</code>,那么只需要简单的做个动态逻辑判断就好了</p>
+</li>
+<li><p>至此，整个逆向过程完成，再次梳理下思路</p>
+<ol>
+<li>一共3次请求,2次521,第三次才是200,cookie加密2处:<code>__jsluid_s和__jsl_clearance_s</code>(加速乐的显著特征)</li>
+<li>__jsluid_s来源于第一次response的set-cookie</li>
+<li>__jsl_clearance_s来源于第二次response.body中的js计算,而构造第二次请求所需cookie来源于第一次请求中response.set-cookie,和response.body中的js脚本(简单混淆)</li>
+<li>其中__jsl_clearance_s经过了2次变换,第二次变换的主要特点是for循环和hash(随机)加密</li>
+</ol>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/99f3619bc7654c7699f7433215cd7509.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="成功拿到数据"></p>
+</li>
+</ol>
+<h3 id="三、代码"><a href="#三、代码" class="headerlink" title="三、代码"></a>三、代码</h3><p>python</p>
+<pre><code class="python">import json
+import time
+
+import requests
+import execjs
+from jmespath import search
+from loguru import logger
+import pymongo
+from redis import Redis
+
+
+class Spider():
+    def __init__(self):
+        self.mongodb = pymongo.MongoClient()
+        self.db = self.mongodb[&#39;spider&#39;]
+        self.coll = self.db[&#39;jsl&#39;]
+        self.redis_cli = Redis()
+        with open(&#39;emu_enc.js&#39;) as f:
+            self.js = f.read()
+
+    def req1(self):
+        headers = &#123;
+            &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36&quot;,
+        &#125;
+        url = &quot;https://credit.hefei.gov.cn/credit-website/publicity/search-result/xyxx-list.do&quot;
+        response = requests.get(url, headers=headers)
+        __jsl_clearance_s_str = response.text.split(
+            &#39;&#39;&#39;&lt;script&gt;document.cookie=(&#39;_&#39;)+(&#39;_&#39;)+(&#39;j&#39;)+(&#39;s&#39;)+(&#39;l&#39;)+(&#39;_&#39;)+(&#39;c&#39;)+(&#39;l&#39;)+(&#39;e&#39;)+(&#39;a&#39;)+(&#39;r&#39;)+(&#39;a&#39;)+(&#39;n&#39;)+(&#39;c&#39;)+(&#39;e&#39;)+(&#39;_&#39;)+(&#39;s&#39;)+(&#39;=&#39;)&#39;&#39;&#39;,
+            1)[-1].rsplit(&#39;&#39;&#39;+(&#39;;&#39;)+(&#39;m&#39;)+(&#39;a&#39;)+(&#39;x&#39;)&#39;&#39;&#39;, 1)[0]
+        __jsl_clearance_s = execjs.eval(
+            __jsl_clearance_s_str
+        )
+        ret_data = &#123;
+            &#39;__jsl_clearance_s&#39;: __jsl_clearance_s,
+            &#39;__jsluid_s&#39;: response.cookies.get_dict()[&#39;__jsluid_s&#39;]
+
+        &#125;
+        return ret_data
+
+    def req2(self, cookie):
+        headers = &#123;
+            &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36&quot;,
+        &#125;
+        url = &quot;https://credit.hefei.gov.cn/credit-website/publicity/search-result/xyxx-list.do&quot;
+        response = requests.post(url, headers=headers, cookies=cookie)
+        data = response.text.rsplit(&#39;go(&#39;, 1)[-1].split(&#39;)&lt;/script&gt;&#39;, 1)[0]
+        __jsl_clearance_s = execjs.compile(self.js).call(&#39;encrypt_cookie&#39;, json.loads(data))
+
+        cookie.update(&#123;&#39;__jsl_clearance_s&#39;: __jsl_clearance_s&#125;)  # 这个cookie大约1h过期
+        return cookie
+
+    def req3(self, cookie, page):
+        url = &#39;https://credit.hefei.gov.cn/credit-website/publicity/topSearch/getXYXXPageInfo.do&#39;
+        headers = &#123;&#39;Content-Type&#39;: &#39;application/x-www-form-urlencoded; charset=UTF-8&#39;,
+                   &#39;User-Agent&#39;: &#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36&#39;,
+                   &#39;Referer&#39;: &#39;https://credit.hefei.gov.cn/credit-website/publicity/search-result/xyxx-list.do&#39;,
+                   &#125;
+        logger.debug(&#39;req:&#39; + url)
+        data = &#123;
+            &#39;currentPageNo&#39;: page,  # 这是当前的页数，要求2000数据+，来个20页，就满足了
+            &#39;pageSize&#39;: &#39;100&#39;,  # 此处发现可以修改成和网页不一样的参数
+            &#39;creditQuery&#39;: &#39;&#39;
+        &#125;
+        response = requests.post(url, headers=headers, cookies=cookie, data=data)
+        assert response.status_code == 200
+        return response
+
+    def parse(self, response):
+        data = response.json()
+        items = search(&#39;rows&#39;, data)
+        data2save = []
+        for item in items:
+            title = search(&#39;baseDwmc&#39;, item)
+            credential_code = search(&#39;uniscid&#39;, item)
+            register_code = search(&#39;baseZch&#39;, item)
+            data2save.append(&#123;
+                &quot;title&quot;: title,
+                &quot;credential_code&quot;: credential_code,
+                &quot;register_code&quot;: register_code
+            &#125;)
+        logger.debug(&#39;data2save: &#39; + json.dumps(data2save, ensure_ascii=False, indent=2))
+        return data2save
+
+    def save(self, data):
+        &quot;&quot;&quot;用redis set特性过滤避免重复插入,sadd如果有则返回1，否则是0&quot;&quot;&quot;
+        for i in data:
+            if self.redis_cli.sadd(&#39;jsl&#39;, json.dumps(i)):
+                self.coll.insert_one(i)
+        logger.debug(&#39;保存成功!&#39;)
+
+    def main(self):
+        cookie = self.req1()
+        cookie2 = self.req2(cookie)
+        for i in range(1, 2):
+            res = self.req3(cookie2, i)
+            data2save = self.parse(res)
+            self.save(data2save)
+            time.sleep(3)  # 文明爬虫,从我做起
+
+
+if __name__ == &#39;__main__&#39;:
+    spider = Spider()
+    spider.main()
+</code></pre>
+<p>js</p>
+<pre><code class="javascript">let crypto = require(&#39;crypto-js&#39;)
+
+
+function hash(method, data) &#123;
+    switch (method) &#123;
+        case &#39;sha1&#39;:
+            return crypto.SHA1(data).toString();
+        case &#39;md5&#39;:
+            return crypto.MD5(data).toString();
+        case &#39;sha256&#39;:
+            return crypto.SHA256(data).toString();
+        default:
+            throw &quot;未记录的method: &quot; + method
+    &#125;
+&#125;
+
+function _0x213920(_0x4166ab, _0x319b42) &#123;
+    var _0x31fe7f = _0x4af155[&#39;chars&#39;][&#39;length&#39;];
+    for (var _0x282885 = 0; _0x282885 &lt; _0x31fe7f; _0x282885++) &#123;
+        for (var _0x494272 = 0; _0x494272 &lt; _0x31fe7f; _0x494272++) &#123;
+            var _0x587cf2 = (_0x319b42[0] + _0x4af155[&#39;chars&#39;][&#39;substr&#39;](_0x282885, 1) + _0x4af155[&#39;chars&#39;][&#39;substr&#39;](_0x494272, 1)) + _0x319b42[1];
+            if (hash(_0x4af155[&#39;ha&#39;], _0x587cf2) === _0x4166ab) &#123;
+                return _0x587cf2;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+
+function encrypt_cookie(_0x4af155) &#123;
+    global._0x4af155 = _0x4af155; //这是因为_0x213920方法中也用到了这个变量，因此挂在全局上
+    return _0x213920(_0x4af155[&#39;ct&#39;], _0x4af155[&#39;bts&#39;])
+&#125;
+</code></pre>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 2454612285@qq.com </span>
+    </div>
+</article>
+
+
+
+
+
+    <div id="comments"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+<script type="text/javascript">
+    $.getScript('/js/gitalk.js', function () {
+        var gitalk = new Gitalk({
+            clientID: '214c5cb5f884cc696370',
+            clientSecret: 'd8cc5414db1e24724d504f4157d453a7143835c8',
+            repo: 'cthousand.github.io',
+            owner: 'Cthousand',
+            admin: ['cthousand'],
+            id: decodeURI(location.pathname),
+            distractionFreeMode: 'true',
+            language: 'zh-CN',
+            perPage: parseInt('10',10)
+        })
+        gitalk.render('comments')
+    })
+</script>
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2021-2025 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
