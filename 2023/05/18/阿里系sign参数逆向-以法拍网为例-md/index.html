@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>阿里系sign参数逆向-以法拍网为例.md | cthousand</title>
+  <meta name="keywords" content=" web逆向 , 阿里系 ">
+  <meta name="description" content="阿里系sign参数逆向-以法拍网为例.md | cthousand">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="目标地址：https:&#x2F;&#x2F;zc-paimai.taobao.com&#x2F;需求：使用爬虫抓取淘宝法拍房数据，针对北上广三个城市进行全量采集，数据不低于500条字段：标题、价格、地区 思路前期工作定位接口 精简请求  一共4个参数需要逆向  参数逆向_m_h5_tk和_m_h5_tk_enccookie来源分为2种,后端返回与前端生成,先验证第一种。  很好,这说明两个参数都是后端返回的,逆向进度直接完成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阿里系sign参数逆向-以法拍网为例.md">
+<meta property="og:url" content="http://example.com/2023/05/18/%E9%98%BF%E9%87%8C%E7%B3%BBsign%E5%8F%82%E6%95%B0%E9%80%86%E5%90%91-%E4%BB%A5%E6%B3%95%E6%8B%8D%E7%BD%91%E4%B8%BA%E4%BE%8B-md/index.html">
+<meta property="og:site_name" content="cthousand">
+<meta property="og:description" content="目标地址：https:&#x2F;&#x2F;zc-paimai.taobao.com&#x2F;需求：使用爬虫抓取淘宝法拍房数据，针对北上广三个城市进行全量采集，数据不低于500条字段：标题、价格、地区 思路前期工作定位接口 精简请求  一共4个参数需要逆向  参数逆向_m_h5_tk和_m_h5_tk_enccookie来源分为2种,后端返回与前端生成,先验证第一种。  很好,这说明两个参数都是后端返回的,逆向进度直接完成">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/d90496dce7af43e4b257c7879e3b39ec.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/021cef0798ec4838979d02378e4f98dc.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/1509546aae9a4876b7aa0ba14f9b842e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/e68023039c834b268500c00f6758e06b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/6526166cf51a4c32b8844f1d4539e01a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/c97b6122ea2f43cc90fea37268a09c61.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/3d32e449fe7743de9378e4467907bed2.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/0c5ffb7dd8de4f8da839a4eff673346e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/e8767cec49964c859beb2b29c48b9909.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/9db00e25dd9741b29f34b0c2b3776282.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/988d1e8eaff44bdfbb6ec8f3a6ecbb89.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/d9864f8da55a46258798862f8e249d39.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/c18ae30a56d148b49a0daed9b4b8e578.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/d7b8bae0fff04e999d16adc5153e7b74.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/d956d48106624c548923b4f7993e02d4.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/7cc46001e2494e129de2454d868a6b78.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/0c92de849a194f25b3f539aae512fcd7.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/a29a893a8f5a4cc28bbf68e07ef64c1a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/d03c417d2fd2492ea5f403deb9df7f3d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/abf42b1e567343449a2414c5009bb3b1.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/f2c445c087124b619adcc0b6cb13e233.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/e9a53afddf2f4d33a0efc171617d44d6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/15d2b483a95c43f09b4b3eb3b6d6fa60.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/ec888458e3c7465daa30a2d895186471.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/3b55ac75bcec421cbd625b8cf80a6c4b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/9ff1ab0025fa49feb1dcf9182a784968.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="article:published_time" content="2023-05-18T08:34:23.000Z">
+<meta property="article:modified_time" content="2023-05-18T12:53:18.256Z">
+<meta property="article:author" content="Cthousand">
+<meta property="article:tag" content="web逆向">
+<meta property="article:tag" content="阿里系">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/d90496dce7af43e4b257c7879e3b39ec.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/darcula.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>Cthousand</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="github"
+               href="https://github.com/Cthousand"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="email"
+               href="mailto:2454612285@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=2454612285&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(4)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                <li>
+                    <div data-rel="爬虫">
+                        
+                        爬虫
+                        <small>(3)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="4">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里系</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>加速乐</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>cookie加密</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>scrapy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>web逆向</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>web爬虫</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/05/18/%E9%98%BF%E9%87%8C%E7%B3%BBsign%E5%8F%82%E6%95%B0%E9%80%86%E5%90%91-%E4%BB%A5%E6%B3%95%E6%8B%8D%E7%BD%91%E4%B8%BA%E4%BE%8B-md/"
+           data-tag="web逆向,阿里系"
+           data-author="" >
+            <span class="post-title" title="阿里系sign参数逆向-以法拍网为例.md">阿里系sign参数逆向-以法拍网为例.md</span>
+            <span class="post-date" title="2023-05-18 16:34:23">2023/05/18</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/05/17/cookie%E5%8A%A0%E5%AF%86-%E4%BB%A5hefei%E4%B8%BA%E4%BE%8B/"
+           data-tag="web爬虫,加速乐,cookie加密"
+           data-author="" >
+            <span class="post-title" title="cookie加密-以hefei为例">cookie加密-以hefei为例</span>
+            <span class="post-date" title="2023-05-17 13:50:48">2023/05/17</span>
+        </a>
+        
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/05/15/scrapy%E8%BF%90%E7%94%A8-%E4%BB%A5winshangdata%E4%B8%BA%E4%BE%8B/"
+           data-tag="web爬虫,scrapy"
+           data-author="" >
+            <span class="post-title" title="scrapy运用-以winshangdata为例">scrapy运用-以winshangdata为例</span>
+            <span class="post-date" title="2023-05-15 15:48:57">2023/05/15</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-阿里系sign参数逆向-以法拍网为例-md" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">阿里系sign参数逆向-以法拍网为例.md</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="爬虫">爬虫</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">web逆向</a>
+            
+            <a class="color4">阿里系</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2023-05-18 20:53:18'>2023-05-18 16:34</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+        <span class="top-comment" title="跳转至评论区">
+            <a href="#comments">
+                评论 :<span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </a>
+        </span>
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87"><span class="toc-text">目标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E6%9C%9F%E5%B7%A5%E4%BD%9C"><span class="toc-text">前期工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%BD%8D%E6%8E%A5%E5%8F%A3"><span class="toc-text">定位接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%BE%E7%AE%80%E8%AF%B7%E6%B1%82"><span class="toc-text">精简请求</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E9%80%86%E5%90%91"><span class="toc-text">参数逆向</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#m-h5-tk%E5%92%8C-m-h5-tk-enc"><span class="toc-text">_m_h5_tk和_m_h5_tk_enc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sign"><span class="toc-text">sign</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%BD%8D%E5%8A%A0%E5%AF%86%E4%BD%8D%E7%BD%AE"><span class="toc-text">定位加密位置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#o-token"><span class="toc-text">o.token</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#a"><span class="toc-text">a</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#s"><span class="toc-text">s</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#n-data"><span class="toc-text">n.data</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#t"><span class="toc-text">t</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BF%BB%E9%A1%B5%E9%80%BB%E8%BE%91"><span class="toc-text">翻页逻辑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%B0%E5%8C%BA%E5%88%87%E6%8D%A2%E9%80%BB%E8%BE%91"><span class="toc-text">地区切换逻辑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%BB%84%E8%A3%85%E6%B5%8B%E8%AF%95"><span class="toc-text">代码组装测试</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81"><span class="toc-text">完整代码</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><p><strong>地址</strong>：<a target="_blank" rel="noopener" href="https://zc-paimai.taobao.com/">https://zc-paimai.taobao.com/</a><br><br><strong>需求</strong>：使用爬虫抓取淘宝法拍房数据，针对北上广三个城市进行全量采集，数据不低于500条<br><br><strong>字段</strong>：标题、价格、地区<br></p>
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><h2 id="前期工作"><a href="#前期工作" class="headerlink" title="前期工作"></a>前期工作</h2><h3 id="定位接口"><a href="#定位接口" class="headerlink" title="定位接口"></a>定位接口</h3><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/d90496dce7af43e4b257c7879e3b39ec.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="关键词定位接口"></p>
+<h3 id="精简请求"><a href="#精简请求" class="headerlink" title="精简请求"></a>精简请求</h3><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/021cef0798ec4838979d02378e4f98dc.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="将请求curl转request后精简参数"></p>
+<blockquote>
+<p>一共4个参数需要逆向</p>
+</blockquote>
+<h2 id="参数逆向"><a href="#参数逆向" class="headerlink" title="参数逆向"></a>参数逆向</h2><h3 id="m-h5-tk和-m-h5-tk-enc"><a href="#m-h5-tk和-m-h5-tk-enc" class="headerlink" title="_m_h5_tk和_m_h5_tk_enc"></a>_m_h5_tk和_m_h5_tk_enc</h3><p>cookie来源分为2种,后端返回与前端生成,先验证第一种。</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/1509546aae9a4876b7aa0ba14f9b842e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="打开proxyman,在response.headers中搜索_m_h5_tk"></p>
+<p>很好,这说明两个参数都是后端返回的,逆向进度直接完成一半!</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/e68023039c834b268500c00f6758e06b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="异常的返回"></p>
+<p>注意这个请求即使没有返回数据,其cookie也是有用的,而且虽然里面有body和params并且看起来加过密,但经过多次尝试,采用固定参数也可以稳定长期的返回所需要cookie值。</p>
+<h3 id="sign"><a href="#sign" class="headerlink" title="sign"></a>sign</h3><h4 id="定位加密位置"><a href="#定位加密位置" class="headerlink" title="定位加密位置"></a>定位加密位置</h4><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/6526166cf51a4c32b8844f1d4539e01a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="从启动器中点入可能性最大的js文件"></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/c97b6122ea2f43cc90fea37268a09c61.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="搜索sign ="></p>
+<p>但没有结果, 换个搜法，搜索<code>sign: </code></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/3d32e449fe7743de9378e4467907bed2.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="搜索sign:"></p>
+<p>下断点成功断住，很像32位的md5加密</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/0c5ffb7dd8de4f8da839a4eff673346e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="把方法赋给全局变量"></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/e8767cec49964c859beb2b29c48b9909.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="测试是否为标准md5加密"><br>通过测试，确实是标准的md5加密，接下来研究下参数<code>o.token + &quot;&amp;&quot; + a + &quot;&amp;&quot; + s + &quot;&amp;&quot; + n.data</code>的由来。</p>
+<h4 id="o-token"><a href="#o-token" class="headerlink" title="o.token"></a>o.token</h4><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/9db00e25dd9741b29f34b0c2b3776282.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="o是一个对象"></p>
+<p>搜索<code>o=</code>有160几个,不太好精准定位，所以看当前栈的信息,找到<code>o=this.options</code>,搜索<code>this.options</code>,找到<code>this.options = r(n || &#123;&#125;, f)</code>,执行这个函数</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/988d1e8eaff44bdfbb6ec8f3a6ecbb89.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="执行r(n || {}, f)"></p>
+<p>并没有显示token成员，因此推测token是后来加入的，对于一个object对象，加入成员一般有.成员和[成员]两种方式，先来尝试第一种<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/d9864f8da55a46258798862f8e249d39.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="搜索.token ="></p>
+<p>注意<code>this.option</code>后续可能被赋给了别的变量,也就是换了马甲,因此搜<code>.token=</code>,预防这种情况，共找到了4处结果，其中<code>a(S)</code>和<code>a(h)</code>看起来都有可能是生成函数。</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/c18ae30a56d148b49a0daed9b4b8e578.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="控制台打印a(S)和a(h)"></p>
+<p>结果显示<code>o.token</code>是源于a(S),其中S是<code>_m_h5_tk</code></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/d7b8bae0fff04e999d16adc5153e7b74.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="a函数"></p>
+<p><code>a()</code>是从document.cookie中提取字符串，基本上可以判定取的cookie键就是<code>_m_h5_tk</code>,用时下最流行的gpt来帮我解释一下</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/d956d48106624c548923b4f7993e02d4.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="gpt解释正则含义"></p>
+<p>结果也验证了想法，到了这里还不能沾沾自喜,还需进一步处理,提取出_之前的那部分作为最终返回结果</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/7cc46001e2494e129de2454d868a6b78.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="还不能沾沾自喜"></p>
+<p>前面分析过这个cookie是一个接口返回的,至此<code>o.token</code>已经破案。</p>
+<h4 id="a"><a href="#a" class="headerlink" title="a"></a>a</h4><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/0c92de849a194f25b3f539aae512fcd7.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="a像一个时间戳"></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/a29a893a8f5a4cc28bbf68e07ef64c1a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="将当前栈上函数复制到控制台,精准搜索一下 a ="></p>
+<p>原来它就是一个时间戳。</p>
+<h4 id="s"><a href="#s" class="headerlink" title="s"></a>s</h4><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/d03c417d2fd2492ea5f403deb9df7f3d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="s看不出来是个啥"></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/abf42b1e567343449a2414c5009bb3b1.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="搜索一下,原来是Appkey,是个固定值"></p>
+<h4 id="n-data"><a href="#n-data" class="headerlink" title="n.data"></a>n.data</h4><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/f2c445c087124b619adcc0b6cb13e233.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="看起来很像请求时的params参数"></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/e9a53afddf2f4d33a0efc171617d44d6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="搜索n= ,结果证实了猜想"></p>
+<blockquote>
+<p>总结一下sign值的由来，_m_h5_tk这个cookie值的_之前部分+”&amp;”+当前的时间戳+”&amp;”+appkey(固定值)+”&amp;”+请求时的params中的data值,形成的字符串md5加密,之后我们直接用python模拟算法</p>
+</blockquote>
+<h3 id="t"><a href="#t" class="headerlink" title="t"></a>t</h3><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/15d2b483a95c43f09b4b3eb3b6d6fa60.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="在分析sign参数时已经顺便找到了来源"></p>
+<h2 id="翻页逻辑"><a href="#翻页逻辑" class="headerlink" title="翻页逻辑"></a>翻页逻辑</h2><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/ec888458e3c7465daa30a2d895186471.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="经过测试只需要改params中page参数即可"></p>
+<h2 id="地区切换逻辑"><a href="#地区切换逻辑" class="headerlink" title="地区切换逻辑"></a>地区切换逻辑</h2><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/3b55ac75bcec421cbd625b8cf80a6c4b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="经过参数对比和反复尝试,这是由params中`locationCode`和`sid`控制的,可作为静态变量事先存储起来"></p>
+<h2 id="代码组装测试"><a href="#代码组装测试" class="headerlink" title="代码组装测试"></a>代码组装测试</h2><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230518/9ff1ab0025fa49feb1dcf9182a784968.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="成功拿到数据"></p>
+<p>这证明之前参数逆向和翻页地区切换的假设都是正确的，下面贴上完整的代码。</p>
+<h1 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h1><pre><code class="python">import json
+import time
+
+import pymongo
+import requests
+import hashlib
+from loguru import logger
+from redis.client import Redis
+from jmespath import search
+
+
+class Spider():
+    def __init__(self):
+        self.mongodb = pymongo.MongoClient()
+        self.db = self.mongodb[&#39;spider&#39;]
+        self.coll = self.db[&#39;court_auction&#39;]
+        self.redis_cli = Redis()
+        self.location_change = &#123;
+            &#39;beiJin&#39;: &#123;&#39;locationCode&#39;: &#39;110000&#39;,
+                       &#39;sid&#39;: &#39;0272474869_1684412604030&#39;&#125;,
+            &#39;shangHai&#39;: &#123;
+                &#39;locationCode&#39;: &#39;310000&#39;,
+                &#39;sid&#39;: &#39;1373475548_1684412676879&#39;
+            &#125;,
+            &#39;guangZhou&#39;: &#123;&#39;locationCode&#39;: &#39;440000&#39;,
+                          &#39;sid&#39;: &#39;8608688863_1684412736958&#39;&#125;
+        &#125;
+
+    def md5_enc(self, str):
+        md5 = hashlib.md5()
+        md5.update(str.encode(&#39;utf-8&#39;))
+        return md5.hexdigest()
+
+    def get_cookie(self):
+        headers = &#123;
+            &#39;Content-type&#39;: &#39;application/x-www-form-urlencoded&#39;,
+            &#39;User-Agent&#39;: &#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36&#39;,
+            &#39;Referer&#39;: &#39;https://zc-paimai.taobao.com/&#39;,
+        &#125;
+        params = (
+            (&#39;jsv&#39;, &#39;2.6.1&#39;),
+            (&#39;appKey&#39;, &#39;12574478&#39;),
+            (&#39;t&#39;, &#39;1684378620773&#39;),
+            (&#39;sign&#39;, &#39;796d54577ac8db0af55dab2f0a06555d&#39;),
+            (&#39;bxPageId&#39;, &#39;1910955&#39;),
+            (&#39;api&#39;, &#39;mtop.taobao.datafront.invoke.auctionwalle&#39;),
+            (&#39;v&#39;, &#39;1.0&#39;),
+            (&#39;type&#39;, &#39;originaljson&#39;),
+            (&#39;dataType&#39;, &#39;json&#39;),
+            (&#39;requiredParams&#39;, &#39;dfApiName,dfUniqueId&#39;),
+        )
+        data = &#123;
+            &#39;data&#39;: &#39;&#123;&quot;dfApp&quot;:&quot;auctionwalle&quot;,&quot;dfApiName&quot;:&quot;auctionwalle.datou.getPageModulesData&quot;,&quot;dfVariables&quot;:&quot;&#123;\\&quot;pageId\\&quot;:1910955,\\&quot;moduleIds\\&quot;:\\&quot;4394607430,4489817680,4480874310,2004318340,4529967930,2708524060,global\\&quot;,\\&quot;context\\&quot;:&#123;\\&quot;pmid\\&quot;:\\&quot;7287198777_1684376275117\\&quot;,\\&quot;pmtk\\&quot;:\\&quot;20140647.0.0.0.27064540.puimod-pc-search-navbar_5143927030.vault-jump\\&quot;,\\&quot;spm\\&quot;:\\&quot;a2129.27064540.puimod-pc-search-navbar_5143927030.vault-jump\\&quot;,\\&quot;path\\&quot;:\\&quot;27064540\\&quot;,\\&quot;keyword\\&quot;:\\&quot;\u4E8C\u624B\u623F\\&quot;,\\&quot;page\\&quot;:\\&quot;2\\&quot;,\\&quot;userInfo\\&quot;:\\&quot;&#123;&#125;\\&quot;,\\&quot;sceneCode\\&quot;:\\&quot;20210823QCG72BUD\\&quot;,\\&quot;firstScreen\\&quot;:\\&quot;true\\&quot;,\\&quot;device\\&quot;:\\&quot;pc\\&quot;&#125;&#125;&quot;,&quot;dfUniqueId&quot;:&quot;1910955.4394607430,4489817680,4480874310,2004318340,4529967930,2708524060,global&quot;,&quot;dfVariablesRecover&quot;:&quot;&#123;&#125;&quot;&#125;&#39;
+        &#125;
+        logger.debug(&#39;url: &#39; + &#39;https://h5api.m.taobao.com/h5/mtop.taobao.datafront.invoke.auctionwalle/1.0/&#39;)
+        response = requests.post(&#39;https://h5api.m.taobao.com/h5/mtop.taobao.datafront.invoke.auctionwalle/1.0/&#39;,
+                                 headers=headers, params=params, data=data)
+        logger.debug(&#39;cookie: &#39; + json.dumps(response.cookies.get_dict(), ensure_ascii=False, indent=2))
+        return response.cookies.get_dict()
+
+    def get_data(self, cookie, page, location):
+        cur_timeStamp = str(round(time.time() * 1000))
+        headers = &#123;
+            &quot;content-type&quot;: &quot;application/x-www-form-urlencoded&quot;,
+            &quot;referer&quot;: &quot;https://zc-paimai.taobao.com/&quot;,
+            &quot;user-agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36&quot;
+        &#125;
+        url = &quot;https://h5api.m.taobao.com/h5/mtop.taobao.datafront.invoke.auctionwalle/1.0/&quot;
+        logger.debug(&#39;url: &#39; + url)
+        data = &#123;
+            &quot;data&quot;: &quot;&#123;\&quot;dfApp\&quot;:\&quot;auctionwalle\&quot;,\&quot;dfApiName\&quot;:\&quot;auctionwalle.datou.getPageModulesData\&quot;,\&quot;dfVariables\&quot;:\&quot;&#123;\\\&quot;pageId\\\&quot;:1910955,\\\&quot;moduleIds\\\&quot;:\\\&quot;2004318340:items\\\&quot;,\\\&quot;context\\\&quot;:&#123;\\\&quot;_b_2004318340:items\\\&quot;:\\\&quot;&#123;\\\\\\\&quot;keyword\\\\\\\&quot;:\\\\\\\&quot;二手房\\\\\\\&quot;,\\\\\\\&quot;pmid\\\\\\\&quot;:\\\\\\\&quot;3840625134_1684412570290\\\\\\\&quot;,\\\\\\\&quot;pmtk\\\\\\\&quot;:\\\\\\\&quot;20140647.0.0.0.27064540.puimod-pc-search-navbar_5143927030.vault-jump\\\\\\\&quot;,\\\\\\\&quot;spm\\\\\\\&quot;:\\\\\\\&quot;a2129.27064540.puimod-pc-search-navbar_5143927030.vault-jump\\\\\\\&quot;,\\\\\\\&quot;path\\\\\\\&quot;:\\\\\\\&quot;27064540\\\\\\\&quot;,\\\\\\\&quot;locationCodes\\\\\\\&quot;:[\\\\\\\&quot;%(locationCode)s\\\\\\\&quot;],\\\\\\\&quot;userInfo\\\\\\\&quot;:&#123;&#125;,\\\\\\\&quot;appendMap\\\\\\\&quot;:&#123;\\\\\\\&quot;sid\\\\\\\&quot;:\\\\\\\&quot;%(sid)s\\\\\\\&quot;&#125;,\\\\\\\&quot;page\\\\\\\&quot;:\\\\\\\&quot;%(page)s\\\\\\\&quot;&#125;\\\&quot;,\\\&quot;userInfo\\\&quot;:\\\&quot;&#123;&#125;\\\&quot;,\\\&quot;device\\\&quot;:\\\&quot;pc\\\&quot;,\\\&quot;sceneCode\\\&quot;:\\\&quot;20210823QCG72BUD\\\&quot;&#125;&#125;\&quot;,\&quot;dfUniqueId\&quot;:\&quot;1910955.2004318340:items\&quot;,\&quot;dfVariablesRecover\&quot;:\&quot;&#123;&#125;\&quot;&#125;&quot; % &#123;
+                &#39;page&#39;: page, &#39;locationCode&#39;: location[&#39;locationCode&#39;], &#39;sid&#39;: location[&#39;sid&#39;]&#125;
+        &#125;
+        params = &#123;
+            &quot;jsv&quot;: &quot;2.6.1&quot;,
+            &quot;appKey&quot;: &quot;12574478&quot;,
+            &quot;t&quot;: cur_timeStamp,
+            &quot;sign&quot;: self.md5_enc(
+                cookie[&#39;_m_h5_tk&#39;].split(&#39;_&#39;, 1)[0] + &quot;&amp;&quot; + cur_timeStamp + &quot;&amp;&quot; + &quot;12574478&quot; + &quot;&amp;&quot; + data[
+                    &#39;data&#39;]).encode(
+                &#39;utf-8&#39;),
+            &quot;bxPageId&quot;: &quot;1910955&quot;,
+            &quot;api&quot;: &quot;mtop.taobao.datafront.invoke.auctionwalle&quot;,
+            &quot;v&quot;: &quot;1.0&quot;,
+            &quot;type&quot;: &quot;originaljson&quot;,
+            &quot;dataType&quot;: &quot;json&quot;,
+            &quot;requiredParams&quot;: &quot;dfApiName,dfUniqueId&quot;
+        &#125;
+        response = requests.post(url, headers=headers, cookies=cookie, params=params, data=data)
+        return response
+
+    def parse(self, res, city):
+        data2save = []
+        items = search(&#39;data.data.GQL_getPageModulesData.&quot;2004318340&quot;.items.schemeList&#39;, res.json())
+        for item in items:
+            title = search(&#39;auctionTitle&#39;, item)
+            price = str(search(&#39;price&#39;, item)) + search(&#39;priceUnit&#39;, item)
+            location = search(&#39;auctionBenefits&#39;, item)
+            data2save.append(&#123;
+                &#39;city&#39;: city,
+                &#39;title&#39;: title,
+                &#39;price&#39;: price,
+                &#39;location&#39;: location
+            &#125;)
+        logger.debug(&#39;data: &#39; + json.dumps(data2save, indent=2, ensure_ascii=False))
+        return data2save
+
+    def save(self, data):
+        &quot;&quot;&quot;用redis set特性过滤避免重复插入,sadd如果有则返回1，否则是0&quot;&quot;&quot;
+        for i in data:
+            if self.redis_cli.sadd(&#39;court_auction&#39;, json.dumps(i)):
+                self.coll.insert_one(i)
+        logger.debug(&#39;保存成功!&#39;)
+
+    def main(self):
+        cookie = self.get_cookie()  # 这个cookie过期时间还挺长的,不用每次请求都变
+        for k, v in self.location_change.items():
+            for i in range(1, 10):
+                res = self.get_data(cookie, i, v)
+                data2save = self.parse(res, k)
+                self.save(data2save)
+                time.sleep(1)
+
+
+if __name__ == &#39;__main__&#39;:
+    spider = Spider()
+    spider.main()
+</code></pre>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 2454612285@qq.com </span>
+    </div>
+</article>
+
+
+
+
+
+    <div id="comments"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+<script type="text/javascript">
+    $.getScript('/js/gitalk.js', function () {
+        var gitalk = new Gitalk({
+            clientID: '214c5cb5f884cc696370',
+            clientSecret: 'd8cc5414db1e24724d504f4157d453a7143835c8',
+            repo: 'cthousand.github.io',
+            owner: 'Cthousand',
+            admin: ['cthousand'],
+            id: decodeURI(location.pathname),
+            distractionFreeMode: 'true',
+            language: 'zh-CN',
+            perPage: parseInt('10',10)
+        })
+        gitalk.render('comments')
+    })
+</script>
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2021-2025 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
