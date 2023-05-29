@@ -588,18 +588,33 @@
 .nav-left ul li>div {
   height: 40px;
   color: rgba(255,255,255,0.7);
-  transition: all 0.15s linear;
   position: relative;
   white-space: nowrap;
   overflow: hidden;
+  z-index: 1;
+}
+.nav-left ul li>div::after {
+  content: "";
+  position: absolute;
+  transition: all 0.15s linear;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #fff;
+  z-index: -1;
 }
 .nav-left ul li>div:hover {
   color: #f7f7f7;
-  box-shadow: inset 6px 0 0.09px #fff;
+}
+.nav-left ul li>div:hover:after {
+  width: 5px;
 }
 .nav-left ul li>div.active {
   color: #020202;
-  box-shadow: inset 165px 0 0.09px #fff;
+}
+.nav-left ul li>div.active:after {
+  width: 100%;
 }
 .nav-left ul li>div>.fold {
   left: 4px;
