@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>利用AST对JS代码进行混淆与还原 | cthousand</title>
+  <meta name="keywords" content=" AST ">
+  <meta name="description" content="利用AST对JS代码进行混淆与还原 | cthousand">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="AST基本概念中文名为抽象语法树，英文名称：Abstract Syntax Code，是源代码语法结构的一种抽象表示方式，具有明显的树状结构特征，原本紧密联系、结构紧凑的代码被切分成了不可再分的零碎词块，且语法不会表示出真实语法中的所有细节，因此带来了”抽象”的感觉。例如，编写一个简单的1+1&#x3D;&#x3D;2，表达式在解析后得到AST抽象语法树如下所示。 &amp;#123;   &quot;t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用AST对JS代码进行混淆与还原">
+<meta property="og:url" content="http://example.com/2023/06/07/%E5%88%A9%E7%94%A8AST%E5%AF%B9JS%E4%BB%A3%E7%A0%81%E8%BF%9B%E8%A1%8C%E6%B7%B7%E6%B7%86%E4%B8%8E%E8%BF%98%E5%8E%9F/index.html">
+<meta property="og:site_name" content="cthousand">
+<meta property="og:description" content="AST基本概念中文名为抽象语法树，英文名称：Abstract Syntax Code，是源代码语法结构的一种抽象表示方式，具有明显的树状结构特征，原本紧密联系、结构紧凑的代码被切分成了不可再分的零碎词块，且语法不会表示出真实语法中的所有细节，因此带来了”抽象”的感觉。例如，编写一个简单的1+1&#x3D;&#x3D;2，表达式在解析后得到AST抽象语法树如下所示。 &amp;#123;   &quot;t">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/95088a97a346460497caa763a7006fa4.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/f00558762763432082f92dcc5549d65c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/a5cbc82dd057493bbdcedee52cf015cb.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/52735e611a014cd89863f43104be96a5.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/804d4519a2dd4373819e493859a7de9e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/5ac859cda38046cc90e9fbe5380d6b7f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/afb80ea05a3748538600ce87c944876a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/bef650ca631b4cd38ae8e5606d773aa7.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/46222efe499b42a79bd0e57a2c5c7b19.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/c70cbf10c230421c9f11a64825222635.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="article:published_time" content="2023-06-06T16:48:10.000Z">
+<meta property="article:modified_time" content="2023-06-07T07:53:19.554Z">
+<meta property="article:author" content="Cthousand">
+<meta property="article:tag" content="AST">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/95088a97a346460497caa763a7006fa4.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/darcula.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>Cthousand</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="github"
+               href="https://github.com/Cthousand"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="email"
+               href="mailto:2454612285@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=2454612285&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(6)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                <li>
+                    <div data-rel="爬虫">
+                        
+                        爬虫
+                        <small>(4)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="英语">
+                        
+                        英语
+                        <small>(2)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="6">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a><a song of ice and fire></a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里系</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>加速乐</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AST</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>cookie加密</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>scrapy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>web逆向</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>web爬虫</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/06/07/%E5%88%A9%E7%94%A8AST%E5%AF%B9JS%E4%BB%A3%E7%A0%81%E8%BF%9B%E8%A1%8C%E6%B7%B7%E6%B7%86%E4%B8%8E%E8%BF%98%E5%8E%9F/"
+           data-tag="AST"
+           data-author="" >
+            <span class="post-title" title="利用AST对JS代码进行混淆与还原">利用AST对JS代码进行混淆与还原</span>
+            <span class="post-date" title="2023-06-07 00:48:10">2023/06/07</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/06/04/02%3Ca-song-of-ice-and-fire%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"
+           data-tag="&lt;a song of ice and fire&gt;"
+           data-author="" >
+            <span class="post-title" title="02&lt;a song of ice and fire&gt;阅读笔记">02&lt;a song of ice and fire&gt;阅读笔记</span>
+            <span class="post-date" title="2023-06-04 20:29:34">2023/06/04</span>
+        </a>
+        
+        
+        <a  class="全部文章 英语 "
+           href="/2023/05/28/01%3Ca-song-of-ice-and-fire%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"
+           data-tag="&lt;a song of ice and fire&gt;"
+           data-author="" >
+            <span class="post-title" title="01&lt;a song of ice and fire&gt;阅读笔记">01&lt;a song of ice and fire&gt;阅读笔记</span>
+            <span class="post-date" title="2023-05-28 08:49:32">2023/05/28</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/05/18/%E9%98%BF%E9%87%8C%E7%B3%BBsign%E5%8F%82%E6%95%B0%E9%80%86%E5%90%91-%E4%BB%A5%E6%B3%95%E6%8B%8D%E7%BD%91%E4%B8%BA%E4%BE%8B/"
+           data-tag="web逆向,阿里系"
+           data-author="" >
+            <span class="post-title" title="阿里系sign参数逆向-以法拍网为例.md">阿里系sign参数逆向-以法拍网为例.md</span>
+            <span class="post-date" title="2023-05-18 16:34:23">2023/05/18</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/05/17/cookie%E9%80%86%E5%90%91-%E4%BB%A5hefei%E4%B8%BA%E4%BE%8B/"
+           data-tag="web爬虫,加速乐,cookie加密"
+           data-author="" >
+            <span class="post-title" title="cookie逆向-以hefei为例">cookie逆向-以hefei为例</span>
+            <span class="post-date" title="2023-05-17 13:50:48">2023/05/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/05/16/scrapy%E8%BF%90%E7%94%A8-%E4%BB%A5winshangdata%E4%B8%BA%E4%BE%8B/"
+           data-tag="web爬虫,scrapy"
+           data-author="" >
+            <span class="post-title" title="scrapy运用-以winshangdata为例.md">scrapy运用-以winshangdata为例.md</span>
+            <span class="post-date" title="2023-05-16 16:34:23">2023/05/16</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-利用AST对JS代码进行混淆与还原" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">利用AST对JS代码进行混淆与还原</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="爬虫">爬虫</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color4">AST</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2023-06-07 15:53:19'>2023-06-07 00:48</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#AST%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">AST基本概念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JS%E4%BB%A3%E7%A0%81%E7%9A%84%E6%B7%B7%E6%B7%86"><span class="toc-text">JS代码的混淆</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B7%E6%B7%86%E5%89%8D%E7%9A%84%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-text">混淆前的预处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B9%E5%8F%98%E5%AF%B9%E8%B1%A1%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F"><span class="toc-text">改变对象访问方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1%E5%A4%84%E7%90%86"><span class="toc-text">内置对象处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E4%B8%8E%E6%A0%87%E8%AF%86%E7%AC%A6%E6%B7%B7%E6%B7%86"><span class="toc-text">常量与标识符混淆</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E5%A4%84%E7%90%86"><span class="toc-text">字符串常量处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8A%A0%E5%AF%86"><span class="toc-text">字符串加密</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%A7%E6%95%B0%E7%BB%84%E5%88%86%E9%85%8D"><span class="toc-text">大数组分配</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E4%B9%B1%E5%BA%8F"><span class="toc-text">数组乱序</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%A3%80%E6%B5%8B"><span class="toc-text">格式化检测</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%88%86%E7%A0%B4"><span class="toc-text">内存爆破</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E5%B8%B8%E9%87%8F%E5%8A%A0%E5%AF%86"><span class="toc-text">数值常量加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%89%B9%E6%AE%8A%E5%A4%84%E7%90%86"><span class="toc-text">十六进制特殊处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E8%AF%86%E7%AC%A6%E6%B7%B7%E6%B7%86"><span class="toc-text">标识符混淆</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E7%94%9F%E6%88%90%E5%8A%9E%E6%B3%95"><span class="toc-text">随机生成办法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%9D%97%E6%B7%B7%E6%B7%86"><span class="toc-text">代码块混淆</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E9%A1%B9%E5%BC%8F%E8%BD%AC%E5%87%BD%E6%95%B0%E8%8A%B1%E6%8C%87%E4%BB%A4"><span class="toc-text">二项式转函数花指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E8%BD%AC%E8%8A%B1%E6%8C%87%E4%BB%A4"><span class="toc-text">函数调用转花指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A%E4%BB%A3%E7%A0%81%E8%A1%8C%E5%8A%A0%E5%AF%86"><span class="toc-text">指定代码行加密</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#base64%E5%8A%A0%E5%AF%86"><span class="toc-text">base64加密</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ascii%E7%A0%81%E5%8A%A0%E5%AF%86"><span class="toc-text">ascii码加密</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E9%80%BB%E8%BE%91%E7%9A%84%E6%B7%B7%E6%B7%86"><span class="toc-text">执行逻辑的混淆</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E5%B9%B3%E5%9D%A6%E5%8C%96"><span class="toc-text">流程平坦化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%97%E5%8F%B7%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8E%8B%E7%BC%A9"><span class="toc-text">逗号表达式压缩</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JS%E4%BB%A3%E7%A0%81%E7%9A%84%E8%BF%98%E5%8E%9F"><span class="toc-text">JS代码的还原</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E7%BD%91%E7%AB%99%E4%BD%BF%E7%94%A8%E7%9A%84%E6%B7%B7%E6%B7%86%E6%AD%A5%E9%AA%A4"><span class="toc-text">分析网站使用的混淆步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%95%B0%E7%BB%84%E6%B7%B7%E6%B7%86"><span class="toc-text">字符串数组混淆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E4%B9%B1%E5%BA%8F-1"><span class="toc-text">数组乱序</span></a></li></ol></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="AST基本概念"><a href="#AST基本概念" class="headerlink" title="AST基本概念"></a>AST基本概念</h1><p>中文名为<code>抽象语法树</code>，英文名称：<code>Abstract Syntax Code</code>，是源代码语法结构的一种抽象表示方式，具有明显的树状结构特征，原本紧密联系、结构紧凑的代码被切分成了不可再分的零碎词块，且语法不会表示出真实语法中的所有细节，因此带来了”抽象”的感觉。例如，编写一个简单的1+1&#x3D;&#x3D;2，表达式在解析后得到AST抽象语法树如下所示。</p>
+<pre><code class="json">&#123;
+  &quot;type&quot;: &quot;Program&quot;,
+  &quot;start&quot;: 0,
+  &quot;end&quot;: 6,
+  &quot;body&quot;: [
+    &#123;
+      &quot;type&quot;: &quot;ExpressionStatement&quot;,
+      &quot;start&quot;: 0,
+      &quot;end&quot;: 6,
+      &quot;expression&quot;: &#123;
+        &quot;type&quot;: &quot;BinaryExpression&quot;,
+        &quot;start&quot;: 0,
+        &quot;end&quot;: 6,
+        &quot;left&quot;: &#123;
+          &quot;type&quot;: &quot;BinaryExpression&quot;,
+          &quot;start&quot;: 0,
+          &quot;end&quot;: 3,
+          &quot;left&quot;: &#123;
+            &quot;type&quot;: &quot;Literal&quot;,
+            &quot;start&quot;: 0,
+            &quot;end&quot;: 1,
+            &quot;value&quot;: 1,
+            &quot;raw&quot;: &quot;1&quot;
+          &#125;,
+          &quot;operator&quot;: &quot;+&quot;,
+          &quot;right&quot;: &#123;
+            &quot;type&quot;: &quot;Literal&quot;,
+            &quot;start&quot;: 2,
+            &quot;end&quot;: 3,
+            &quot;value&quot;: 1,
+            &quot;raw&quot;: &quot;1&quot;
+          &#125;
+        &#125;,
+        &quot;operator&quot;: &quot;==&quot;,
+        &quot;right&quot;: &#123;
+          &quot;type&quot;: &quot;Literal&quot;,
+          &quot;start&quot;: 5,
+          &quot;end&quot;: 6,
+          &quot;value&quot;: 2,
+          &quot;raw&quot;: &quot;2&quot;
+        &#125;
+      &#125;
+    &#125;
+  ],
+  &quot;sourceType&quot;: &quot;module&quot;
+&#125;
+</code></pre>
+<p>其实，任何编程语言都需要一些软件来将源代码处理AST形式的数据结构以便让计算机能够理解，对于JS而言，可以使用Babel作为编译器将JS代码解构成AST。</p>
+<h1 id="JS代码的混淆"><a href="#JS代码的混淆" class="headerlink" title="JS代码的混淆"></a>JS代码的混淆</h1><p>JS代码如果不混淆，那么数据对于逆向者而言就如同探囊取物，下面对常见的混淆方式分别进行描述。大致可以分为三类，第一类是常量与标示符的混淆；第二类是代码块的混淆；第三类是执行逻辑的混淆。<br><br>以下这段js代码为例，进行混淆处理</p>
+<pre><code class="javascript">Date.prototype.format = function (formatStr) &#123;
+    var str = formatStr;
+    str = str.replace(/yyyy|YYYY/, this.getFullYear());
+    str = str.replace(/MM/, (this.getMonth() + 1) &gt; 9 ? (this.getMonth() + 1).toString() : &#39;0&#39; + (this.getMonth() + 1));
+    str = str.replace(/dd|DD/, this.getDate() &gt; 9 ? this.getDate().toString() : &#39;0&#39; + this.getDate()); //AsciiEncrypt
+    return str;
+&#125;
+console.log(new Date().format(&#39;yyyy-MM-dd&#39;));
+</code></pre>
+<p>这段代码是在Date的原型链上新增一个实例方法，功能是以指定格式输出当前的日期，浏览器控制台执行结果如下。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/95088a97a346460497caa763a7006fa4.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="执行结果"><br>接下来对这段js代码进行混淆处理。</p>
+<h2 id="混淆前的预处理"><a href="#混淆前的预处理" class="headerlink" title="混淆前的预处理"></a>混淆前的预处理</h2><pre><code class="javascript">const parser = require(&#39;@babel/parser&#39;) //解析
+const traverse = require(&#39;@babel/traverse&#39;).default //遍历
+const t = require(&#39;@babel/types&#39;) //类型判定与生成
+const generator = require(&#39;@babel/generator&#39;).default //ast转code
+const fs = require(&#39;fs&#39;) //文件读写
+
+//把混淆方案的相关实现封装成类
+function ConfoundUtils(ast, encryptFunc) &#123;
+    this.ast = ast;
+    this.bigArr = [];
+    //接收传进来的函数，用于字符串加密
+    this.encryptFunc = encryptFunc;
+&#125;
+</code></pre>
+<h3 id="改变对象访问方式"><a href="#改变对象访问方式" class="headerlink" title="改变对象访问方式"></a>改变对象访问方式</h3><p>举例说明，也就是将<code>console.log</code>转成<code>console[&#39;log&#39;]</code>形式，目的是为了方便进行后续大数组分配、字符串加密等。</p>
+<pre><code class="javascript">ConfoundUtils.prototype.changeAccessMode = function () &#123;
+    traverse(this.ast, &#123;
+        MemberExpression(path) &#123; //遍历所有的成员表达式
+            if (t.isIdentifier(path.node.property)) &#123; //如果节点的属性是标识符的话
+                let name = path.node.property.name; //获取标识符的名称
+                path.node.property = t.stringLiteral(name); //用字符串字面量替换原先的标识符
+                path.node.computed = true; //对象读写属性设置为true
+            &#125;
+        &#125;
+    &#125;)
+&#125;
+</code></pre>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/f00558762763432082f92dcc5549d65c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="效果"></p>
+<h3 id="内置对象处理"><a href="#内置对象处理" class="headerlink" title="内置对象处理"></a>内置对象处理</h3><p>某些内置对象如<code>Date</code>,本来是标识符性质，可以转为<code>window.[&#39;Date&#39;]</code></p>
+<pre><code class="javascript">ConfoundUtils.prototype.changeBuiltinObjects = function () &#123;
+    traverse(this.ast, &#123;
+        Identifier(path) &#123;
+            let name = path.node.name; //获取标识符的名称
+            //如果名称与这些内置对象同名
+            if (&#39;eval|parseInt|encodeURIComponent|Object|Function|Boolean|Number|Math|Date|String|RegExp|Array&#39;.indexOf(name) !== -1) &#123;
+                //用window[name]成员表达式替换之
+                path.replaceWith(t.MemberExpression(t.identifier(&#39;window&#39;), t.stringLiteral(name), true));
+            &#125;
+        &#125;
+    &#125;)
+&#125;
+</code></pre>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/a5cbc82dd057493bbdcedee52cf015cb.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="效果"></p>
+<h2 id="常量与标识符混淆"><a href="#常量与标识符混淆" class="headerlink" title="常量与标识符混淆"></a>常量与标识符混淆</h2><p>常量一般是字符串或者数值，在上一步中已经通过改变对象属性访问方式产生了很多字符串了，这些都是可以进行混淆的。</p>
+<h3 id="字符串常量处理"><a href="#字符串常量处理" class="headerlink" title="字符串常量处理"></a>字符串常量处理</h3><h4 id="字符串加密"><a href="#字符串加密" class="headerlink" title="字符串加密"></a>字符串加密</h4><p>先对全文中出现的字符串进行加密，加密方法可以是自带的base64也可自定义加密方法。</p>
+<h4 id="大数组分配"><a href="#大数组分配" class="headerlink" title="大数组分配"></a>大数组分配</h4><p>将加密后的字符串放入数组中统一分配，通过下标取值，当数组很大时，很容易让逆向者失去耐心。用ast处理时大数组和字符串加密一般同时处理。</p>
+<pre><code class="javascript">ConfoundUtils.prototype.arrayConfound = function () &#123;
+    let bigArr = [];
+    let encryptFunc = this.encryptFunc;
+    traverse(this.ast, &#123;
+        StringLiteral(path) &#123;
+            let cipherText = encryptFunc(path.node.value); //获取字符串值
+            let bigArrIndex = bigArr.indexOf(cipherText); //在大数组中查找是否有这个值,如有返回索引
+            let index = bigArrIndex; // 索引赋值给index
+            if (bigArrIndex === -1) &#123; //若索引不存在
+                let length = bigArr.push(cipherText); //将字符串推入大数组,并返回数组长度,push是推入最后
+                index = length - 1 //index为大数组中最后一位的索引
+            &#125;
+            //构造函数调用表达式(加密),内部成员表达式(数组混淆),从数组中用索引取值
+            let encStr = t.callExpression(t.identifier(&#39;atob&#39;),
+                [t.memberExpression(t.identifier(&#39;arr&#39;), t.numericLiteral(index), true)]);
+            path.replaceWith(encStr);
+        &#125;
+    &#125;);
+    bigArr = bigArr.map(function (v) &#123;
+        return t.StringLiteral(v); //大数组内的成员转ast代码
+    &#125;);
+    this.bigArr = bigArr; 
+&#125;
+//插入大数组
+ConfoundUtils.prototype.unshiftArrayDeclaration = function () &#123;
+    this.bigArr = t.variableDeclarator(t.identifier(&#39;arr&#39;), t.arrayExpression(this.bigArr)); //构建大数组变量
+    this.bigArr = t.variableDeclaration(&#39;var&#39;, [this.bigArr]); //构建大数组变量声明语句
+    this.ast.program.body.unshift(this.bigArr); //在ast的最上层插入大数组
+&#125;
+</code></pre>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/52735e611a014cd89863f43104be96a5.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="效果"></p>
+<h4 id="数组乱序"><a href="#数组乱序" class="headerlink" title="数组乱序"></a>数组乱序</h4><p>通过将大数组打乱放置，后面插入一个自执行函数用于还原顺序，由于还原函数中的<code>push</code>和<code>shift</code>字符串含义比较明显，可以考虑用16进制编码表示，如此，逆向者必须找到还原函数，而还原函数中还可以埋坑进去，如后文的格式化检测+内存爆破。</p>
+<pre><code class="JAVASCRIPT">//现在外部新建一个astFront.js用于存放还原函数
+!(function (myArr, num) &#123;
+    var outOrder = function (num) &#123;
+        while (--num) &#123; //循环次数递减
+            myArr.push(myArr.shift()); //数组开头取出末尾插入
+        &#125;
+    &#125;;
+
+&#125;)(arr, 0x10) //0x10表示移动16位，用16进制表示增加迷惑性
+//对还原函数进行16进制处理
+ConfoundUtils.prototype.stringToHex = function () &#123;
+    function hexEnc(code) &#123;
+        for (var hexStr = &#39;&#39;, i = 0, s; i &lt; code.length; i++) &#123;
+            s = code.charCodeAt(i).toString(16); 
+            hexStr += &#39;\\x&#39; + s;
+        &#125;
+        return hexStr
+    &#125;
+
+    traverse(this.ast, &#123;
+        MemberExpression(path) &#123; //遍历成员表达式
+            if (t.isIdentifier(path.node.property)) &#123; //判断节点的属性是不是标识符，因为也有可能是字符串
+                let name = path.node.property.name; //取出主体名
+                //16进制替换
+                path.node.property = t.stringLiteral(hexEnc(name));
+                path.node.computed = true;//16进制也是支持用.属性的形式访问的
+            &#125;
+        &#125;
+    &#125;)
+&#125;
+//把还原ast放到混淆ast的上面,主要注意的是这一步要放在大数组放置步骤的前面
+ConfoundUtils.prototype.astConcatUnshift = function (ast) &#123;
+    this.ast.program.body.unshift(ast)
+&#125;
+//混淆的代码中，如果有十六进制字符串加密，ast转成代码后会有多余的转义字符，需要替换掉
+    code = code.replace(/\\\\x/g, &#39;\\x&#39;)
+</code></pre>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/804d4519a2dd4373819e493859a7de9e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="效果"></p>
+<p>此时，数组提取中的数字就不再与大数组中一一对应。</p>
+<h5 id="格式化检测"><a href="#格式化检测" class="headerlink" title="格式化检测"></a>格式化检测</h5><p>浏览中的代码正常执行是压缩的状态，逆向者的沙盒环境执行往往是格式化状态，利用这个规律，在自执行函数中对某个函数利用正则校验其是否被格式化，如果被格式化，可以选择让其执行错误的流程分支，返回错误的数据，或者进入内存爆破的函数，让浏览器陷入崩溃。</p>
+<h5 id="内存爆破"><a href="#内存爆破" class="headerlink" title="内存爆破"></a>内存爆破</h5><p>当检测到当前环境不正常时执行，利用while或者for循环等，执行一个永不会结束的代码，并且持续消耗浏览器内存，直到浏览器崩溃。</p>
+<pre><code class="javascript">//在之前定义好的astFront代码中做补充
+!(function (myArr, num) &#123;
+    var outOrder = function (num) &#123;
+        while (--num) &#123; //循环次数递减
+            myArr.push(myArr.shift()); //数组开头取出末尾插入
+        &#125;
+    &#125;;
+    //内存爆破
+    var memBreak = function () &#123;
+        for (var i = 0, j = [1]; i &lt; j.length; i++) &#123;
+            j.push(i) //每次都push,逻辑上i永远都小于j.length
+        &#125;
+    &#125;
+
+    var formatFuc = function () &#123;
+        return &#39;debug review&#39;
+    &#125;
+    var formatReg = /[\r\n]/; //查找换行符或回车符
+
+    var match = formatReg.exec(formatFuc.toString()); //格式化检测
+    if (match) &#123;
+        memBreak(); //如果检测出来格式化就进入内存爆破的函数
+    &#125; else &#123;
+        outOrder(num); //否则执行正确的逻辑分支
+    &#125;
+&#125;)(arr, 0x10) //0x10表示移动16位，用16进制表示增加迷惑性
+</code></pre>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/5ac859cda38046cc90e9fbe5380d6b7f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="如果检测到特定的代码被格式化"><br><br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/afb80ea05a3748538600ce87c944876a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="如果代码未被格式化"></p>
+<h3 id="数值常量加密"><a href="#数值常量加密" class="headerlink" title="数值常量加密"></a>数值常量加密</h3><p>一些数值,例如大数组的下标取值,可以利用异或操作增加复杂度,例如1,可以变成123457 ^ 123456表示。</p>
+<pre><code class="javascript">ConfoundUtils.prototype.numericEncrypt = function () &#123;
+    traverse(this.ast, &#123;
+        NumericLiteral(path) &#123;
+            let value = path.node.value; //获取数值常量的值
+            //生成100000~999999的随机10进制的字符串
+            let key = parseInt(Math.random() * (999999 - 100000) + 100000, 10);
+            let cipherNum = value ^ key;//真实数值异或这个随机值得到一个加密值,异或是两边二进制对位同为0,异为1
+            //那么加密异或key也一定可以还原为真实值
+            path.replaceWith(t.binaryExpression(&#39;^&#39;, t.numericLiteral(cipherNum), t.numericLiteral(key)));
+            path.skip(); //这是因为替换后防止继续深度遍历numericLiteral,形成死循环
+        &#125;
+    &#125;)
+&#125;
+</code></pre>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/bef650ca631b4cd38ae8e5606d773aa7.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="效果"></p>
+<h3 id="十六进制特殊处理"><a href="#十六进制特殊处理" class="headerlink" title="十六进制特殊处理"></a>十六进制特殊处理</h3><p>push，shift是自执行函数中用来还原大数组的函数，本身不可放入大数组，此时可进行十六进制处理，或者unicode编码处理（浏览器环境这两种编码执行时与字符串等效），让逆向者无法直接通过搜索push和shift定位自自执行函数的位置。</p>
+<pre><code class="javascript">
+</code></pre>
+<h3 id="标识符混淆"><a href="#标识符混淆" class="headerlink" title="标识符混淆"></a>标识符混淆</h3><p>标识符语义在开发时往往定义成具有语义的名称，而这为逆向者提供了猜测代码逻辑的便利，通过将所有的标识符变成无意义的乱码，使逆向者无法看词猜意，被动进行调试分析，甚至直接放弃。</p>
+<h4 id="随机生成办法"><a href="#随机生成办法" class="headerlink" title="随机生成办法"></a>随机生成办法</h4><p>每个参数都有自己的作用域，因此每个不同的作用域的标识符可以重名，逆向者善用搜索法，这样做可使其搜索结果变多，无法快速定位，此外，推荐使用oO0等高度相识的符号作为标识符明，进一步增加混淆程度。</p>
+<h2 id="代码块混淆"><a href="#代码块混淆" class="headerlink" title="代码块混淆"></a>代码块混淆</h2><p>代码块一般值得使函数体内部代码，可以是匿名函数，也可以是函数表达式，通过可以用来混淆的操作有花指令，逗号表达式，控制流平坦化等，特殊一点的有指定代码行加密。</p>
+<h3 id="二项式转函数花指令"><a href="#二项式转函数花指令" class="headerlink" title="二项式转函数花指令"></a>二项式转函数花指令</h3><p>诸如<code>a+b</code>,可以用<code>function x(a,b)&#123;return a+b&#125;</code>表示,利用函数调用的形式来表达，能够起到一行变十行的混淆效果，可使逆向者大脑堵塞膨胀，甚至当场夯机。</p>
+<h3 id="函数调用转花指令"><a href="#函数调用转花指令" class="headerlink" title="函数调用转花指令"></a>函数调用转花指令</h3><p>诸如<code>a(b)</code>,可以使用<code>function x(a,b)&#123;return a(b)&#125;</code>来表达，效果同二项式花指令。</p>
+<h3 id="指定代码行加密"><a href="#指定代码行加密" class="headerlink" title="指定代码行加密"></a>指定代码行加密</h3><p>有时对核心代码行进行更近一步的报名可选择这种方式，不仅限于base64和ascii，也可以是自定义的加密方式，需要提前把加密和解密函数导入进来。</p>
+<h4 id="base64加密"><a href="#base64加密" class="headerlink" title="base64加密"></a>base64加密</h4><p>对于某些关键的代码行，可以该行代码用base64加密形成字符串，再利用eval的特性在vm中执行代码，可针对具体行的代码起到进一步的保护作用。</p>
+<h4 id="ascii码加密"><a href="#ascii码加密" class="headerlink" title="ascii码加密"></a>ascii码加密</h4><p>原理同上，只是换了加密方法。</p>
+<h2 id="执行逻辑的混淆"><a href="#执行逻辑的混淆" class="headerlink" title="执行逻辑的混淆"></a>执行逻辑的混淆</h2><p>一般情况下，开发写代码逻辑是自上而下的，逆向者就想走直线一样破解，可以通过控制流平坦化打乱执行顺序，也可以通过逗号表达式将执行顺序变成从内到外。</p>
+<h3 id="流程平坦化"><a href="#流程平坦化" class="headerlink" title="流程平坦化"></a>流程平坦化</h3><p>函数体内的代码逻辑是一行一行执行，方便逆向者如一个闯关勇士一般一路向前，最终找到保证，可以利用switch配合分发器在一个while循环中执行，以打乱代码行的执行流程。</p>
+<h3 id="逗号表达式压缩"><a href="#逗号表达式压缩" class="headerlink" title="逗号表达式压缩"></a>逗号表达式压缩</h3><p>如果平坦化是纵向打乱代码的话，那逗号表达式就是横向压缩代码，利用逗号表达式表达式从左向右执行的特性，将多行代码置于一行内表达。</p>
+<h1 id="JS代码的还原"><a href="#JS代码的还原" class="headerlink" title="JS代码的还原"></a>JS代码的还原</h1><h2 id="分析网站使用的混淆步骤"><a href="#分析网站使用的混淆步骤" class="headerlink" title="分析网站使用的混淆步骤"></a>分析网站使用的混淆步骤</h2><h3 id="字符串数组混淆"><a href="#字符串数组混淆" class="headerlink" title="字符串数组混淆"></a>字符串数组混淆</h3><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/46222efe499b42a79bd0e57a2c5c7b19.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="大数组"></p>
+<h3 id="数组乱序-1"><a href="#数组乱序-1" class="headerlink" title="数组乱序"></a>数组乱序</h3><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/c70cbf10c230421c9f11a64825222635.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="大数组下的自执行函数并且参数是大数组和一个16进制"></p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，如有问题请邮件至2454612285@qq.com。 </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2021-2025 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
