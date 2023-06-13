@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>cthousand</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="cthousand">
+  <title>用rpc过某乎zse96参数 | cthousand</title>
+  <meta name="keywords" content=" web爬虫 , rpc ">
+  <meta name="description" content="用rpc过某乎zse96参数 | cthousand">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="目标地址：https:&#x2F;&#x2F;www.zhihu.com&#x2F;hot 需求：知乎热榜数据抓取字段：字段:标题、链接地址、热度, 用mongodb保存 思路前期工作定位接口 精简请求 逆向参数x-zse-93多次重放测试后可以确定这是一个定值:101_3_3.0 x-zse-96定位加密位置 一共有2处,都打上断点。  分析加密逻辑  关键代码：tq(ti).encrypt.(tg()(td))  参数：t">
 <meta property="og:type" content="article">
@@ -73,7 +73,7 @@
 
 
 <body>
-<aside class="nav mobile">
+<aside class="nav">
     <div class="nav-left">
         <a href="/"
    class="avatar_target">
@@ -345,12 +345,60 @@
         </div>
     </div>
 </aside>
-<div id="post" class="index">
+<div id="post">
     <div class="pjax">
-        <article class="index">
-            <div class="toc-ref">
+        <article id="post-用rpc过某乎zse96参数" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-Blog"><span class="toc-text">Why Blog</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E5%8D%9A%E5%AE%A2%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-text">对博客的理解</span></a></li></ol></li></ol>
+        <h1 class="article-title">用rpc过某乎zse96参数</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="爬虫">爬虫</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">web爬虫</a>
+            
+            <a class="color4">rpc</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2023-06-13 17:03:26'>2023-06-13 14:22</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87"><span class="toc-text">目标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E6%9C%9F%E5%B7%A5%E4%BD%9C"><span class="toc-text">前期工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%BD%8D%E6%8E%A5%E5%8F%A3"><span class="toc-text">定位接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%BE%E7%AE%80%E8%AF%B7%E6%B1%82"><span class="toc-text">精简请求</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%86%E5%90%91%E5%8F%82%E6%95%B0"><span class="toc-text">逆向参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#x-zse-93"><span class="toc-text">x-zse-93</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#x-zse-96"><span class="toc-text">x-zse-96</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%BD%8D%E5%8A%A0%E5%AF%86%E4%BD%8D%E7%BD%AE"><span class="toc-text">定位加密位置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E5%8A%A0%E5%AF%86%E9%80%BB%E8%BE%91"><span class="toc-text">分析加密逻辑</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%EF%BC%9Atg-td"><span class="toc-text">参数：tg()(td)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%EF%BC%9A-0-tq-ti-encrypt"><span class="toc-text">方法：(0,tq(ti).encrypt)</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RPC"><span class="toc-text">RPC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B2%B9%E7%8C%B4%E8%84%9A%E6%9C%AC%E6%B3%A8%E5%85%A5%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-text">油猴脚本注入客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86%E5%8A%A0%E5%AF%86%E5%87%BD%E6%95%B0%E7%9A%84%E5%BC%95%E7%94%A8%E6%8C%82%E5%88%B0%E5%85%A8%E5%B1%80%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%AD"><span class="toc-text">将加密函数的引用挂到全局作用域中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python%E8%B0%83%E7%94%A8rpc"><span class="toc-text">python调用rpc</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%8F%8A%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-text">代码及运行结果</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -363,22 +411,192 @@
     }
 </style>
 </div>
-            <h1 id="Why-Blog"><a href="#Why-Blog" class="headerlink" title="Why Blog"></a>Why Blog</h1><h2 id="对博客的理解"><a href="#对博客的理解" class="headerlink" title="对博客的理解"></a>对博客的理解</h2><p>喜欢写Blog的人，会经历三个阶段。</p>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><p><strong>地址</strong>：<a target="_blank" rel="noopener" href="https://www.zhihu.com/hot">https://www.zhihu.com/hot</a><br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230613/2021d1abc6db4449b8eecadb532bc8dc.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<p><strong>需求</strong>：知乎热榜数据抓取<br><br><strong>字段</strong>：字段:标题、链接地址、热度, 用mongodb保存<br></p>
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><h2 id="前期工作"><a href="#前期工作" class="headerlink" title="前期工作"></a>前期工作</h2><h3 id="定位接口"><a href="#定位接口" class="headerlink" title="定位接口"></a>定位接口</h3><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230613/fbd533f8ca984b5cb6d4b0dbef2e02bc.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="关键词搜索定位接口"></p>
+<h3 id="精简请求"><a href="#精简请求" class="headerlink" title="精简请求"></a>精简请求</h3><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230613/2650ef00f33840ac9f79eeae73b4ba62.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="精简请求后只剩下这4个参数需要逆向"></p>
+<h2 id="逆向参数"><a href="#逆向参数" class="headerlink" title="逆向参数"></a>逆向参数</h2><h3 id="x-zse-93"><a href="#x-zse-93" class="headerlink" title="x-zse-93"></a>x-zse-93</h3><p>多次重放测试后可以确定这是一个定值:<code>101_3_3.0</code></p>
+<h3 id="x-zse-96"><a href="#x-zse-96" class="headerlink" title="x-zse-96"></a>x-zse-96</h3><h4 id="定位加密位置"><a href="#定位加密位置" class="headerlink" title="定位加密位置"></a>定位加密位置</h4><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230613/e15adbcad2d94d0f80627a3bbc28c906.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="搜索x-zse-96"></p>
+<p>一共有2处,都打上断点。</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230613/b55b51fae7aa43c6aae0f6164e1121c7.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="成功断住,取消勾选另外一个断点,不难看出,ef函数调用是关键突破点"></p>
+<h4 id="分析加密逻辑"><a href="#分析加密逻辑" class="headerlink" title="分析加密逻辑"></a>分析加密逻辑</h4><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230613/25a24b5148d64eb89dd234c2c2bc26e2.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="进入ef函数，一眼看见signature关键词及其生成代码"></p>
 <blockquote>
-<p>第一阶段，刚接触Blog，觉得很新鲜，试着选择一个免费空间来写。</p>
+<p>关键代码：<code>tq(ti).encrypt.(tg()(td))</code></p>
 </blockquote>
+<h5 id="参数：tg-td"><a href="#参数：tg-td" class="headerlink" title="参数：tg()(td)"></a>参数：tg()(td)</h5><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230613/7aacc12bb76f4944a905c9bbed06fccb.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="看上去像一个md5加密"><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230613/c04c5687a945409fb4c20acabf4d8372.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="用&#39;1&#39;测试确定了是标准md5"><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230613/14b2f181bcff4c30be80e24aadec2987.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="td的生成逻辑一目了然"></p>
 <blockquote>
-<p>第二阶段，发现免费空间限制太多，就自己购买域名和空间，搭建独立博客。</p>
+<p>总结一下：”101_3_3.0”+url的path和search部分+dc0,用+号作为连接符形成的字符串再用标准的md5加密，虽然上图显示还需要<code>x-zst-81</code>，但经过测试header里不传这个参数也可以不需要这个。</p>
 </blockquote>
-<blockquote>
-<p>第三阶段，觉得独立博客的管理太麻烦，最好在保留控制权的前提下，让别人来管，自己只负责写文章。</p>
-</blockquote>
-<p>我们每个人的在网络上产生的数据越来越多，这些信息是我们在互联网上存在过的痕迹，值得我们认真对待。但是它们被分散分布在各个网站上。很多时候我们很难将它们聚合在一起，而且各个网站的信息排布方式也没有办法自由控制，所以我们需要一个可以由自己主宰的空间——博客。</p>
-<p>通过博客，我们可以记录自己的生活和成长的轨迹。它不像 Twitter 那样碎片化，也不像 Facebook 那样关系化，它是私人的空间。</p>
+<h5 id="方法：-0-tq-ti-encrypt"><a href="#方法：-0-tq-ti-encrypt" class="headerlink" title="方法：(0,tq(ti).encrypt)"></a>方法：(0,tq(ti).encrypt)</h5><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230613/4e7681059ae64eca90231c346d5bac2c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>可以看到是<code>_g._encrypt</code>对参数进行了加密，一般到了这一步有两种选择，1是使用rpc，2是继续逆向，这里选择1。</p>
+<h2 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h2><p>RPC是远程过程调用（Remote Procedure Call）的缩写形式，简单来说就是将本地和浏览器，看做是服务端和客户端，二者之间通过 WebSocket 协议进行通信，在浏览器中将加密函数暴露出来，在本地直接调用浏览器中对应的加密函数，从而得到加密结果，不必去在意函数具体的执行逻辑，也省去了扣代码、补环境等操作，可以省去大量的逆向调试时间。</p>
+<p>这里使用Sekiro-RPC搭建服务器和客户端。<br><a target="_blank" rel="noopener" href="https://github.com/yint-tech/sekiro-open">Sekiro-RPC的github传送门</a></p>
+<h3 id="油猴脚本注入客户端"><a href="#油猴脚本注入客户端" class="headerlink" title="油猴脚本注入客户端"></a>油猴脚本注入客户端</h3><p>注入客户端之前先打开本地Sekiro-RPC服务器，然后在油猴脚本新建内容如下的脚本。</p>
+<pre><code class="javascript">// ==UserScript==
+// @name         zhihu
+// @namespace    zhihu
+// @version      0.1
+// @description  zhihu
+// @author       yueqian
+// @match        https://www.zhihu.com/*
+// @grant        none
+// @require      http://file.virjar.com/sekiro_web_client.js?_=123
+// ==/UserScript==
 
-        </article>
-        
-        
+!(function () &#123;
+    &#39;use strict&#39;;
+
+    function guid() &#123;
+        function S4() &#123;
+            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+        &#125;
+
+        return (S4() + S4() + &quot;-&quot; + S4() + &quot;-&quot; + S4() + &quot;-&quot; + S4() + &quot;-&quot; + S4() + S4() + S4());
+    &#125;
+
+    var client = new SekiroClient(&quot;ws://127.0.0.1:5620/business-demo/register?group=rpc&amp;clientId=&quot; + guid());
+    client.registerAction(&quot;zse96&quot;, function (request, resolve, reject) &#123;
+        return resolve(window.zse96(request[&quot;param&quot;]))
+    &#125;);
+&#125;)();
+</code></pre>
+<h3 id="将加密函数的引用挂到全局作用域中"><a href="#将加密函数的引用挂到全局作用域中" class="headerlink" title="将加密函数的引用挂到全局作用域中"></a>将加密函数的引用挂到全局作用域中</h3><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230613/07223b47ddc6415791bdb8d88886aa7e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="使用override修改源码"></p>
+<h3 id="python调用rpc"><a href="#python调用rpc" class="headerlink" title="python调用rpc"></a>python调用rpc</h3><pre><code class="python">def get5rpc(param):
+    data = &#123;
+        &quot;group&quot;: &quot;rpc&quot;,
+        &quot;action&quot;: &quot;zse96&quot;,
+        &quot;param&quot;: param
+    &#125;
+    res = requests.post(url=&quot;http://127.0.0.1:5620/business-demo/invoke&quot;, data=data, verify=False)
+    resp = res.json()
+    zse96 = &#39;2.0_&#39; + resp[&#39;data&#39;]
+    logger.debug(&#39;zse96: &#39; + zse96)
+    return zse96
+</code></pre>
+<p>传入一个’1’测试，可以正常拿到结果。</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230613/30759f42d52c43f895162cdb88e8b859.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<h2 id="代码及运行结果"><a href="#代码及运行结果" class="headerlink" title="代码及运行结果"></a>代码及运行结果</h2><pre><code class="python">import json
+
+import requests
+from jmespath import search
+from loguru import logger
+import pymongo
+
+import hashlib
+
+
+class Spider():
+    def __init__(self):
+        self.mongodb = pymongo.MongoClient()
+        self.db = self.mongodb[&#39;spider&#39;]
+        self.coll = self.db[&#39;zhihuHot&#39;]
+
+    def get5rpc(self, param):
+        data = &#123;
+            &quot;group&quot;: &quot;rpc&quot;,
+            &quot;action&quot;: &quot;zse96&quot;,
+            &quot;param&quot;: param
+        &#125;
+        res = requests.post(url=&quot;http://127.0.0.1:5620/business-demo/invoke&quot;, data=data, verify=False)
+        resp = res.json()
+        zse96 = &#39;2.0_&#39; + resp[&#39;data&#39;]
+        logger.debug(&#39;zse96: &#39; + zse96)
+        return zse96
+
+    def md5(self, str):
+        md5 = hashlib.md5()
+        md5.update(str.encode(&#39;utf-8&#39;))
+        return md5.hexdigest()
+
+    def get_dc0(self):
+        headers = &#123;
+            &#39;User-Agent&#39;: &#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36&#39;,
+            &#39;Referer&#39;: &#39;https://www.zhihu.com/search?type=content&amp;q=%E7%88%AC%E8%99%AB&#39;,
+        &#125;
+
+        response = requests.post(&#39;https://www.zhihu.com/udid&#39;, headers=headers)
+        dc0 = response.cookies.get_dict()[&#39;d_c0&#39;]
+        logger.debug(f&#39;dc0: &#123;dc0&#125;&#39;)
+        return dc0
+
+    def spider(self, d_c0):
+        zse96 = self.get5rpc(self.md5(&quot;101_3_3.0+/api/v3/feed/topstory/hot-lists/total?limit=50&amp;desktop=true+&quot; + d_c0))
+        headers = &#123;
+            &quot;Referer&quot;: &quot;https://www.zhihu.com/hot&quot;,
+            &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36&quot;,
+            &quot;x-zse-93&quot;: &quot;101_3_3.0&quot;,
+            &quot;x-zse-96&quot;: zse96,
+        &#125;
+        cookies = &#123;
+            &quot;d_c0&quot;: d_c0,
+            &quot;z_c0&quot;: &quot;2|1:0|10:1686573425|4:z_c0|92:Mi4xSzlXNEJnQUFBQUFBRUpkdmhfcnJGaVlBQUFCZ0FsVk5jRjkwWlFCSmdseHJOaXBhT3kyWTl5MFNDUGtIVmdET3N3|86159a1b5ed1dd64ad5f260c920e1e50350aa54f9a9d20f96dcb46ac379458dc&quot;,
+        &#125;
+        url = &quot;https://www.zhihu.com/api/v3/feed/topstory/hot-lists/total&quot;
+        logger.debug(f&#39;请求: &#123;url&#125;&#39;)
+        params = &#123;
+            &quot;limit&quot;: &quot;50&quot;,
+            &quot;desktop&quot;: &quot;true&quot;
+        &#125;
+        response = requests.get(url, headers=headers, cookies=cookies, params=params)
+        logger.debug(f&#39;下载: &#123;response.status_code&#125;&#39;)
+        return response
+
+    def parse(self, res):
+        data2save = []
+        items = search(&#39;data&#39;, res.json())
+        for item in items:
+            title = search(&#39;target.title&#39;, item)
+            href = search(&#39;target.url&#39;, item)
+            hotDegree = search(&#39;detail_text&#39;, item)
+            data2save.append(&#123;
+                &#39;title&#39;: title,
+                &#39;href&#39;: href,
+                &#39;hotDegree&#39;: hotDegree,
+            &#125;)
+        logger.debug(&#39;解析: &#39; + json.dumps(data2save, indent=2, ensure_ascii=False))
+        return data2save
+
+    def save(self, data):
+        for i in data:
+            self.coll.insert_one(i)
+        logger.debug(&#39;保存成功!&#39;)
+
+    def main(self):
+        dc0 = self.get_dc0()
+        resp = self.spider(dc0)
+        data = self.parse(resp)
+        self.save(data)
+
+
+if __name__ == &#39;__main__&#39;:
+    spider = Spider()
+    spider.main()
+  
+</code></pre>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230613/0608636401114b088efa55924291128a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="运行结果"></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230613/f1b696368df744cb8ad4c16170d5b204.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="mongodb存储"></p>
+<blockquote>
+<p>这道题的解法不仅对热榜api是有效的，经过测试对知乎搜索api也同样适用，把url和param改一下即可。</p>
+</blockquote>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，如有问题请邮件至2454612285@qq.com。 </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
     </div>
     <div class="copyright">
         <p class="footer-entry">
@@ -387,11 +605,11 @@
 <p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
 
     </div>
-</div>
-<div class="full-toc">
-    <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
 <a class="" id="rocket" ></a>
 
+    </div>
 </div>
 
 </body>
