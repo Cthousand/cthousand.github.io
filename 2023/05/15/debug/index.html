@@ -6,31 +6,23 @@
   <meta name="keywords" content="">
   <meta name="description" content="debug | cthousand">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="目标url: https:&#x2F;&#x2F;www.smythstoys.com&#x2F;de&#x2F;de-de 搜索任意词,爬取其搜索结果字段:标题,图片,价格,详情页url  前期工作寻找接口在搜索栏搜索toy，在搜索结果中截取关键词在开发者工具中再次搜索，找到关键接口：https:&#x2F;&#x2F;www.smythstoys.com&#x2F;de&#x2F;de-de&#x2F;search&#x2F;?text&#x3D;toy  简化请求经过测试,存在一个加密参数:rees">
+<meta name="description" content="前言不知你是否存在着这样的困扰，当你在百度上搜寻某急切问题的答案时，发现全是广告，该相信还是不该相信，这是一个值得困惑的问题。当你看到某莆田系医院通过广告治死了某大学生时，心中蒙上了一层阴影，在你下一次通过百度搜索时，想起了当初被广告支配时的心理阴影。在你学习javascript语言后的某天，你收到来自过去的一封信，信中写了… 目标制作一款插件将百度搜索结果中的广告过滤掉，包括左侧搜索结果和右侧推">
 <meta property="og:type" content="article">
-<meta property="og:title" content="谷歌插件绕过cookie反爬_某境外电商网站">
-<meta property="og:url" content="http://example.com/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E7%BB%95%E8%BF%87cookie%E5%8F%8D%E7%88%AC-%E5%A2%83%E5%A4%96%E7%94%B5%E5%95%86%E7%BD%91%E7%AB%99/index.html">
+<meta property="og:title" content="谷歌插件屏蔽百度广告">
+<meta property="og:url" content="http://example.com/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E5%B1%8F%E8%94%BD%E7%99%BE%E5%BA%A6%E5%B9%BF%E5%91%8A/index.html">
 <meta property="og:site_name" content="cthousand">
-<meta property="og:description" content="目标url: https:&#x2F;&#x2F;www.smythstoys.com&#x2F;de&#x2F;de-de 搜索任意词,爬取其搜索结果字段:标题,图片,价格,详情页url  前期工作寻找接口在搜索栏搜索toy，在搜索结果中截取关键词在开发者工具中再次搜索，找到关键接口：https:&#x2F;&#x2F;www.smythstoys.com&#x2F;de&#x2F;de-de&#x2F;search&#x2F;?text&#x3D;toy  简化请求经过测试,存在一个加密参数:rees">
+<meta property="og:description" content="前言不知你是否存在着这样的困扰，当你在百度上搜寻某急切问题的答案时，发现全是广告，该相信还是不该相信，这是一个值得困惑的问题。当你看到某莆田系医院通过广告治死了某大学生时，心中蒙上了一层阴影，在你下一次通过百度搜索时，想起了当初被广告支配时的心理阴影。在你学习javascript语言后的某天，你收到来自过去的一封信，信中写了… 目标制作一款插件将百度搜索结果中的广告过滤掉，包括左侧搜索结果和右侧推">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/b0e9f0afd1044ffca00f9236acfcd48a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/88c146bef1f346b99a5c90289e609771.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/152d5020d3744b54bce1ce6cdb730125.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/8907f1322e3a4279b02831c9a379cf43.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/9e4fd668acce4c05b908e88ded0bb522.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/e48cb0b7fed14d1d81ac343917114f2a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/33d57d3648bf447f8d7b5634c4152dbe.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/11367940cd8c40f1ad7a00e4c3ca651c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/e7594809dfbb46e680e23452ffedc4c3.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/39949d1f10a649d1938e7d8aadec1442.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/3264b960ddbd4acbb21c910c247fda65.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="article:published_time" content="2023-06-18T07:54:04.000Z">
-<meta property="article:modified_time" content="2023-06-18T09:54:48.227Z">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/3ddb5bb1f15545648934f5fd0dcd9a9a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/e63c309771ea40a0952bd16b619f2f90.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/01786985067f47cb81dd11861b08efd8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="article:published_time" content="2023-06-18T10:22:08.000Z">
+<meta property="article:modified_time" content="2023-06-18T20:59:22.350Z">
 <meta property="article:author" content="Cthousand">
-<meta property="article:tag" content="web爬虫">
+<meta property="article:tag" content="javascript">
 <meta property="article:tag" content="谷歌插件">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/b0e9f0afd1044ffca00f9236acfcd48a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/3ddb5bb1f15545648934f5fd0dcd9a9a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -128,10 +120,24 @@
     <li>
         <div class="all active" data-rel="全部文章">全部文章
             
-                <small>(8)</small>
+                <small>(9)</small>
             
         </div>
     </li>
+    
+        
+            
+                <li>
+                    <div data-rel="开发">
+                        
+                        开发
+                        <small>(1)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
     
         
             
@@ -174,7 +180,7 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="8">
+<input type="hidden" id="yelog_site_posts_number" value="9">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -241,7 +247,15 @@
             </li>
         
             <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>cookie加密</a>
+                <i class="iconfont icon-tag"></i><a>flask</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>javascript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
             </li>
         
             <li class="article-tag-list-item">
@@ -268,9 +282,18 @@
     <nav id="title-list-nav">
         
         
+        <a  class="全部文章 开发 "
+           href="/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E5%B1%8F%E8%94%BD%E7%99%BE%E5%BA%A6%E5%B9%BF%E5%91%8A/"
+           data-tag="javascript,谷歌插件"
+           data-author="" >
+            <span class="post-title" title="谷歌插件屏蔽百度广告">谷歌插件屏蔽百度广告</span>
+            <span class="post-date" title="2023-06-18 18:22:08">2023/06/18</span>
+        </a>
+        
+        
         <a  class="全部文章 爬虫 "
            href="/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E7%BB%95%E8%BF%87cookie%E5%8F%8D%E7%88%AC-%E5%A2%83%E5%A4%96%E7%94%B5%E5%95%86%E7%BD%91%E7%AB%99/"
-           data-tag="web爬虫,谷歌插件"
+           data-tag="javascript,web爬虫,python,谷歌插件,flask"
            data-author="" >
             <span class="post-title" title="谷歌插件绕过cookie反爬_某境外电商网站">谷歌插件绕过cookie反爬_某境外电商网站</span>
             <span class="post-date" title="2023-06-18 15:54:04">2023/06/18</span>
@@ -279,7 +302,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/06/13/RPC%E8%BF%87%E6%9F%90%E4%B9%8Ezse96%E5%8F%82%E6%95%B0-%E6%9F%90%E4%B9%8E%E7%83%AD%E6%90%9C/"
-           data-tag="web爬虫,rpc"
+           data-tag="javascript,web爬虫,python,rpc"
            data-author="" >
             <span class="post-title" title="RPC过某乎zse96参数-某乎热搜">RPC过某乎zse96参数-某乎热搜</span>
             <span class="post-date" title="2023-06-13 14:22:36">2023/06/13</span>
@@ -288,7 +311,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/06/07/AST%E5%AF%B9JS%E4%BB%A3%E7%A0%81%E8%BF%9B%E8%A1%8C%E6%B7%B7%E6%B7%86%E4%B8%8E%E8%BF%98%E5%8E%9F/"
-           data-tag="AST"
+           data-tag="AST,javascript"
            data-author="" >
             <span class="post-title" title="AST对JS代码进行混淆与还原">AST对JS代码进行混淆与还原</span>
             <span class="post-date" title="2023-06-07 00:48:10">2023/06/07</span>
@@ -315,7 +338,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/05/18/%E7%BA%AF%E6%89%A3%E8%BF%87%E9%98%BF%E9%87%8C%E7%B3%BBsign%E5%8F%82%E6%95%B0-%E6%9F%90%E5%AE%9D%E6%B3%95%E6%8B%8D%E7%BD%91/"
-           data-tag="web逆向,阿里系"
+           data-tag="javascript,python,web逆向,阿里系"
            data-author="" >
             <span class="post-title" title="纯扣过阿里系sign参数-某宝法拍网.md">纯扣过阿里系sign参数-某宝法拍网.md</span>
             <span class="post-date" title="2023-05-18 16:34:23">2023/05/18</span>
@@ -324,7 +347,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/05/17/%E7%BA%AF%E6%89%A3%E8%BF%87%E5%8A%A0%E9%80%9F%E4%B9%90-%E6%9F%90%E4%BF%A1%E7%94%A8%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/"
-           data-tag="web爬虫,加速乐,cookie加密"
+           data-tag="javascript,web爬虫,python,加速乐"
            data-author="" >
             <span class="post-title" title="纯扣过加速乐-某信用查询网站">纯扣过加速乐-某信用查询网站</span>
             <span class="post-date" title="2023-05-17 13:50:48">2023/05/17</span>
@@ -333,7 +356,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/05/16/scrapy%E6%89%B9%E9%87%8F%E9%87%87%E9%9B%86-%E6%9F%90%E5%95%86%E5%A4%A7%E6%95%B0%E6%8D%AE/"
-           data-tag="web爬虫,scrapy"
+           data-tag="javascript,web爬虫,scrapy,python"
            data-author="" >
             <span class="post-title" title="scrapy批量采集-某商大数据">scrapy批量采集-某商大数据</span>
             <span class="post-date" title="2023-05-16 16:34:23">2023/05/16</span>
