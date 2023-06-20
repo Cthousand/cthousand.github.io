@@ -6,39 +6,28 @@
   <meta name="keywords" content=" &lt;a song of ice and fire&gt; ">
   <meta name="description" content="02&lt;a song of ice and fire&gt;阅读笔记 | cthousand">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="AST基本概念中文名为抽象语法树，英文名称：Abstract Syntax Code，是源代码语法结构的一种抽象表示方式，具有明显的树状结构特征，原本紧密联系、结构紧凑的代码被切分成了不可再分的零碎词块，且语法不会表示出真实语法中的所有细节，因此带来了”抽象”的感觉。例如，编写一个简单的1+1&#x3D;&#x3D;2，表达式在解析后得到AST抽象语法树如下所示。 &amp;#123;   &quot;t">
+<meta name="description" content="一、前言1.1 hook是什么在js逆向中,重新定义函数,使得调用位置走我们重新定义的函数,改变执行流程, 通常我们叫它钩子技术。 1.2 hook的作用 输出分析日志 定位关键点 改变执行结果  二、以hookbtoa为例做一次对抗演习2.1 第一回合hook方: let _btoa &#x3D; btoa; btoa &#x3D; function (str) &amp;#123;     console.log(&amp;#3">
 <meta property="og:type" content="article">
-<meta property="og:title" content="AST对JS代码进行混淆与还原">
-<meta property="og:url" content="http://example.com/2023/06/07/AST%E5%AF%B9JS%E4%BB%A3%E7%A0%81%E8%BF%9B%E8%A1%8C%E6%B7%B7%E6%B7%86%E4%B8%8E%E8%BF%98%E5%8E%9F/index.html">
+<meta property="og:title" content="hook与反hook之间的对抗">
+<meta property="og:url" content="http://example.com/2023/06/20/hook%E4%B8%8E%E5%8F%8Dhook%E4%B9%8B%E9%97%B4%E7%9A%84%E5%AF%B9%E6%8A%97/index.html">
 <meta property="og:site_name" content="cthousand">
-<meta property="og:description" content="AST基本概念中文名为抽象语法树，英文名称：Abstract Syntax Code，是源代码语法结构的一种抽象表示方式，具有明显的树状结构特征，原本紧密联系、结构紧凑的代码被切分成了不可再分的零碎词块，且语法不会表示出真实语法中的所有细节，因此带来了”抽象”的感觉。例如，编写一个简单的1+1&#x3D;&#x3D;2，表达式在解析后得到AST抽象语法树如下所示。 &amp;#123;   &quot;t">
+<meta property="og:description" content="一、前言1.1 hook是什么在js逆向中,重新定义函数,使得调用位置走我们重新定义的函数,改变执行流程, 通常我们叫它钩子技术。 1.2 hook的作用 输出分析日志 定位关键点 改变执行结果  二、以hookbtoa为例做一次对抗演习2.1 第一回合hook方: let _btoa &#x3D; btoa; btoa &#x3D; function (str) &amp;#123;     console.log(&amp;#3">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/95088a97a346460497caa763a7006fa4.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/f00558762763432082f92dcc5549d65c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/a5cbc82dd057493bbdcedee52cf015cb.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/52735e611a014cd89863f43104be96a5.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/804d4519a2dd4373819e493859a7de9e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/5ac859cda38046cc90e9fbe5380d6b7f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/afb80ea05a3748538600ce87c944876a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/bef650ca631b4cd38ae8e5606d773aa7.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/7a509d2ceecb45aaab2d1ce2bdda140e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/38c12443e48a47959f961d656584afb2.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/9fa5d3386d984e14927f1e564e0437ef.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/b8bab499bbec41b09e58ce2c2d0afc93.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/f496a33cbff8406a906cf11e41057fd7.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/2c9a523b388a4301952c5d05a1272aa3.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/8f1ed799edb642ff90e1a2836fbabe93.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/c3bda51a5ebd4d7bb4421c8696d3fbce.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/96d279e1d0084c379d17f1097ea895dc.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/e81821f038bd47e28d580a4d6659c9e0.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/36c71040882448f6b93cf317dc196228.jpg?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="article:published_time" content="2023-06-06T16:48:10.000Z">
-<meta property="article:modified_time" content="2023-06-18T20:52:55.950Z">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/0f0798b62cb14f60a09add62254b59f2.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/075e0a1200f942bc9619eb90b21cd33c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/f83cd2e669d84ce1a3861375229019cf.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/5fb25d7af74142b88bf5f5627130841a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/fa38536154d44846b498d633e982bb42.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/37caccf6f3a2407a9cbde0506c8a4b2f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/641c9772a7b74ece9586ad0d13b3107c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/23bda9ee76ea478aa06edfcf1c475c11.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/99473cdcc4364de5a981ce34532ea969.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="article:published_time" content="2023-06-20T07:46:05.000Z">
+<meta property="article:modified_time" content="2023-06-20T10:25:58.427Z">
 <meta property="article:author" content="Cthousand">
-<meta property="article:tag" content="AST">
-<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="hook">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230607/95088a97a346460497caa763a7006fa4.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/0f0798b62cb14f60a09add62254b59f2.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -255,15 +244,15 @@
             </li>
         
             <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a>加速乐</a>
-            </li>
-        
-            <li class="article-tag-list-item">
                 <i class="iconfont icon-tag"></i><a>AST</a>
             </li>
         
             <li class="article-tag-list-item">
                 <i class="iconfont icon-tag"></i><a>flask</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hook</a>
             </li>
         
             <li class="article-tag-list-item">
@@ -298,6 +287,15 @@
     <nav id="title-list-nav">
         
         
+        <a  class="全部文章 爬虫 "
+           href="/2023/06/20/hook%E4%B8%8E%E5%8F%8Dhook%E4%B9%8B%E9%97%B4%E7%9A%84%E5%AF%B9%E6%8A%97/"
+           data-tag="hook"
+           data-author="" >
+            <span class="post-title" title="hook与反hook之间的对抗">hook与反hook之间的对抗</span>
+            <span class="post-date" title="2023-06-20 15:46:05">2023/06/20</span>
+        </a>
+        
+        
         <a  class="全部文章 开发 "
            href="/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E5%B1%8F%E8%94%BD%E7%99%BE%E5%BA%A6%E5%B9%BF%E5%91%8A/"
            data-tag="javascript,谷歌插件"
@@ -309,7 +307,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E7%BB%95%E8%BF%87cookie%E5%8F%8D%E7%88%AC-%E5%A2%83%E5%A4%96%E7%94%B5%E5%95%86%E7%BD%91%E7%AB%99/"
-           data-tag="javascript,web爬虫,python,谷歌插件,flask"
+           data-tag="web爬虫,python,javascript,谷歌插件,flask"
            data-author="" >
             <span class="post-title" title="谷歌插件绕过cookie反爬_某境外电商网站">谷歌插件绕过cookie反爬_某境外电商网站</span>
             <span class="post-date" title="2023-06-18 15:54:04">2023/06/18</span>
@@ -318,7 +316,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/06/13/RPC%E8%BF%87%E6%9F%90%E4%B9%8Ezse96%E5%8F%82%E6%95%B0-%E6%9F%90%E4%B9%8E%E7%83%AD%E6%90%9C/"
-           data-tag="javascript,web爬虫,rpc,python"
+           data-tag="web爬虫,rpc,python,javascript"
            data-author="" >
             <span class="post-title" title="RPC过某乎zse96参数-某乎热搜">RPC过某乎zse96参数-某乎热搜</span>
             <span class="post-date" title="2023-06-13 14:22:36">2023/06/13</span>
@@ -327,7 +325,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/06/07/AST%E5%AF%B9JS%E4%BB%A3%E7%A0%81%E8%BF%9B%E8%A1%8C%E6%B7%B7%E6%B7%86%E4%B8%8E%E8%BF%98%E5%8E%9F/"
-           data-tag="AST,javascript"
+           data-tag="javascript,AST"
            data-author="" >
             <span class="post-title" title="AST对JS代码进行混淆与还原">AST对JS代码进行混淆与还原</span>
             <span class="post-date" title="2023-06-07 00:48:10">2023/06/07</span>
@@ -354,7 +352,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/05/18/%E7%BA%AF%E6%89%A3%E8%BF%87%E9%98%BF%E9%87%8C%E7%B3%BBsign%E5%8F%82%E6%95%B0-%E6%9F%90%E5%AE%9D%E6%B3%95%E6%8B%8D%E7%BD%91/"
-           data-tag="javascript,python,web逆向,阿里系"
+           data-tag="python,javascript,web逆向,阿里系"
            data-author="" >
             <span class="post-title" title="纯扣过阿里系sign参数-某宝法拍网.md">纯扣过阿里系sign参数-某宝法拍网.md</span>
             <span class="post-date" title="2023-05-18 16:34:23">2023/05/18</span>
@@ -362,17 +360,8 @@
         
         
         <a  class="全部文章 爬虫 "
-           href="/2023/05/17/%E7%BA%AF%E6%89%A3%E8%BF%87%E5%8A%A0%E9%80%9F%E4%B9%90-%E6%9F%90%E4%BF%A1%E7%94%A8%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/"
-           data-tag="javascript,web爬虫,python,加速乐"
-           data-author="" >
-            <span class="post-title" title="纯扣过加速乐-某信用查询网站">纯扣过加速乐-某信用查询网站</span>
-            <span class="post-date" title="2023-05-17 13:50:48">2023/05/17</span>
-        </a>
-        
-        
-        <a  class="全部文章 爬虫 "
            href="/2023/05/16/scrapy%E6%89%B9%E9%87%8F%E9%87%87%E9%9B%86-%E6%9F%90%E5%95%86%E5%A4%A7%E6%95%B0%E6%8D%AE/"
-           data-tag="javascript,web爬虫,python,scrapy"
+           data-tag="web爬虫,python,javascript,scrapy"
            data-author="" >
             <span class="post-title" title="scrapy批量采集-某商大数据">scrapy批量采集-某商大数据</span>
             <span class="post-date" title="2023-05-16 16:34:23">2023/05/16</span>
@@ -423,7 +412,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-06-05 00:22:23'>2023-06-04 20:29</time>
+            发布时间 : <time class="date" title='最后更新: 2023-06-20 14:33:36'>2023-06-04 20:29</time>
         
     </div>
     <div class="article-meta">
@@ -462,36 +451,36 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="本周剧情走向概况"><a href="#本周剧情走向概况" class="headerlink" title="本周剧情走向概况"></a>本周剧情走向概况</h1><h2 id="艾莉亚"><a href="#艾莉亚" class="headerlink" title="艾莉亚"></a>艾莉亚</h2><ol>
-<li><p>艾莉亚落寞地来到神木林，练习西利欧老师交给她的剑术，后在鱼梁木下祈祷时遇到贾坤, 贾坤要求她说出第三个名字，艾莉亚趁机要求贾坤解救北境囚犯,贾坤以一命只能换一命为由拒绝，于是艾莉亚说出第三个名字就是贾坤自己，除非帮助她释放囚犯，贾坤只好同意。</p>
+<li><p>艾莉亚落寞地来到神木林，练习西利欧老师交给她的剑术，后在鱼梁木下祈祷时遇到贾坤,<br>贾坤要求她说出第三个名字，艾莉亚趁机要求贾坤解救北境囚犯,贾坤以一命只能换一命为由拒绝，于是艾莉亚说出第三个名字就是贾坤自己，除非帮助她释放囚犯，贾坤只好同意。</p>
 <blockquote>
-<p>Arya came to godswood lonely, worked at the drills Syrio had taught her. Jaqen H’ghar appeared while Arya preyed under the weirwood.He asked Arya to tell the third name. Arya took the opportunity to ask Jaqen to save the northmen confined in dungeons,Jaqen refused Arya ,he told her that a life only worth a life. Finally, Jaqen agreed as Arya tell him the third name will be jaqen H’ghar himself if he won’t help.</p>
+<p>Arya came to godswood lonely, worked at the drills Syrio had taught her. Jaqen H’ghar appeared while Arya preyed under the weirwood.He asked Arya<br>to tell the third name. Arya took the opportunity to ask Jaqen to save the northmen confined in dungeons,Jaqen refused Arya ,he told her that a<br>life only worth a life. Finally, Jaqen agreed as Arya tell him the third name will be jaqen H’ghar himself if he won’t help.</p>
 </blockquote>
 </li>
-<li><p>他们伪装成血戏班的人给地牢看守送肉汤，趁机杀死看守，释放了囚犯，随后艾莉亚得知血戏班早已与北境势力达成了私下协议。贾坤给了艾莉亚一枚金币，并告知如果要找他学习本领，就把硬币给任何一个布拉佛斯人，向其说出’Valar morghulis’，随后离去。</p>
+<li><p>他们伪装成血戏班的人给地牢看守送肉汤，趁机杀死看守，释放了囚犯，随后艾莉亚得知血戏班早已与北境势力达成了私下协议。贾坤给了艾莉亚一枚金币，并告知如果要找他学习本领，就把硬币给任何一个布拉佛斯人，向其说出’Valar<br>morghulis’，随后离去。</p>
 <blockquote>
-<p>They disguised themselves as members of the Bloody Mummers to deliver broth to the dungeon guards.They took the opportunity to kill the guards, and released the prisoners, then Arya learned that the Bloody Mummers had already reached a private agreement with the northern. Jaqun gave Arya a gold coin, told her to give the coin to any man from Braavos and say ‘Valar morghulis’ if Arya wanted to learn from him.</p>
+<p>They disguised themselves as members of the Bloody Mummers to deliver broth to the dungeon guards.They took the opportunity to kill the guards,<br>and released the prisoners, then Arya learned that the Bloody Mummers had already reached a private agreement with the northern. Jaqun gave Arya a<br>gold coin, told her to give the coin to any man from Braavos and say ‘Valar morghulis’ if Arya wanted to learn from him.</p>
 </blockquote>
 </li>
 <li><p>次日晚，北境恐怖堡领主卢斯·波顿率军接管了赫伦堡，在与卢斯波顿交谈期间，艾莉亚隐瞒了真名,以娜娜为假名,瞒过了卢斯波顿，并被其安排成了侍酒小童。</p>
 <blockquote>
-<p>The next night, Roose Bolton the lord of the Dreadfort in the North, led his army to take over Harrenhal. During conversation with Roose Bolton, Arya concealed her real name and used Nana as pseudonym. Roose Bolton appointed Nana as his cupbearer.</p>
+<p>The next night, Roose Bolton the lord of the Dreadfort in the North, led his army to take over Harrenhal. During conversation with Roose Bolton,<br>Arya concealed her real name and used Nana as pseudonym. Roose Bolton appointed Nana as his cupbearer.</p>
 </blockquote>
 </li>
 </ol>
 <h2 id="丹妮莉丝"><a href="#丹妮莉丝" class="headerlink" title="丹妮莉丝"></a>丹妮莉丝</h2><ol>
 <li><p>丹妮莉丝等人来到不朽神殿，意外的发现其并没有想象中的恢弘大气，而更像是古老的灰色废墟，充满着诡异，丹妮莉丝在众人的劝阻下执意前行，乔拉爵士等人想要跟随，但被男巫俳雅•菩厉阻止，于是丹妮妮丝只携带黑龙卓耿入内。</p>
 <blockquote>
-<p>Daenerys along with his delegation arrived the House of Undying ones, unexpectedly found that it was not as magnificent as what they imaged before, but more like an ancient gray ruin, full of weirdness. Daenerys insisted on entering while others persuaded her back, Sir Jorah and others wanted to go with her, but they were stopped by the warlock Pyat Pree, so Denise only brought the black dragon Drogon into it.</p>
+<p>Daenerys along with his delegation arrived the House of Undying ones, unexpectedly found that it was not as magnificent as what they imaged<br>before, but more like an ancient gray ruin, full of weirdness. Daenerys insisted on entering while others persuaded her back, Sir Jorah and others<br>wanted to go with her, but they were stopped by the warlock Pyat Pree, so Denise only brought the black dragon Drogon into it.</p>
 </blockquote>
 </li>
 <li><p>在喝下夜影之水后，丹妮受男巫俳雅•菩厉的告诫，只能走右手边的第一道门，途中无论其他门有什么样的诱惑都不要进去。在经过了种种幻境之后，丹妮妮丝来到了一扇关闭着的门前。</p>
 <blockquote>
-<p>After drinking a cup of the shadow of evening, Dany was warned by the warlock Pyat Pree that she could only enter the first door on the right, and don’t enter other door no matter whatever it would present on the way. After going through various visions, Dany came to a closed door.</p>
+<p>After drinking a cup of the shadow of evening, Dany was warned by the warlock Pyat Pree that she could only enter the first door on the right,<br>and don’t enter other door no matter whatever it would present on the way. After going through various visions, Dany came to a closed door.</p>
 </blockquote>
 </li>
 </ol>
 <h1 id="精选语句"><a href="#精选语句" class="headerlink" title="精选语句"></a>精选语句</h1><ol>
-<li><p>a slow litte stream meandered through the wood,and there was one spot where it had eaten the ground away beneath a deadfall.<br><em>一条蜿蜒的小溪缓缓流过林间，一颗树木倒落下来,将下满砸出了个小坑。</em></p>
+<li><p>a slow litte stream meandered through the wood,and there was one spot where it had eaten the ground away beneath a deadfall.<br><br><em>一条蜿蜒的小溪缓缓流过林间，一颗树木倒落下来,将下满砸出了个小坑。</em></p>
 <blockquote>
 <p>meander 闲逛 助记：me 和 er子在一起闲逛</p>
 </blockquote>
@@ -506,7 +495,7 @@
 <p>pitilessly 无情的 助记: pity 可惜 + less &gt; 不足为惜 &gt; 无情</p>
 </blockquote>
 </li>
-<li><p>even in the burning barn,with walls of flame towering all around and him in chains, he had not seemed so distraught as he did now.<br><em>即使在燃烧的谷仓,四周是咆哮的火海,身体又被铁链束缚,他也没有此刻惊慌。</em></p>
+<li><p>even in the burning barn,with walls of flame towering all around and him in chains, he had not seemed so distraught as he did now.<br><br><em>即使在燃烧的谷仓,四周是咆哮的火海,身体又被铁链束缚,他也没有此刻惊慌。</em></p>
 <blockquote>
 <p>seem distraught 看起来惊慌失措 助记: distract 分心</p>
 </blockquote>
@@ -536,12 +525,12 @@
 <p>sage 睿智的 助记：s 蛇 上了年纪的蛇一般都很睿智</p>
 </blockquote>
 </li>
-<li><p>from another came a dissonant piping that made the dragon lash his tail wildly from side to side.<br><em>另一扇后面传来刺耳的笛声,龙一听之下便疯狂地摇尾巴</em></p>
+<li><p>from another came a dissonant piping that made the dragon lash his tail wildly from side to side.<br><br><em>另一扇后面传来刺耳的笛声,龙一听之下便疯狂地摇尾巴</em></p>
 <blockquote>
 <p>a dissonant piping 刺耳的笛声<br>lash tail 摇尾巴 助记:lash l 金箍棒 ash灰 &gt; 金箍棒抽打灰</p>
 </blockquote>
 </li>
-<li><p>savagely slaughtered, the feasters lay strewn across overturned chairs and hacked trestle tables, asprawl in pools of congealing blood. <br><em>被残忍屠杀后的参与者们东倒西歪的趴在倾倒的椅子和劈烂的高架桌边,躺在一滩滩正在凝结的血液中.</em></p>
+<li><p>savagely slaughtered, the feasters lay strewn across overturned chairs and hacked trestle tables, asprawl in pools of congealing blood. <br><br><em>被残忍屠杀后的参与者们东倒西歪的趴在倾倒的椅子和劈烂的高架桌边,躺在一滩滩正在凝结的血液中.</em></p>
 <blockquote>
 <p>lay strewn across 凌乱的躺在</p>
 </blockquote>
@@ -557,7 +546,7 @@
 </li>
 <li><p>丹妮妮丝向不朽神殿寻求帮助，众所周知，命运的馈赠早已在暗中标好了筹码，她要为此付出的代价是什么呢，不朽神殿的目的何在？</p>
 <blockquote>
-<p>Dany seeks help from the House of Undying ones. As we all know, life never gives anything for nothing, and that a price is always exacted for what fate bestows. What price will she pay for this?and what is the purpose of the House of Undying ones?</p>
+<p>Dany seeks help from the House of Undying ones. As we all know, life never gives anything for nothing, and that a price is always exacted for<br>what fate bestows. What price will she pay for this?and what is the purpose of the House of Undying ones?</p>
 </blockquote>
 </li>
 </ol>
