@@ -6,24 +6,38 @@
   <meta name="keywords" content=" javascript , AST ">
   <meta name="description" content="AST对JS代码进行混淆与还原 | cthousand">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="前言不知你是否存在着这样的困扰，当你在百度上搜寻某急切问题的答案时，发现全是广告，该相信还是不该相信，这是一个值得困惑的问题。当你看到某莆田系医院通过广告治死了某大学生时，心中蒙上了一层阴影，在你下一次通过百度搜索时，想起了当初被广告支配时的心理阴影。在你学习javascript语言后的某天，你收到来自过去的一封信，信中写了… 目标制作一款插件将百度搜索结果中的广告过滤掉，包括左侧搜索结果和右侧推">
+<meta name="description" content="[TOC] 一、前言对于逆向工程师来说，加密参数隐藏在cookie中的情况并不少见，比如某数，通常需要通过hook技术快速定位到加密点。常用的做法是直接利用Object.defineProperty覆写对象的相关方法实现，但这种方法并不能保证原方法的执行，可能会影响代码执行流程，且容易被检测出来。 本文基于此出发，做了以下工作：  为保证hook代码与原代码都能得到执行，从原型链角度出发对属性描述">
 <meta property="og:type" content="article">
-<meta property="og:title" content="谷歌插件屏蔽百度广告">
-<meta property="og:url" content="http://example.com/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E5%B1%8F%E8%94%BD%E7%99%BE%E5%BA%A6%E5%B9%BF%E5%91%8A/index.html">
+<meta property="og:title" content="document.cookie的hook及引申">
+<meta property="og:url" content="http://example.com/2023/06/23/document-cookie%E7%9A%84hook%E5%8F%8A%E5%BC%95%E7%94%B3/index.html">
 <meta property="og:site_name" content="cthousand">
-<meta property="og:description" content="前言不知你是否存在着这样的困扰，当你在百度上搜寻某急切问题的答案时，发现全是广告，该相信还是不该相信，这是一个值得困惑的问题。当你看到某莆田系医院通过广告治死了某大学生时，心中蒙上了一层阴影，在你下一次通过百度搜索时，想起了当初被广告支配时的心理阴影。在你学习javascript语言后的某天，你收到来自过去的一封信，信中写了… 目标制作一款插件将百度搜索结果中的广告过滤掉，包括左侧搜索结果和右侧推">
+<meta property="og:description" content="[TOC] 一、前言对于逆向工程师来说，加密参数隐藏在cookie中的情况并不少见，比如某数，通常需要通过hook技术快速定位到加密点。常用的做法是直接利用Object.defineProperty覆写对象的相关方法实现，但这种方法并不能保证原方法的执行，可能会影响代码执行流程，且容易被检测出来。 本文基于此出发，做了以下工作：  为保证hook代码与原代码都能得到执行，从原型链角度出发对属性描述">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/3ddb5bb1f15545648934f5fd0dcd9a9a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/e63c309771ea40a0952bd16b619f2f90.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/01786985067f47cb81dd11861b08efd8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230622/42cfdf883bd74a559de434454b74a8c1.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="article:published_time" content="2023-06-18T10:22:08.000Z">
-<meta property="article:modified_time" content="2023-06-22T10:08:38.546Z">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/8332ae9a48394b7f9c126d05183ae05d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/a765aae3dfae44ad9baad32488edf387.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/faf75117aaa2438e83c7adf15b231358.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/b0edc19f55a749938abc3709ad43ac49.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/22cb9561679d4418bd38c2a7de67708e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/2be6bc8afa844aa3ae227721d282e4e0.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/a0a17d50a7d04509b3dd0f55e5e419ad.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/53843591e15746429d0e195374710755.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/3686236448c64fb6ae97e094409777eb.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/ea18a5510d0945bcb61aae9f24993a9d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/e4e5e4bd85e34c2e8882663dd649005f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/203863ccb12948a09a67ac53afefe64a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/6b12cca07f8b47a597482904313ef15c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/bd4c761746dd47dc90b99411a1403172.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/cba0e5587e6a4253a7e2d8e40cb13cb1.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/2652a5cfc82846bfa3eb8d9a667294f7.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/b9db5c950bca41579e0b7cbfa58a40bd.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/16793e3f262a4a8d8758933a49f61418.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="article:published_time" content="2023-06-23T08:26:03.000Z">
+<meta property="article:modified_time" content="2023-06-25T08:25:57.548Z">
 <meta property="article:author" content="Cthousand">
 <meta property="article:tag" content="javascript">
-<meta property="article:tag" content="谷歌插件">
+<meta property="article:tag" content="hook">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/3ddb5bb1f15545648934f5fd0dcd9a9a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/8332ae9a48394b7f9c126d05183ae05d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
 
 
 <link rel="icon" href="/img/avatar.jpg">

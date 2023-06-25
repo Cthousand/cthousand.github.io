@@ -6,24 +6,38 @@
   <meta name="keywords" content=" javascript , hook ">
   <meta name="description" content="document.cookie的hook及引申 | cthousand">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="前言不知你是否存在着这样的困扰，当你在百度上搜寻某急切问题的答案时，发现全是广告，该相信还是不该相信，这是一个值得困惑的问题。当你看到某莆田系医院通过广告治死了某大学生时，心中蒙上了一层阴影，在你下一次通过百度搜索时，想起了当初被广告支配时的心理阴影。在你学习javascript语言后的某天，你收到来自过去的一封信，信中写了… 目标制作一款插件将百度搜索结果中的广告过滤掉，包括左侧搜索结果和右侧推">
+<meta name="description" content="[TOC] 一、前言对于逆向工程师来说，加密参数隐藏在cookie中的情况并不少见，比如某数，通常需要通过hook技术快速定位到加密点。常用的做法是直接利用Object.defineProperty覆写对象的相关方法实现，但这种方法并不能保证原方法的执行，可能会影响代码执行流程，且容易被检测出来。 本文基于此出发，做了以下工作：  为保证hook代码与原代码都能得到执行，从原型链角度出发对属性描述">
 <meta property="og:type" content="article">
-<meta property="og:title" content="谷歌插件屏蔽百度广告">
-<meta property="og:url" content="http://example.com/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E5%B1%8F%E8%94%BD%E7%99%BE%E5%BA%A6%E5%B9%BF%E5%91%8A/index.html">
+<meta property="og:title" content="document.cookie的hook及引申">
+<meta property="og:url" content="http://example.com/2023/06/23/document-cookie%E7%9A%84hook%E5%8F%8A%E5%BC%95%E7%94%B3/index.html">
 <meta property="og:site_name" content="cthousand">
-<meta property="og:description" content="前言不知你是否存在着这样的困扰，当你在百度上搜寻某急切问题的答案时，发现全是广告，该相信还是不该相信，这是一个值得困惑的问题。当你看到某莆田系医院通过广告治死了某大学生时，心中蒙上了一层阴影，在你下一次通过百度搜索时，想起了当初被广告支配时的心理阴影。在你学习javascript语言后的某天，你收到来自过去的一封信，信中写了… 目标制作一款插件将百度搜索结果中的广告过滤掉，包括左侧搜索结果和右侧推">
+<meta property="og:description" content="[TOC] 一、前言对于逆向工程师来说，加密参数隐藏在cookie中的情况并不少见，比如某数，通常需要通过hook技术快速定位到加密点。常用的做法是直接利用Object.defineProperty覆写对象的相关方法实现，但这种方法并不能保证原方法的执行，可能会影响代码执行流程，且容易被检测出来。 本文基于此出发，做了以下工作：  为保证hook代码与原代码都能得到执行，从原型链角度出发对属性描述">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/3ddb5bb1f15545648934f5fd0dcd9a9a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/e63c309771ea40a0952bd16b619f2f90.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/01786985067f47cb81dd11861b08efd8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230622/42cfdf883bd74a559de434454b74a8c1.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="article:published_time" content="2023-06-18T10:22:08.000Z">
-<meta property="article:modified_time" content="2023-06-22T10:08:38.546Z">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/8332ae9a48394b7f9c126d05183ae05d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/a765aae3dfae44ad9baad32488edf387.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/faf75117aaa2438e83c7adf15b231358.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/b0edc19f55a749938abc3709ad43ac49.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/22cb9561679d4418bd38c2a7de67708e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/2be6bc8afa844aa3ae227721d282e4e0.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/a0a17d50a7d04509b3dd0f55e5e419ad.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/53843591e15746429d0e195374710755.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/3686236448c64fb6ae97e094409777eb.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/ea18a5510d0945bcb61aae9f24993a9d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/e4e5e4bd85e34c2e8882663dd649005f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/203863ccb12948a09a67ac53afefe64a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/6b12cca07f8b47a597482904313ef15c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/bd4c761746dd47dc90b99411a1403172.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/cba0e5587e6a4253a7e2d8e40cb13cb1.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/2652a5cfc82846bfa3eb8d9a667294f7.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/b9db5c950bca41579e0b7cbfa58a40bd.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/16793e3f262a4a8d8758933a49f61418.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="article:published_time" content="2023-06-23T08:26:03.000Z">
+<meta property="article:modified_time" content="2023-06-25T08:25:57.548Z">
 <meta property="article:author" content="Cthousand">
 <meta property="article:tag" content="javascript">
-<meta property="article:tag" content="谷歌插件">
+<meta property="article:tag" content="hook">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/3ddb5bb1f15545648934f5fd0dcd9a9a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/8332ae9a48394b7f9c126d05183ae05d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -419,7 +433,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-06-25 15:28:25'>2023-06-23 16:26</time>
+            发布时间 : <time class="date" title='最后更新: 2023-06-25 16:25:57'>2023-06-23 16:26</time>
         
     </div>
     <div class="article-meta">
@@ -458,7 +472,14 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><div class='inner-toc'><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%96%B9%E6%B3%95"><span class="toc-text">二、方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E9%87%8D%E5%86%99%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7set-x2F-get%E6%96%B9%E6%B3%95"><span class="toc-text">2.1 重写对象属性set&#x2F;get方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E4%BB%8E%E5%8E%9F%E5%9E%8B%E9%93%BE%E4%B8%8Ahook%E5%8E%9F%E5%9E%8B%E5%AF%B9%E8%B1%A1"><span class="toc-text">2.2 从原型链上hook原型对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E5%B0%81%E8%A3%85%E4%B8%80%E4%B8%8B%E4%BB%A5hook%E4%BB%BB%E6%84%8F%E5%AF%B9%E8%B1%A1"><span class="toc-text">2.3 封装一下以hook任意对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E9%9A%90%E8%97%8Fhook%E7%97%95%E8%BF%B9"><span class="toc-text">2.4 隐藏hook痕迹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-window%E5%85%A8%E5%B1%80%E5%AF%B9%E8%B1%A1%E7%9A%84hook"><span class="toc-text">2.5 window全局对象的hook</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">三、总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%99%84%E5%BD%95"><span class="toc-text">四、附录</span></a></li></ol></div></p>
-<h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><p>对于逆向工程师来说，加密参数隐藏在cookie中的情况并不少见，比如某数，通常需要通过hook技术快速定位到加密点，那么如何写一段hook-cookie的脚本呢？</p>
+<h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><p>对于逆向工程师来说，加密参数隐藏在cookie中的情况并不少见，比如某数，通常需要通过hook技术快速定位到加密点。常用的做法是直接利用<code>Object.defineProperty</code>覆写对象的相关方法实现，但这种方法并不能保证原方法的执行，可能会影响代码执行流程，且容易被检测出来。</p>
+<p>本文基于此出发，做了以下工作：</p>
+<ol>
+<li>为保证hook代码与原代码都能得到执行，从原型链角度出发对属性描述符进行修改；</li>
+<li>为方便拓展到对其它对象的hook，对hook方法进行封装；</li>
+<li>针对反hook检测，做了隐藏痕迹处理。</li>
+<li>为支撑之后补环境框架的建设，对window对象进行了简单hook封装。</li>
+</ol>
 <h1 id="二、方法"><a href="#二、方法" class="headerlink" title="二、方法"></a>二、方法</h1><h2 id="2-1-重写对象属性set-x2F-get方法"><a href="#2-1-重写对象属性set-x2F-get方法" class="headerlink" title="2.1 重写对象属性set&#x2F;get方法"></a>2.1 重写对象属性set&#x2F;get方法</h2><pre><code class="javascript">let temp = document.cookie;
 (function () &#123;
         Object.defineProperty(document, &#39;cookie&#39;, &#123;
@@ -474,11 +495,13 @@
     &#125;
 )();
 </code></pre>
-<p>上面是网上很常见的用于hook<code>cookie</code>的一段代码，主要是将<code>document.cookie</code>提前存放到一个变量中，用于在get&#x2F;set方法中做暂存器。随后重写document对象的cookie属性，在get&#x2F;set<br>方法中插入自定义的hook代码。让我们来看一下效果。随便打开一个网站，输入<code>document.cookie=&quot;a=123&quot;</code>：</p>
+<p>上面是网上很常见的用于hook<code>cookie</code>的一段代码，主要是将<code>document.cookie</code>提前存放到一个变量中，用于在<code>get/set</code>方法中做暂存器。随后重写document对象的cookie属性，在<code>get/set</code>方法中插入自定义的hook代码。</p>
+<p>让我们来看一下效果。随便打开一个网站，输入<code>document.cookie=&quot;a=123&quot;</code>：</p>
 <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/8332ae9a48394b7f9c126d05183ae05d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
 <p>从上图中可以看出，效果还是比较好的，再测试一下：</p>
 <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/a765aae3dfae44ad9baad32488edf387.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
-<p>从上图中不难发现一些问题，按理来说，输出结果应该是<code>a=123,b=456</code>才对，这里只显示出来<code>b=456</code>，虽然大部分情况下，这并不影响我们调试，但少部分情况下这会导致原有逻辑的改变。<br>之所以出现这种情况是因为上面那段代码中的<code>temp</code>变量每次经过<code>set</code>方法都会被重新赋值，解决的方法有2<br>个，第一种是将修改代码让其符合追加赋值的逻辑，第二种是保留原<code>set/get</code>方法的逻辑，即将原get&#x2F;set方法的引用用2个全新的变量接收（只要引用还在，对象就不会被回收），下面来看看第二种方法具体如何实现。</p>
+<p>从上图中不难发现一些问题，按理来说，输出结果应该是<code>a=123,b=456</code>才对，这里只显示出来<code>b=456</code>，虽然大部分情况下，这并不影响我们调试，但少部分情况下这会导致原有逻辑的改变。</p>
+<p>之所以出现这种情况是因为上面那段代码中的<code>temp</code>变量每次经过<code>set</code>方法都会被重新赋值，解决的方法有2个，第一种是将修改代码让其符合追加赋值的逻辑，第二种是保留原<code>set/get</code>方法的逻辑，即将原get&#x2F;set方法的引用用2个全新的变量接收（只要引用还在，对象就不会被回收），下面来看看第二种方法具体如何实现。</p>
 <h2 id="2-2-从原型链上hook原型对象"><a href="#2-2-从原型链上hook原型对象" class="headerlink" title="2.2 从原型链上hook原型对象"></a>2.2 从原型链上hook原型对象</h2><p>首先我们来看document的cookie属性是哪里来的，输入<code>dir(document)</code>可以查看document对象的各种属性。</p>
 <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/faf75117aaa2438e83c7adf15b231358.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="document对象属性"></p>
 <p>上图中，颜色较深的是document自己的属性，颜色浅的是document从原型链上继承的，而cookie属性存在于颜色浅的一类中，所以我们还需要寻找其原型对象，通过<code>__proto__</code>寻找。</p>
@@ -504,7 +527,7 @@ newProperities.set = function (val) &#123;
 &#125;
 Object.defineProperty(Document.prototype, &#39;cookie&#39;, newProperities)
 </code></pre>
-<p>上述代码首先用<code>getOwnPropertyDescriptor</code>提取出<code>Document.prototype</code>的cookie属性描述符，随后定义了一个新属性描述符，在新属性描述符中调用了旧属性描述符中的get&#x2F;set方法（保证原逻辑不变），并添加了自定义的hook<br>代码（打印日志），最后将新属性描述符通过<code>Object.defineProperty</code>覆写了<code>Document.prototype</code>的cookie属性。</p>
+<p>上述代码首先用<code>getOwnPropertyDescriptor</code>提取出<code>Document.prototype</code>的cookie属性描述符，随后定义了一个新属性描述符，在新属性描述符中调用了旧属性描述符中的get&#x2F;set方法（保证原逻辑不变），并添加了自定义的hook代码（打印日志），最后将新属性描述符通过<code>Object.defineProperty</code>覆写了<code>Document.prototype</code>的cookie属性。</p>
 <p>让我们来看一下效果：</p>
 <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230624/2be6bc8afa844aa3ae227721d282e4e0.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
 <p>解决了直接重写了get&#x2F;set方法导致更改了原逻辑更改造成的隐患，并且hook代码也可正常运行。然后我们可以引发一下思考，在这里hook的本质是什么？hook的本质其实就是修改对象属性的属性描述符，hook其它原型对象也是如此，既然如此，是不是可以封装成一个方法？</p>
@@ -613,7 +636,8 @@ let hookObj = function hookObj(obj, objName, propName, isDebug) &#123;
     Object.defineProperty(obj, propName, newDescriptor);
 &#125;
 </code></pre>
-<p>上述代码定义了一个hookObj函数，传入需要hook的对象、对象属性名，以及是否需要<code>debugger</code>，随后更改属性描述符，属性描述符中<code>configurable</code>和<code>enumerable</code><br>是一定会有的，但<code>get/set</code>属性确不一定有，有时是以<code>value</code>和<code>writable </code>形式存在，例如<code>window</code>下的<code>btoa</code>属性，因此需要加以判断，其中<code>value</code>有可能不是函数，而是字符串，这种情况下无需hook直接返回，所以总的来说，只有<code>value/get/set</code>三种函数需要hook；在hook<br>方法中，入参有原函数，函数信息（包括对象名和属性名），是否需要debugger，原函数执行前hook函数，原函数执行后hook函数，原函数是否执行等6个参数，其中如果没有传，则执行默认表达，让我们来看一下效果：</p>
+<p>上述代码定义了一个hookObj函数，传入需要hook的对象、对象属性名，以及是否需要<code>debugger</code>，随后更改属性描述符，属性描述符中<code>configurable</code>和<code>enumerable</code>是一定会有的，但<code>get/set</code>属性确不一定有，有时是以<code>value</code>和<code>writable </code>形式存在，例如<code>window</code>下的<code>btoa</code>属性，因此需要加以判断，其中<code>value</code>有可能不是函数，而是字符串，这种情况下无需hook直接返回。</p>
+<p>所以总的来说，只有<code>value/get/set</code>三种函数需要hook；在hook方法中，入参有原函数，函数信息（包括对象名和属性），是否需要debugger，原函数执行前hook函数，原函数执行后hook函数，原函数是否执行等6个参数，其中如果没有传，则执行默认表达，让我们来看一下效果：</p>
 <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/a0a17d50a7d04509b3dd0f55e5e419ad.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
 <p>结果显示hook代码与原函数均执行成功。不过如果反hook方想检测也很容易，例如<code>Object.getOwnPropertyDescriptor(Document.prototype,&#39;cookie&#39;).get.toString()</code>：</p>
 <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/53843591e15746429d0e195374710755.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
@@ -623,7 +647,8 @@ let hookObj = function hookObj(obj, objName, propName, isDebug) &#123;
 <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/ea18a5510d0945bcb61aae9f24993a9d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
 <p>而原函数的输出结果是：</p>
 <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/e4e5e4bd85e34c2e8882663dd649005f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
-<h2 id="2-4-隐藏hook痕迹"><a href="#2-4-隐藏hook痕迹" class="headerlink" title="2.4 隐藏hook痕迹"></a>2.4 隐藏hook痕迹</h2><p>关于toString型的检测，需要手动覆写<code>Function.prototype.toString</code>方法以实现模拟native化的返回，该方案在<br><a target="_blank" rel="noopener" href="https://blog.cthousand.cn/2023/06/20/hook%E4%B8%8E%E5%8F%8Dhook%E4%B9%8B%E9%97%B4%E7%9A%84%E5%AF%B9%E6%8A%97/">hook与反hook之间的对抗</a><br>中描述过，有兴趣的可以点击跳转去查看，至于第二种<code>.name</code>型的检测，可以用<code>Object.defineProperty</code>直接修改name属性的描述符即可。</p>
+<h2 id="2-4-隐藏hook痕迹"><a href="#2-4-隐藏hook痕迹" class="headerlink" title="2.4 隐藏hook痕迹"></a>2.4 隐藏hook痕迹</h2><p>关于toString型的检测，需要手动覆写<code>Function.prototype.toString</code>方法以实现模拟native化的返回，该方案在<br><a target="_blank" rel="noopener" href="https://blog.cthousand.cn/2023/06/20/hook%E4%B8%8E%E5%8F%8Dhook%E4%B9%8B%E9%97%B4%E7%9A%84%E5%AF%B9%E6%8A%97/">hook与反hook之间的对抗</a><br>中描述过，有兴趣的可以点击跳转去查看。</p>
+<p>至于第二种<code>.name</code>型的检测，可以用<code>Object.defineProperty</code>直接修改name属性的描述符即可。</p>
 <pre><code class="javascript">reNameFunc = function reNameFunc(func, name) &#123;
     Object.defineProperty(func, &quot;name&quot;, &#123;
         configurable: true,
@@ -641,7 +666,7 @@ let hookObj = function hookObj(obj, objName, propName, isDebug) &#123;
 <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/bd4c761746dd47dc90b99411a1403172.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
 <p>第三部分是非函数属性，例如<code>window.closed</code>和<code>window.chrome</code>，该类属性要么是一个值，要么是一个对象，如下图所示：</p>
 <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/cba0e5587e6a4253a7e2d8e40cb13cb1.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
-<p>这部分一般不用hook，对于第一类原型函数的hook，首先用<code>.prototype</code>得到其原型对象，然后用<code>Object. getOwnPropertyDescriptors</code><br>得到其所有属性，然后遍历属性，对每个属性调用上文提到过的hook原型对象属性的方法，这里有一点要注意的是，在浏览器环境中只有属性描述符中<code>configurable</code>为<code>true</code><br>才可以被hook，<code>configurable</code>表示是否可配置，具体解释可见<br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">https://developer.mozilla.org/</a></p>
+<p>这部分一般不用hook，对于第一类原型函数的hook，首先用<code>.prototype</code>得到其原型对象，然后用<code>Object.getOwnPropertyDescriptors</code>得到其所有属性，然后遍历属性，对每个属性调用上文提到过的hook原型对象属性的方法，这里有一点要注意的是，在浏览器环境中只有属性描述符中<code>configurable</code>为<code>true</code>才可以被hook，<code>configurable</code>表示是否可配置，具体解释可见<br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">https://developer.mozilla.org/</a></p>
 <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/2652a5cfc82846bfa3eb8d9a667294f7.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
 <p>对于普通函数的hook，由于没有原型对象，直接修改其属性描述符即可，以下是具体代码：</p>
 <pre><code class="javascript">yueqian.hookGlobal = function hookGlobal(isDebugger) &#123;
@@ -666,7 +691,13 @@ let hookObj = function hookObj(obj, objName, propName, isDebug) &#123;
 <p>测试一下结果：</p>
 <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/b9db5c950bca41579e0b7cbfa58a40bd.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
 <p>测试结果表明，window对象已成功被我们hook。</p>
-<h1 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h1><p>通过本文，我们了解了<code>hook</code>的两种方式，一是直接覆写<code>get/set</code><br>方法，二是通过原型链修改属性描述符，其中第二种方式可以保证hook代码与原函数都能得到执行，随后进行引申，基于语法共性将<code>hook</code>方法封装成函数以便于对其它对象进行<code>hook</code><br>；再之后对<code>hook</code>痕迹进行了隐藏，一是隐藏<code>toString</code>痕迹，二是隐藏<code>. name</code>痕迹，最后对全局对象<code>window</code>进行了hook，其中最重要的是理解js中hook的本质是修改对象属性的属性描述符。</p>
+<h1 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h1><p>hook技术在js逆向中是很重要的一门技术，hook写的好，加密位置找的快，补环境也能更顺利些，本文指出了以下几个改进方向：</p>
+<ol>
+<li>尽量通过原型链修改属性描述符，以保证hook代码与原函数都能得到执行；</li>
+<li>基于语法共性将<code>hook</code>方法封装成函数以便于对其它对象进行快速<code>hook</code>；</li>
+<li>对<code>hook</code>痕迹进行了隐藏，一是隐藏<code>toString</code>痕迹，二是隐藏<code>.name</code>痕迹，避免为反hook检测识别出来；</li>
+</ol>
+<p>最后对window对象进行了hook，为之后建立补环境框架打下良好的地基。</p>
 <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/16793e3f262a4a8d8758933a49f61418.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
 <h1 id="四、附录"><a href="#四、附录" class="headerlink" title="四、附录"></a>四、附录</h1><pre><code class="javascript">yueqian = &#123;&#125;;
 
