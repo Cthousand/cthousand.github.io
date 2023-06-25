@@ -6,34 +6,24 @@
   <meta name="keywords" content=" python , javascript , web逆向 , 阿里系 ">
   <meta name="description" content="纯扣过阿里系sign参数-某宝法拍网.md | cthousand">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="目标url: https:&#x2F;&#x2F;www.smythstoys.com&#x2F;de&#x2F;de-de 搜索任意词,爬取其搜索结果字段:标题,图片,价格,详情页url  前期工作寻找接口在搜索栏搜索toy，在搜索结果中截取关键词在开发者工具中再次搜索，找到关键接口：https:&#x2F;&#x2F;www.smythstoys.com&#x2F;de&#x2F;de-de&#x2F;search&#x2F;?text&#x3D;toy  简化请求经过测试,存在一个加密参数:rees">
+<meta name="description" content="前言不知你是否存在着这样的困扰，当你在百度上搜寻某急切问题的答案时，发现全是广告，该相信还是不该相信，这是一个值得困惑的问题。当你看到某莆田系医院通过广告治死了某大学生时，心中蒙上了一层阴影，在你下一次通过百度搜索时，想起了当初被广告支配时的心理阴影。在你学习javascript语言后的某天，你收到来自过去的一封信，信中写了… 目标制作一款插件将百度搜索结果中的广告过滤掉，包括左侧搜索结果和右侧推">
 <meta property="og:type" content="article">
-<meta property="og:title" content="谷歌插件绕过cookie反爬_某境外电商网站">
-<meta property="og:url" content="http://example.com/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E7%BB%95%E8%BF%87cookie%E5%8F%8D%E7%88%AC-%E5%A2%83%E5%A4%96%E7%94%B5%E5%95%86%E7%BD%91%E7%AB%99/index.html">
+<meta property="og:title" content="谷歌插件屏蔽百度广告">
+<meta property="og:url" content="http://example.com/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E5%B1%8F%E8%94%BD%E7%99%BE%E5%BA%A6%E5%B9%BF%E5%91%8A/index.html">
 <meta property="og:site_name" content="cthousand">
-<meta property="og:description" content="目标url: https:&#x2F;&#x2F;www.smythstoys.com&#x2F;de&#x2F;de-de 搜索任意词,爬取其搜索结果字段:标题,图片,价格,详情页url  前期工作寻找接口在搜索栏搜索toy，在搜索结果中截取关键词在开发者工具中再次搜索，找到关键接口：https:&#x2F;&#x2F;www.smythstoys.com&#x2F;de&#x2F;de-de&#x2F;search&#x2F;?text&#x3D;toy  简化请求经过测试,存在一个加密参数:rees">
+<meta property="og:description" content="前言不知你是否存在着这样的困扰，当你在百度上搜寻某急切问题的答案时，发现全是广告，该相信还是不该相信，这是一个值得困惑的问题。当你看到某莆田系医院通过广告治死了某大学生时，心中蒙上了一层阴影，在你下一次通过百度搜索时，想起了当初被广告支配时的心理阴影。在你学习javascript语言后的某天，你收到来自过去的一封信，信中写了… 目标制作一款插件将百度搜索结果中的广告过滤掉，包括左侧搜索结果和右侧推">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/b0e9f0afd1044ffca00f9236acfcd48a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/88c146bef1f346b99a5c90289e609771.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/152d5020d3744b54bce1ce6cdb730125.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/8907f1322e3a4279b02831c9a379cf43.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/9e4fd668acce4c05b908e88ded0bb522.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/e48cb0b7fed14d1d81ac343917114f2a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/33d57d3648bf447f8d7b5634c4152dbe.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/11367940cd8c40f1ad7a00e4c3ca651c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/e7594809dfbb46e680e23452ffedc4c3.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/39949d1f10a649d1938e7d8aadec1442.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/3264b960ddbd4acbb21c910c247fda65.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="article:published_time" content="2023-06-18T07:54:04.000Z">
-<meta property="article:modified_time" content="2023-06-18T20:52:55.964Z">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/3ddb5bb1f15545648934f5fd0dcd9a9a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/e63c309771ea40a0952bd16b619f2f90.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/01786985067f47cb81dd11861b08efd8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230622/42cfdf883bd74a559de434454b74a8c1.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="article:published_time" content="2023-06-18T10:22:08.000Z">
+<meta property="article:modified_time" content="2023-06-22T10:08:38.546Z">
 <meta property="article:author" content="Cthousand">
-<meta property="article:tag" content="web爬虫">
-<meta property="article:tag" content="python">
 <meta property="article:tag" content="javascript">
 <meta property="article:tag" content="谷歌插件">
-<meta property="article:tag" content="flask">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/b0e9f0afd1044ffca00f9236acfcd48a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230619/3ddb5bb1f15545648934f5fd0dcd9a9a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -131,7 +121,7 @@
     <li>
         <div class="all active" data-rel="全部文章">全部文章
             
-                <small>(9)</small>
+                <small>(10)</small>
             
         </div>
     </li>
@@ -156,7 +146,7 @@
                     <div data-rel="爬虫">
                         
                         爬虫
-                        <small>(6)</small>
+                        <small>(7)</small>
                         
                     </div>
                     
@@ -191,7 +181,7 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="9">
+<input type="hidden" id="yelog_site_posts_number" value="10">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -291,6 +281,15 @@
 
     
     <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/06/23/document-cookie%E7%9A%84hook%E5%8F%8A%E5%BC%95%E7%94%B3/"
+           data-tag="javascript,hook"
+           data-author="" >
+            <span class="post-title" title="document.cookie的hook及引申">document.cookie的hook及引申</span>
+            <span class="post-date" title="2023-06-23 16:26:03">2023/06/23</span>
+        </a>
         
         
         <a  class="全部文章 爬虫 "
