@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>cthousand</title>
+  <title>debug | cthousand</title>
   <meta name="keywords" content="">
-  <meta name="description" content="cthousand">
+  <meta name="description" content="debug | cthousand">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="[TOC] 一、前言对于逆向工程师来说，加密参数隐藏在cookie中的情况并不少见，比如某数，通常需要通过hook技术快速定位到加密点。常用的做法是直接利用Object.defineProperty覆写对象的相关方法实现，但这种方法并不能保证原方法的执行，可能会影响代码执行流程，且容易被检测出来。 本文基于此出发，做了以下工作：  为保证hook代码与原代码都能得到执行，从原型链角度出发对属性描述">
 <meta property="og:type" content="article">
@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/b9db5c950bca41579e0b7cbfa58a40bd.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
 <meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230625/16793e3f262a4a8d8758933a49f61418.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
 <meta property="article:published_time" content="2023-06-23T08:26:03.000Z">
-<meta property="article:modified_time" content="2023-06-25T08:25:57.548Z">
+<meta property="article:modified_time" content="2023-07-04T15:39:59.866Z">
 <meta property="article:author" content="Cthousand">
 <meta property="article:tag" content="javascript">
 <meta property="article:tag" content="hook">
@@ -77,7 +77,7 @@
 
 
 <body>
-<aside class="nav mobile">
+<aside class="nav">
     <div class="nav-left">
         <a href="/"
    class="avatar_target">
@@ -160,21 +160,7 @@
                     <div data-rel="爬虫">
                         
                         爬虫
-                        <small>(7)</small>
-                        
-                    </div>
-                    
-                </li>
-            
-        
-    
-        
-            
-                <li>
-                    <div data-rel="英语">
-                        
-                        英语
-                        <small>(2)</small>
+                        <small>(9)</small>
                         
                     </div>
                     
@@ -242,15 +228,19 @@
     <div class="tag-wrapper">
         
             <li class="article-tag-list-item">
-                <i class="iconfont icon-tag"></i><a><a song of ice and fire></a>
-            </li>
-        
-            <li class="article-tag-list-item">
                 <i class="iconfont icon-tag"></i><a>阿里系</a>
             </li>
         
             <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>补环境</a>
+            </li>
+        
+            <li class="article-tag-list-item">
                 <i class="iconfont icon-tag"></i><a>谷歌插件</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>加速乐</a>
             </li>
         
             <li class="article-tag-list-item">
@@ -295,6 +285,15 @@
 
     
     <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/07/06/proxy%E4%B8%8Ereflect%E5%97%85%E6%8E%A2%E7%BC%BA%E5%A4%B1%E7%8E%AF%E5%A2%83/"
+           data-tag="补环境"
+           data-author="" >
+            <span class="post-title" title="Proxy与Reflect嗅探缺失环境">Proxy与Reflect嗅探缺失环境</span>
+            <span class="post-date" title="2023-07-06 11:03:49">2023/07/06</span>
+        </a>
         
         
         <a  class="全部文章 爬虫 "
@@ -351,30 +350,21 @@
         </a>
         
         
-        <a  class="全部文章 英语 "
-           href="/2023/06/04/02%3Ca-song-of-ice-and-fire%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"
-           data-tag="&lt;a song of ice and fire&gt;"
-           data-author="" >
-            <span class="post-title" title="02&lt;a song of ice and fire&gt;阅读笔记">02&lt;a song of ice and fire&gt;阅读笔记</span>
-            <span class="post-date" title="2023-06-04 20:29:34">2023/06/04</span>
-        </a>
-        
-        
-        <a  class="全部文章 英语 "
-           href="/2023/05/28/01%3Ca-song-of-ice-and-fire%3E%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"
-           data-tag="&lt;a song of ice and fire&gt;"
-           data-author="" >
-            <span class="post-title" title="01&lt;a song of ice and fire&gt;阅读笔记">01&lt;a song of ice and fire&gt;阅读笔记</span>
-            <span class="post-date" title="2023-05-28 08:49:32">2023/05/28</span>
-        </a>
-        
-        
         <a  class="全部文章 爬虫 "
            href="/2023/05/18/%E7%BA%AF%E6%89%A3%E8%BF%87%E9%98%BF%E9%87%8C%E7%B3%BBsign%E5%8F%82%E6%95%B0-%E6%9F%90%E5%AE%9D%E6%B3%95%E6%8B%8D%E7%BD%91/"
            data-tag="python,javascript,web逆向,阿里系"
            data-author="" >
             <span class="post-title" title="纯扣过阿里系sign参数-某宝法拍网.md">纯扣过阿里系sign参数-某宝法拍网.md</span>
             <span class="post-date" title="2023-05-18 16:34:23">2023/05/18</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/05/17/%E7%BA%AF%E6%89%A3%E8%BF%87%E5%8A%A0%E9%80%9F%E4%B9%90-%E6%9F%90%E4%BF%A1%E7%94%A8%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/"
+           data-tag="web爬虫,python,javascript,加速乐"
+           data-author="" >
+            <span class="post-title" title="纯扣过加速乐-某信用查询网站">纯扣过加速乐-某信用查询网站</span>
+            <span class="post-date" title="2023-05-17 13:50:48">2023/05/17</span>
         </a>
         
         
@@ -402,12 +392,43 @@
         </div>
     </div>
 </aside>
-<div id="post" class="index">
+<div id="post">
     <div class="pjax">
-        <article class="index">
-            <div class="toc-ref">
+        <article id="post-01&lt;a-song-of-ice-and-fire&gt;阅读笔记" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-Blog"><span class="toc-text">Why Blog</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E5%8D%9A%E5%AE%A2%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-text">对博客的理解</span></a></li></ol></li></ol>
+        <h1 class="article-title">debug</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2023-07-06 11:01:21'>2023-05-15 18:05</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E5%89%A7%E6%83%85%E8%B5%B0%E5%90%91%E6%A6%82%E5%86%B5"><span class="toc-text">本周剧情走向概况</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%AF%E7%89%B9%E7%90%B3"><span class="toc-text">凯特琳</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%83%E5%85%B0"><span class="toc-text">布兰</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%89%BE%E4%B8%BD%E5%A8%85"><span class="toc-text">艾丽娅</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B2%BE%E9%80%89%E8%AF%AD%E5%8F%A5"><span class="toc-text">精选语句</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%A7%E6%83%85%E5%88%86%E6%9E%90"><span class="toc-text">剧情分析</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -420,22 +441,144 @@
     }
 </style>
 </div>
-            <h1 id="Why-Blog"><a href="#Why-Blog" class="headerlink" title="Why Blog"></a>Why Blog</h1><h2 id="对博客的理解"><a href="#对博客的理解" class="headerlink" title="对博客的理解"></a>对博客的理解</h2><p>喜欢写Blog的人，会经历三个阶段。</p>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="本周剧情走向概况"><a href="#本周剧情走向概况" class="headerlink" title="本周剧情走向概况"></a>本周剧情走向概况</h1><p>title: 01<a song of ice and fire>阅读笔记<br>date: 2023-05-28 08:49:32<br>categories:<br>tags: <a song of ice and fire><br>hidden: true</p>
+<h2 id="凯特琳"><a href="#凯特琳" class="headerlink" title="凯特琳"></a>凯特琳</h2><ol>
+<li><p>奔流城又一次打退了兰尼斯特凯的小规模袭击，大家都很开心的聚会饮酒，只有凯特琳和布蕾妮知道这只是更猛烈进攻前的试探。</p>
 <blockquote>
-<p>第一阶段，刚接触Blog，觉得很新鲜，试着选择一个免费空间来写。</p>
+<p>Riverrun repelled another small-scale attack from Lannister. A party was hold to celebrate the victory and everybody drunk happily. Only Catelyn and Brienne knew that this was just a probing attack before a more violent attack.</p>
 </blockquote>
+</li>
+<li><p>凯特琳事先用酒灌醉了克里奥爵士，从他口中得知，王后压根就没有准备与奔流城和谈，此外得知珊莎还活着，但艾莉亚不知所踪。</p>
 <blockquote>
-<p>第二阶段，发现免费空间限制太多，就自己购买域名和空间，搭建独立博客。</p>
+<p>Caitlin got ser Cleo drunk with wine in advance. she learned from him that the queen was not prepared to make peace with Riverrun at all, and Sansa was still alive, but Arya was missing.</p>
 </blockquote>
+</li>
+<li><p>不久后，凯特琳收到艾德幕的来信，称泰温公爵带兵从十多处渡口强渡，但被打退，凯特琳高兴之余，不免忧愁，胜利女神的天平总是倾向在他们这边，这合理吗？</p>
 <blockquote>
-<p>第三阶段，觉得独立博客的管理太麻烦，最好在保留控制权的前提下，让别人来管，自己只负责写文章。</p>
+<p>Not long after, Catelyn received a letter from Edmure.He said that Duke Tywin tried to cross over a dozen ferries with his troop forcefully. but they were repelled again. Although Catelyn felt happy ,there was a worry hidden behind her happiness. The balance of the goddess of victory always tends to be on their side. but is this reasonable?</p>
 </blockquote>
-<p>我们每个人的在网络上产生的数据越来越多，这些信息是我们在互联网上存在过的痕迹，值得我们认真对待。但是它们被分散分布在各个网站上。很多时候我们很难将它们聚合在一起，而且各个网站的信息排布方式也没有办法自由控制，所以我们需要一个可以由自己主宰的空间——博客。</p>
-<p>通过博客，我们可以记录自己的生活和成长的轨迹。它不像 Twitter 那样碎片化，也不像 Facebook 那样关系化，它是私人的空间。</p>
+</li>
+</ol>
+<h2 id="布兰"><a href="#布兰" class="headerlink" title="布兰"></a>布兰</h2><ol>
+<li><p>布兰在梦中附身冰原狼夏天，并在神木林内察觉到了隐藏在阴影中的危险，但受困于神木林，无法出来预警，在尝试脱离神木林的过程中，不慎从树上跌落。</p>
+<blockquote>
+<p>Bran possessed the direwolf Xia Tian in his dream, and noticed the danger hidden in the shadows in the godswood. But Xia Tian was unable to come out to warn for being trapped in the godswood. In the process of trying to get out of the godswood, Xia Tian accidentally fell from a tree.</p>
+</blockquote>
+</li>
+<li><p>布兰醒来后开始呼救，但守卫基本都被罗德利克爵士带走了，用于支援托伦方城，其正受到一个叫’裂颚达格摩’的凶残海盗进攻，仅留下了十几人守卫临冬城，正呼喊间，席恩走了进来，告诉他临冬城已被他攻下，让他投降，此刻布兰才明白，原来绿色之梦中海水袭来，指的是这个。而后鲁恩学士告诉他，他在被擒住时，已放了一只渡鸦前去白港请求支援。</p>
+<blockquote>
+<p>Bran woke up and started calling for help, but most of the guards were taken away by ser Rodrik to support Torrhen’s Square, which was being attacked by a vicious pirate named “Dagmer Cleftiaw”. So there were only a dozen guards left in Winterfell. While yelling, Theon walked in and told him that Winterfell had been captured by him and asked him to surrender. At this moment, Bran understood the meaning of the seawater in his green dream.Later, the maester Luwin told him that he had send off a raven to White Harbor before he was captured.</p>
+</blockquote>
+</li>
+<li><p>临冬城大厅内，布兰宣布临冬城向葛雷乔伊家族投降，同时观察到席恩一方的人手仅有二三十人，铁匠密肯因咒骂席恩被杀，囚犯臭佬和野人欧莎向席恩宣誓效忠。</p>
+<blockquote>
+<p>In the hall of Winterfell, Bran announced that Winterfell had surrendered to the Greyjoy family,and he noticed that the number of man belong to Theon was only twenty or thirty. The blacksmith Mikken was killed for cursing Theon, and the prisoners Reek and savage Osha swore allegiance to Theon.</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="艾丽娅"><a href="#艾丽娅" class="headerlink" title="艾丽娅"></a>艾丽娅</h2><ol>
+<li><p>艾莉亚深夜抹黑来到赫伦堡的厨房，怂恿正在揉面包的热派往亚摩利爵士的早餐里吐口唾沫，但热派不敢，此时赫伦堡大门传来异响，艾莉亚决定前去查看状况。</p>
+<blockquote>
+<p>Arya came to Harrenhal’s kitchen in the middle of the night. She incited Hot Pie to spit in Ser Amory’s breakfast while hot Pie was kneading bread, but Hot Pai didn’t dare. At this time, there was a strange sound from the gate of Harrenhal. Arya decided to check the situation.</p>
+</blockquote>
+</li>
+<li><p>原来是血戏班带领一批超百人的俘虏进入城堡大门，他们击败了想要渡河的北境士兵，俘虏了先锋官葛洛佛等北境贵族，但主帅卢斯波顿逃脱，代理城主亚摩利爵士命令将俘虏关在寡妇塔下的地牢里。</p>
+<blockquote>
+<p>It turned out that the Bloody Mummers led a group of more than a hundred captives into the castle gate. They defeated the northern soldiers who wanted to cross the river, and captured the northern nobles such as the vanguard Glover except chief commander Rooth Bolton. Amory the castellan of Harrenhal gave order to keep these prisoners in the dungeon under the Widow’s Tower.</p>
+</blockquote>
+</li>
+<li><p>艾莉亚潜入铁匠房，试图说服詹德利救出北境将士，她指出了由于泰温公爵将绝大部分士兵带走，城堡守卫仅余数百人，防守不会那么严密，但被詹德利以危险拒绝，艾莉亚失望离去。</p>
+<blockquote>
+<p>Arya sneaked into the armory, she tried to persuade Gendry to rescue the northern soldiers. She pointed out that there were only a few hundred guards left in the castle because Duke Tywin took most soldiers away, and the defense of the castle were weak. But Gendry refused for cause of danger, Arya went away disappointed.</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="精选语句"><a href="#精选语句" class="headerlink" title="精选语句"></a>精选语句</h1><ol>
+<li><p>the wine has fuddled my wit.<br><em>美酒麻痹了我的意识。</em></p>
+<blockquote>
+<p>fuddle 灌醉 助记：fiddle 小提琴，小提琴优美的旋律深深将我灌醉。</p>
+</blockquote>
+</li>
+<li><p>the smell of fear made his heart thunder and slaver ran from his jaws。<br><em>恐惧使他心跳加速，嘴角流出唾液。</em></p>
+</li>
+<li><p>the last man march through the door was the prisoner Reek，whose stench preceded him，ripe and pungent。<br><em>最后一个进门的是囚犯臭佬，人未到气味先至，浓郁且刺鼻。</em></p>
+<blockquote>
+<p>pungent 刺鼻的 助记：(prefix)pung 尖</p>
+</blockquote>
+</li>
+<li><p>his voice betrayed him and the words came out in a shrill squeak.<br><em>他的音调背叛了他，言语涌出来变成了尖叫。</em></p>
+<blockquote>
+<p>shrill squeak 尖叫</p>
+</blockquote>
+</li>
+<li><p>ser Amory is partial to them.<br><em>亚摩利爵士就好这一口</em>。</p>
+<blockquote>
+<p>be partial to do sth 偏爱做某事</p>
+</blockquote>
+</li>
+<li><p>but the other cooks and scullions were all asleep in the cavernous lofts above the ovens.<br><em>其他厨子和下人都在炉子上方如洞穴般的阁楼里睡觉。</em></p>
+<blockquote>
+<p>scullions 厨房帮手 助记：cut 切</p>
+</blockquote>
+</li>
+<li><p>the riders escorting the carts spoke in a babble of queer tongues.<br><em>护卫车队的骑手们嘀咕着怪异的语言。</em></p>
+<blockquote>
+<p>babble 含糊不清的声音 助记：baby宝宝，宝宝的声音总是含糊不清的</p>
+</blockquote>
+</li>
+<li><p>she climbed to the roof and peeked down.<br><em>她爬山屋顶偷偷向下看。</em></p>
+<blockquote>
+<p>peek 偷窥 助记：p 警察 seek寻找 &gt; 警察这段时间一直在寻找那个偷窥狂</p>
+</blockquote>
+</li>
+<li><p>as he took up the long-handled tongs to dip the breastplate into the quenching trough.<br><em>当他拿起长柄钳子，将胸甲夹起浸入回火的水槽时</em></p>
+<blockquote>
+<p>tong 钳子 助记：tongue舌头，用钳子把舌头夹住，拔舌地狱。</p>
+</blockquote>
+</li>
+<li><p>she was better off without him anyhow.<br><em>没他参加状况还好呢</em></p>
+<blockquote>
+<p>better off 状况良好的 助记：以更好的状态结束，off有结束的意思。</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="剧情分析"><a href="#剧情分析" class="headerlink" title="剧情分析"></a>剧情分析</h1><ol>
+<li><p>迄今为止奔流城一方屡战屡胜，这是否是泰温公爵的诡计，其在背后以此为引，酝酿着更大的阴谋，如果是的话，这个阴谋又是什么呢？</p>
+<blockquote>
+<p>Riverrun has won many battles and victories from Lannister so far. Is this a trick of Duke Tywin, who is using this as a bait behind which there was a bigger conspiracy? If so, what is this conspiracy?</p>
+</blockquote>
+</li>
+<li><p>席恩拿下了临冬城，但仅凭二三十人就能守住临冬城吗?布兰被囚禁，在前线收到通知的罗伯史塔克将会如何应对?</p>
+<blockquote>
+<p>Theon took down Winterfell, but could he hold Winterfell with only 20 or 30 people? how will Robb Stark do while he was notified on the front line?</p>
+</blockquote>
+</li>
+<li><p>艾莉亚想要救出北境士兵的想法孤立无援，她的出路在哪呢？</p>
+<blockquote>
+<p>Arya’s desire of rescuing the northern soldiers seems to isolate. Where is her way out?</p>
+</blockquote>
+</li>
+</ol>
 
-        </article>
-        
-        
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，如有问题请邮件至2454612285@qq.com。 </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
     </div>
     <div class="copyright">
         <p class="footer-entry">
@@ -444,11 +587,11 @@
 <p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
 
     </div>
-</div>
-<div class="full-toc">
-    <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
 <a class="" id="rocket" ></a>
 
+    </div>
 </div>
 
 </body>

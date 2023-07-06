@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>scrapy批量采集-某商大数据 | cthousand</title>
-  <meta name="keywords" content=" web爬虫 , python , javascript , scrapy ">
-  <meta name="description" content="scrapy批量采集-某商大数据 | cthousand">
+  <title>纯扣过加速乐-某信用查询网站 | cthousand</title>
+  <meta name="keywords" content=" web爬虫 , python , javascript , 加速乐 ">
+  <meta name="description" content="纯扣过加速乐-某信用查询网站 | cthousand">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="[TOC] 一、前言对于逆向工程师来说，加密参数隐藏在cookie中的情况并不少见，比如某数，通常需要通过hook技术快速定位到加密点。常用的做法是直接利用Object.defineProperty覆写对象的相关方法实现，但这种方法并不能保证原方法的执行，可能会影响代码执行流程，且容易被检测出来。 本文基于此出发，做了以下工作：  为保证hook代码与原代码都能得到执行，从原型链角度出发对属性描述">
 <meta property="og:type" content="article">
@@ -394,9 +394,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-scrapy批量采集-某商大数据" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-纯扣过加速乐-某信用查询网站" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">scrapy批量采集-某商大数据</h1>
+        <h1 class="article-title">纯扣过加速乐-某信用查询网站</h1>
     
     <div class="article-meta">
         
@@ -420,14 +420,14 @@
             
             <a class="color1">javascript</a>
             
-            <a class="color2">scrapy</a>
+            <a class="color4">加速乐</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-06-19 04:52:55'>2023-05-16 16:34</time>
+            发布时间 : <time class="date" title='最后更新: 2023-07-06 10:48:41'>2023-05-17 13:50</time>
         
     </div>
     <div class="article-meta">
@@ -449,7 +449,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%9B%AE%E6%A0%87"><span class="toc-text">一、目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%80%9D%E8%B7%AF"><span class="toc-text">二、思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BB%A3%E7%A0%81"><span class="toc-text">三、代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%9B%AE%E6%A0%87"><span class="toc-text">一、目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%80%9D%E8%B7%AF"><span class="toc-text">二、思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BB%A3%E7%A0%81"><span class="toc-text">三、代码</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -466,193 +466,327 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="一、目标"><a href="#一、目标" class="headerlink" title="一、目标"></a>一、目标</h3><ol>
-<li>地址：<a target="_blank" rel="noopener" href="http://www.winshangdata.com/brandList">http://www.winshangdata.com/brandList</a></li>
-<li>需求：用scrapy框架采集本站数据，至少抓取5个分类，数据量要求5000以上</li>
-<li>采集字段：标题、创建时间、开店方式、合作期限、面积要求</li>
+<li>地址：<a target="_blank" rel="noopener" href="https://credit.hefei.gov.cn/credit-website/publicity/search-result/xyxx-list.do">https://credit.hefei.gov.cn/credit-website/publicity/search-result/xyxx-list.do</a></li>
+<li>需求：抓取该页面下站点数据2000个 采集字段：标题、信用代码、工商注册码</li>
 </ol>
 <h3 id="二、思路"><a href="#二、思路" class="headerlink" title="二、思路"></a>二、思路</h3><ol>
-<li>通过F12抓包分析，发现<ol>
-<li>其无加密防护</li>
-<li>翻页参数在前一页的返回里</li>
-<li>页面结构为列表页+详情页</li>
-</ol>
+<li><p>通过F12抓包分析，找到目标接口:<code>https://credit.hefei.gov.cn/credit-website/publicity/topSearch/getXYXXPageInfo.do</code></p>
 </li>
-<li>spider文件中重写start_requests方法，用5个分类构造5个初始Request对象,<br>回调为parse_index</li>
-<li>parse_index中解析并构造详情页的Request对象，回调为parse_detail;<br>解析并构造下一页的列表页Requset对象，回调为parse_index</li>
-<li>用pipeline中间件写mongodb保存类，用middleware写随机ua和代理</li>
-</ol>
-<div style="display: flex;justify-content:center" >
-<img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/1d8e17dbec8c48d29d9f3b1a038707e6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt=""/>
-<img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/21167986002049c7b3e5488dca21c46d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt=""/>
-</div>
+<li><p>这是一个post请求,请求参数有:</p>
+ <p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/2d8140aef5fe49cb827b167252f41389.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="请求体" md-pos="387-574" /></p>
+</li>
+<li><p>通过python模拟请求后发现，必须要携带cookie才能够请求成功，排查后发现主要是这两个cookie</p>
+<blockquote>
+<p>__jsl_clearance_s<br>__jsluid_s</p>
+</blockquote>
+</li>
+<li><p>cookie加密一般有2种来源</p>
+<blockquote>
+<p>后端接口返回<br>前端document.cookie生成</p>
+</blockquote>
+</li>
+<li><p>首先尝试第一种，打开proxyman(抓包工具), 浏览器清掉网站缓存</p>
+<p><img
+src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/48c7e91b11aa4c7080a78f98733c88bd.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"
+alt="清除网站缓存" /></p><p></p><img
+src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/c44a00572ef54cc08242646053d9def3.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"
+alt="proxyman界面" </p>
+</li>
+<li><p>在proxyman中的filter添加过滤条件，搜索 <code>__jsluid_s</code>和<code>__jsl_clearance_s</code></p>
+</li>
+<li><p>__jsluid_s成功搜索到,但<code>__jsl_clearance_s</code>未搜索到<br/><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/db763cdd561140908644a4b3b95ec437.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="__jsluid_s搜索结果"></p>
+</li>
+<li><p>但是发现有个可疑之处，怀疑这便是<code>__jsl_clearance_s</code>的来源 <br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/f95670f573564651bef3a49ef15be034.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="__jsl_clearance_s可疑来源"></p>
+</li>
+<li><p>在控制台执行这段脚本，验证了的猜想,这也给我提供了一种思路，也就是在response_body搜索<code>document.cookie</code><br>关键词来查找cookie设置位置,document不属于变量,无法被混淆!<br/><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/e4feb6010aac4aa9b6a00789c9f4a960.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="控制台执行js"></p>
+</li>
+<li><p>紧接着带入这两个cookie，放入测试请求中验证，结果仍然是不对的,返回状态码是521，这时候意识到，可能这个cookie在中间还产生过变化</p>
+</li>
+<li><p>仔细对比了cookie后发现，<code>__jsl_clearance_s</code>是不一致的<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/873b998cc65b47bf9621a0873164ac5b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="cookie不一致"></p>
+</li>
+<li><p>那么什么时候发生的呢? 仔细看一下抓包请求<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/0d1a1b005ae24fcebc6c9f616cd838c4.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="可疑的脚本"></p>
+</li>
+<li><p>打开一个空白页面执行下该段js，果然如此!<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/a28926a1823f4daeb1c3c28fbb05226c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="执行js验证猜想"></p>
+</li>
+<li><p>接下来准备扣出加密算法,<br>先尝试打断点调试，断不住,为什么,因为这是动态返回的代码，可以考虑替换，在替换文件中首行写下debugger;<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/8c118619861a41f2a0c77242990c3a4c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="手动写下debugger"><br><br>然后使用proxyman提供的替换功能<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/8a4c288dc1154c7ca912d942ce857c0b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="proxyman替换html"><br><br>成功断住<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/4e1926af2faf42b09189cfe735d253d9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="成功断住"></p>
+</li>
+<li><p>js代码经过了混淆处理，但不影响寻找目标，在脚本内搜索document(必然会调用document.cookie),发现了一处可疑的地方<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/645aae5cbd514f9d802e116d46265cdf.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="搜索document"></p>
+</li>
+<li><p>把这句代码复制出来，稍微认真一下<br></p>
+<pre><code class="javascript">function foo() &#123;
+    document[_0x49d1(&#39;0x40&#39;, &#39;4Kd0&#39;) + &#39;ie&#39;] = _0xa88405[_0x49d1(&#39;0xa0&#39;, &#39;oT!N&#39;) + &#39;z&#39;](_0xa88405[_0x49d1(&#39;0x5b&#39;, &#39;UOyd&#39;) + &#39;J&#39;](_0xa88405[_0x49d1(&#39;0x63&#39;, &#39;x*XD&#39;) + &#39;Y&#39;](_0xa88405[_0x49d1(&#39;0x93&#39;, &#39;!3a3&#39;) + &#39;Y&#39;](_0x4af155[&#39;tn&#39;], &#39;=&#39;), _0x38ba7c[0x0]), _0xa88405[_0x49d1(&#39;0x53&#39;, &#39;e@Cg&#39;) + &#39;s&#39;]) + _0x4af155[&#39;vt&#39;], _0x49d1(&#39;0x35&#39;, &#39;x*XD&#39;) + _0x49d1(&#39;0x3&#39;, &#39;]#Kf&#39;) + &#39;\x20/&#39;);
+&#125;
+/* 
+_0x49d1(&#39;0x40&#39;, &#39;4Kd0&#39;) + &#39;ie&#39; 控制台执行结果为&#39;cookie&#39;
+ _0x49d1(&#39;0xa0&#39;, &#39;oT!N&#39;) + &#39;z&#39; 控制台执行结果为&#39;lvLxz&#39;
+ ...
+ 这里没什么技巧，混淆就是这样，考验的耐心
+*/
+//最后发现了核心代码
+</code></pre>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/f70b7acd5be94ed694642c0452e5b99b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="寻找核心代码"></p>
+<pre><code class="javascript">let __jsl_clearance_s=_0x38ba7c[0]
+//容易发现_0x38ba7c这是一个数组，搜索寻找其定位的地方
+</code></pre>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/f0664ec418ab4095870025e13ed26413.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="搜索_0x38ba7c"></p>
+<pre><code class="javascript">var _0x38ba7c = _0x213920(_0x4af155[&#39;ct&#39;], _0x4af155[&#39;bts&#39;]);
+//方法里面传了2个参数，先参数后方法，控制台还原参数
+</code></pre>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/8d03b7446c9d4bbf9e1cde0ff1f580c9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="控制台还原参数"><br><br>源代码搜索_0x4af155，没有找到其赋值的地方，估计中途换了马甲，上栈台<br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/113b339055154a99b2aa8a0ae211d352.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="下断"><br><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/b2cc9bfcdb9543049ac35353b716c3bd.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="跟栈"><br><br>好嘛，原来是原住名，先暂时固定住<br></p>
+<pre><code class="javascript">var _0x4af155 = &#123;
+&quot;bts&quot;: [&quot;1684211908.462|0|864&quot;, &quot;4kitzYBW4tT9ZMt6O%2BYZMo%3D&quot;],
+&quot;chars&quot;: &quot;hCLxUnaKoldwolXHfOYoAC&quot;,
+&quot;ct&quot;: &quot;9039b0cf78bae628fe5e482dd5048e35d34fa598&quot;,
+&quot;ha&quot;: &quot;sha1&quot;,
+&quot;tn&quot;: &quot;__jsl_clearance_s&quot;,
+&quot;vt&quot;: &quot;3600&quot;,
+&quot;wt&quot;: &quot;1500&quot;
+&#125;
+</code></pre>
+<p>接下来来看看这个方法做了什么</p>
+</li>
+<li><p>逆向加密方法逻辑<br></p>
+<pre><code class="javascript">//点击_0x213920进入方法内部，不多，直接复制下来
+function _0x213920(_0x4166ab, _0x319b42) &#123;
+        var _0x31fe7f = _0x4af155[_0x49d1(&#39;0x4c&#39;, &#39;6yLo&#39;) + &#39;s&#39;][_0x49d1(&#39;0x95&#39;, &#39;!dKZ&#39;) + &#39;th&#39;];
+        for (var _0x282885 = 0x0; _0x282885 &lt; _0x31fe7f; _0x282885++) &#123;
+            for (var _0x494272 = 0x0; _0xa88405[_0x49d1(&#39;0x2e&#39;, &#39;x*XD&#39;) + &#39;T&#39;](_0x494272, _0x31fe7f); _0x494272++) &#123;
+                var _0x587cf2 = _0xa88405[_0x49d1(&#39;0x4e&#39;, &#39;4SZE&#39;) + &#39;I&#39;](_0x319b42[0x0] + _0x4af155[_0x49d1(&#39;0x7e&#39;, &#39;#HAO&#39;) + &#39;s&#39;][_0x49d1(&#39;0x15&#39;, &#39;DN7@&#39;) + &#39;tr&#39;](_0x282885, 0x1) + _0x4af155[_0x49d1(&#39;0x58&#39;, &#39;UOyd&#39;) + &#39;s&#39;][_0x49d1(&#39;0x51&#39;, &#39;P(7z&#39;) + &#39;tr&#39;](_0x494272, 0x1), _0x319b42[0x1]);
+                if (_0xa88405[_0x49d1(&#39;0x5c&#39;, &#39;DjgR&#39;) + &#39;W&#39;](hash(_0x587cf2), _0x4166ab)) &#123;
+                    return [_0x587cf2, new Date() - _0x2d647a];
+                &#125;
+            &#125;
+        &#125;
+    &#125;
 
-<h3 id="三、代码"><a href="#三、代码" class="headerlink" title="三、代码"></a>三、代码</h3><ol>
-<li>spider</li>
+//又到了考验耐心的时刻，控制台还原一下
+
+function _0x213920(_0x4166ab, _0x319b42) &#123;
+    var _0x31fe7f = _0x4af155[&#39;chars&#39;][&#39;length&#39;];
+    for (var _0x282885 = 0; _0x282885 &lt; _0x31fe7f; _0x282885++) &#123;
+        for (var _0x494272 = 0; _0x494272 &lt; _0x31fe7f; _0x494272++) &#123;
+            var _0x587cf2 = (_0x319b42[0] + _0x4af155[&#39;chars&#39;][&#39;substr&#39;](_0x282885, 1) + _0x4af155[&#39;chars&#39;][&#39;substr&#39;](_0x494272, 1)) + _0x319b42[1];
+            if (hash(_0x587cf2) === _0x4166ab) &#123;
+                return _0x587cf2;
+            &#125;
+        &#125;
+    &#125;
+&#125;  
+/*
+这里除了hash这个方法未能还原出来，其余均还原出来了，简单说下逻辑
+_0x4166ab参数是_0x4af155参数中的&#39;ct&#39;属性,拿上面的例子就是&quot;9039b0cf78bae628fe5e482dd5048e35d34fa598&quot;
+_0x319b42参数是_0x4af155参数中的&#39;bts&#39;属性,拿上面的例子就是[&quot;1684211908.462|0|864&quot;, &quot;4kitzYBW4tT9ZMt6O%2BYZMo%3D&quot;],
+
+第一行将_0x4af155参数中的&#39;chars&#39;属性的长度赋值给_0x31fe7f
+接下来定义了2个for循环，起点都是0，步增1，条件是小于值_0x31fe7f
+
+循环内部是这么一个逻辑
+1. 将bts列表的第一个值拼接_0x4af155中&#39;chars&#39;在当前2个循环指针指向的那个字符(就是再➕2个字符）,拼接bts列表的第二个值，赋值给_0x587cf2
+2. 如果_0x587cf2经过了名为hash的处理(大概率是分组哈希加密，就md5、sha那些),如果其值等于第一个参数也就是_0x4af155参数中的&#39;ct&#39;属性值，那么返回_0x587cf2，也就是最终要的cookie值
+那么到底是哪一种hash算法呢(先假定没有魔改，经验概率较小),在_0x4af155变量中找到了可疑点&quot;ha&quot;: &quot;sha1&quot;,那就先假定是sha1
+搞清楚了逻辑，就在本地node.js环境中做验证
+*/
+</code></pre>
+</li>
+<li><p>验证加密逻辑能否跑通</p>
+<p>代码如下:</p>
+<pre><code class="javascript">let crypto = require(&#39;crypto-js&#39;)
+
+
+function hash(method, data) &#123;
+    switch (method) &#123;
+        case &#39;sha1&#39;:
+            return crypto.SHA1(data).toString();
+        default:
+            throw &quot;未记录的method: &quot; + method
+    &#125;
+&#125;
+
+function _0x213920(_0x4166ab, _0x319b42) &#123;
+    var _0x31fe7f = _0x4af155[&#39;chars&#39;][&#39;length&#39;];
+    for (var _0x282885 = 0; _0x282885 &lt; _0x31fe7f; _0x282885++) &#123;
+        for (var _0x494272 = 0; _0x494272 &lt; _0x31fe7f; _0x494272++) &#123;
+            var _0x587cf2 = (_0x319b42[0] + _0x4af155[&#39;chars&#39;][&#39;substr&#39;](_0x282885, 1) + _0x4af155[&#39;chars&#39;][&#39;substr&#39;](_0x494272, 1)) + _0x319b42[1];
+            if (hash(_0x4af155[&#39;ha&#39;], _0x587cf2) === _0x4166ab) &#123;
+                return _0x587cf2;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+
+function encrypt_cookie(_0x4af155) &#123;
+    global._0x4af155 = _0x4af155; //这是因为_0x213920方法中也用到了这个变量，因此挂在全局上
+    return _0x213920(_0x4af155[&#39;ct&#39;], _0x4af155[&#39;bts&#39;])
+&#125;
+
+let _0x4af155 = &#123;
+    &quot;bts&quot;: [&quot;1684211908.462|0|864&quot;, &quot;4kitzYBW4tT9ZMt6O%2BYZMo%3D&quot;],
+    &quot;chars&quot;: &quot;hCLxUnaKoldwolXHfOYoAC&quot;,
+    &quot;ct&quot;: &quot;9039b0cf78bae628fe5e482dd5048e35d34fa598&quot;,
+    &quot;ha&quot;: &quot;sha1&quot;,
+    &quot;tn&quot;: &quot;__jsl_clearance_s&quot;,
+    &quot;vt&quot;: &quot;3600&quot;,
+    &quot;wt&quot;: &quot;1500&quot;
+&#125;
+
+console.log(encrypt_cookie(_0x4af155));
+</code></pre>
+<br>
+![返回结果](https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/c923ed2371ca411b91fbd825b6a5bea0.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg)
+<br>
+这证明假设正确
+</li>
+<li><p>用python完整的模拟一次请求后发现有时成功有时不成功，估计这是因为动态html返回的参数中<code>&quot;ha&quot;: &quot;sha1&quot;,</code>，并不是每次都是sha1，经过多次尝试，发现主要是这三种<code>md5,sha1,sha256</code>,那么只需要简单的做个动态逻辑判断就好了</p>
+</li>
+<li><p>至此，整个逆向过程完成，再次梳理下思路</p>
+<ol>
+<li>一共3次请求,2次521,第三次才是200,cookie加密2处:<code>__jsluid_s和__jsl_clearance_s</code>(加速乐的显著特征)</li>
+<li>__jsluid_s来源于第一次response的set-cookie</li>
+<li>__jsl_clearance_s来源于第二次response.body中的js计算,而构造第二次请求所需cookie来源于第一次请求中response.set-cookie,和response.body中的js脚本(<br>简单混淆)</li>
+<li>其中__jsl_clearance_s经过了2次变换,第二次变换的主要特点是for循环和hash(随机)加密</li>
 </ol>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230517/99f3619bc7654c7699f7433215cd7509.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="成功拿到数据"></p>
+</li>
+</ol>
+<h3 id="三、代码"><a href="#三、代码" class="headerlink" title="三、代码"></a>三、代码</h3><p>python</p>
 <pre><code class="python">import json
+import time
 
-import scrapy
+import requests
+import execjs
 from jmespath import search
-from tuling_test.items import TulingTestItem
-from scrapy import cmdline
+from loguru import logger
+import pymongo
+from redis import Redis
 
 
-class WinshangdataSpider(scrapy.Spider):
-    name = &quot;winshangdata&quot;
-    allowed_domains = [&quot;www.winshangdata.com&quot;]
+class Spider():
+    def __init__(self):
+        self.mongodb = pymongo.MongoClient()
+        self.db = self.mongodb[&#39;spider&#39;]
+        self.coll = self.db[&#39;jsl&#39;]
+        self.redis_cli = Redis()
+        with open(&#39;emu_enc.js&#39;) as f:
+            self.js = f.read()
 
-    def start_requests(self):
-        for i in [&#39;餐饮&#39;, &#39;儿童亲子&#39;, &#39;文体娱&#39;, &#39;零售&#39;, &#39;生活服务&#39;]:
-            headers = &#123;
-                &quot;Content-Type&quot;: &quot;application/json;charset=UTF-8&quot;,
-                &quot;Referer&quot;: &quot;http://www.winshangdata.com/brandList&quot;,
-            &#125;
-            url = &quot;http://www.winshangdata.com/wsapi/brand/list3_4&quot;
-            data = &#123;
-                &quot;isHaveLink&quot;: &quot;&quot;,
-                &quot;isTuozhan&quot;: &quot;&quot;,
-                &quot;pageNum&quot;: 1,
-                &quot;pageSize&quot;: 60,
-                &quot;pid&quot;: &quot;&quot;,
-                &quot;qy_p&quot;: &quot;&quot;,
-                &quot;qy_r&quot;: &quot;&quot;,
-                &quot;xqMj&quot;: &quot;&quot;,
-                &quot;ytlb1&quot;: i,
-                &quot;ytlb2&quot;: &quot;&quot;
-            &#125;
-            yield scrapy.Request(url, method=&#39;POST&#39;, headers=headers, body=json.dumps(data), callback=self.parse_index,
-                                 meta=&#123;&#39;sort&#39;: i&#125;)
+    def req1(self):
+        headers = &#123;
+            &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36&quot;,
+        &#125;
+        url = &quot;https://credit.hefei.gov.cn/credit-website/publicity/search-result/xyxx-list.do&quot;
+        response = requests.get(url, headers=headers)
+        __jsl_clearance_s_str = response.text.split(
+            &#39;&#39;&#39;&lt;script&gt;document.cookie=(&#39;_&#39;)+(&#39;_&#39;)+(&#39;j&#39;)+(&#39;s&#39;)+(&#39;l&#39;)+(&#39;_&#39;)+(&#39;c&#39;)+(&#39;l&#39;)+(&#39;e&#39;)+(&#39;a&#39;)+(&#39;r&#39;)+(&#39;a&#39;)+(&#39;n&#39;)+(&#39;c&#39;)+(&#39;e&#39;)+(&#39;_&#39;)+(&#39;s&#39;)+(&#39;=&#39;)&#39;&#39;&#39;,
+            1)[-1].rsplit(&#39;&#39;&#39;+(&#39;;&#39;)+(&#39;m&#39;)+(&#39;a&#39;)+(&#39;x&#39;)&#39;&#39;&#39;, 1)[0]
+        __jsl_clearance_s = execjs.eval(
+            __jsl_clearance_s_str
+        )
+        ret_data = &#123;
+            &#39;__jsl_clearance_s&#39;: __jsl_clearance_s,
+            &#39;__jsluid_s&#39;: response.cookies.get_dict()[&#39;__jsluid_s&#39;]
 
-    def parse_index(self, response):
-        # 拿到详情页url,构造详情页请求
-        # 拿到下一页，构造列表页请求
+        &#125;
+        return ret_data
+
+    def req2(self, cookie):
+        headers = &#123;
+            &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36&quot;,
+        &#125;
+        url = &quot;https://credit.hefei.gov.cn/credit-website/publicity/search-result/xyxx-list.do&quot;
+        response = requests.post(url, headers=headers, cookies=cookie)
+        data = response.text.rsplit(&#39;go(&#39;, 1)[-1].split(&#39;)&lt;/script&gt;&#39;, 1)[0]
+        __jsl_clearance_s = execjs.compile(self.js).call(&#39;encrypt_cookie&#39;, json.loads(data))
+
+        cookie.update(&#123;&#39;__jsl_clearance_s&#39;: __jsl_clearance_s&#125;)  # 这个cookie大约1h过期
+        return cookie
+
+    def req3(self, cookie, page):
+        url = &#39;https://credit.hefei.gov.cn/credit-website/publicity/topSearch/getXYXXPageInfo.do&#39;
+        headers = &#123;&#39;Content-Type&#39;: &#39;application/x-www-form-urlencoded; charset=UTF-8&#39;,
+                   &#39;User-Agent&#39;: &#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36&#39;,
+                   &#39;Referer&#39;: &#39;https://credit.hefei.gov.cn/credit-website/publicity/search-result/xyxx-list.do&#39;,
+                   &#125;
+        logger.debug(&#39;req:&#39; + url)
+        data = &#123;
+            &#39;currentPageNo&#39;: page,  # 这是当前的页数，要求2000数据+，来个20页，就满足了
+            &#39;pageSize&#39;: &#39;100&#39;,  # 此处发现可以修改成和网页不一样的参数
+            &#39;creditQuery&#39;: &#39;&#39;
+        &#125;
+        response = requests.post(url, headers=headers, cookies=cookie, data=data)
+        assert response.status_code == 200
+        return response
+
+    def parse(self, response):
         data = response.json()
-        items = search(&#39;data.list&#39;, data)
+        items = search(&#39;rows&#39;, data)
+        data2save = []
         for item in items:
-            brandId = search(&#39;brandId&#39;, item)
-            url = &#39;https://www.winshangdata.com&#39; + f&#39;/brandDetail?brandId=&#123;brandId&#125;&#39;
-            yield scrapy.Request(url, callback=self.parse_detail, meta=&#123;&#39;sort&#39;: response.meta[&#39;sort&#39;]&#125;)
-        nex_page = search(&#39;data.nextPage&#39;, data)
-        if nex_page &lt; 3:
-            headers = &#123;
-                &quot;Content-Type&quot;: &quot;application/json;charset=UTF-8&quot;,
-                &quot;Referer&quot;: &quot;http://www.winshangdata.com/brandList&quot;,
-            &#125;
-            url = &quot;http://www.winshangdata.com/wsapi/brand/list3_4&quot;
-            data = &#123;
-                &quot;isHaveLink&quot;: &quot;&quot;,
-                &quot;isTuozhan&quot;: &quot;&quot;,
-                &quot;isXxPp&quot;: &quot;&quot;,
-                &quot;kdfs&quot;: &quot;&quot;,
-                &quot;key&quot;: &quot;&quot;,
-                &quot;orderBy&quot;: &quot;1&quot;,
-                &quot;pageNum&quot;: nex_page,
-                &quot;pageSize&quot;: 60,
-                &quot;pid&quot;: &quot;&quot;,
-                &quot;qy_p&quot;: &quot;&quot;,
-                &quot;qy_r&quot;: &quot;&quot;,
-                &quot;xqMj&quot;: &quot;&quot;,
-                &quot;ytlb1&quot;: response.meta[&#39;sort&#39;],
-                &quot;ytlb2&quot;: &quot;&quot;
-            &#125;
-            yield scrapy.Request(url, method=&#39;POST&#39;, headers=headers, body=json.dumps(data), callback=self.parse_index,
-                                 meta=&#123;&#39;sort&#39;: response.meta[&#39;sort&#39;]&#125;)
+            title = search(&#39;baseDwmc&#39;, item)
+            credential_code = search(&#39;uniscid&#39;, item)
+            register_code = search(&#39;baseZch&#39;, item)
+            data2save.append(&#123;
+                &quot;title&quot;: title,
+                &quot;credential_code&quot;: credential_code,
+                &quot;register_code&quot;: register_code
+            &#125;)
+        logger.debug(&#39;data2save: &#39; + json.dumps(data2save, ensure_ascii=False, indent=2))
+        return data2save
 
-    def parse_detail(self, response):
-        # 从列表页中解析出所需要的数据
-        item = TulingTestItem()
-        item[&#39;sort&#39;] = response.meta[&#39;sort&#39;]
-        item[&#39;title&#39;] = response.xpath(&#39;//h1[@class=&quot;detail-one-tit&quot;]/text()&#39;).extract_first().strip()
-        item[&#39;create_data&#39;] = response.xpath(
-            &#39;//span[@class=&quot;detail-option-name&quot; and contains(text(),&quot;创立时间&quot;)]/following-sibling::span/text()&#39;).extract_first()
-        item[&#39;shop_mode&#39;] = response.xpath(
-            &#39;//span[@class=&quot;detail-option-name&quot; and contains(text(),&quot;开店方式&quot;)]/following-sibling::span/text()&#39;).extract_first()
-        item[&#39;cooperation_term&#39;] = response.xpath(
-            &#39;//span[@class=&quot;detail-option-name&quot; and contains(text(),&quot;合作期限&quot;)]/following-sibling::span/text()&#39;).extract_first()
-        item[&#39;area_req&#39;] = response.xpath(
-            &#39;//span[@class=&quot;detail-option-name&quot; and contains(text(),&quot;面积要求&quot;)]/following-sibling::span/text()&#39;).extract_first()
-        yield item
+    def save(self, data):
+        &quot;&quot;&quot;用redis set特性过滤避免重复插入,sadd如果有则返回1，否则是0&quot;&quot;&quot;
+        for i in data:
+            if self.redis_cli.sadd(&#39;jsl&#39;, json.dumps(i)):
+                self.coll.insert_one(i)
+        logger.debug(&#39;保存成功!&#39;)
+
+    def main(self):
+        cookie = self.req1()
+        cookie2 = self.req2(cookie)
+        for i in range(1, 2):
+            res = self.req3(cookie2, i)
+            data2save = self.parse(res)
+            self.save(data2save)
+            time.sleep(3)  # 文明爬虫,从我做起
 
 
 if __name__ == &#39;__main__&#39;:
-    cmdline.execute(&quot;scrapy crawl winshangdata&quot;.split())
+    spider = Spider()
+    spider.main()
 </code></pre>
-<ol start="2">
-<li>pipeline</li>
-</ol>
-<pre><code class="python">import pymongo
+<p>js</p>
+<pre><code class="javascript">let crypto = require(&#39;crypto-js&#39;)
 
 
-class MongoDBPipeline:
-    def __init__(self, mongo_host, mongo_port, mongo_dbname, mongo_docname):
-        self.mongo_host = mongo_host
-        self.mongo_port = mongo_port
-        self.mongo_dbname = mongo_dbname
-        self.mongo_docname = mongo_docname
+function hash(method, data) &#123;
+    switch (method) &#123;
+        case &#39;sha1&#39;:
+            return crypto.SHA1(data).toString();
+        case &#39;md5&#39;:
+            return crypto.MD5(data).toString();
+        case &#39;sha256&#39;:
+            return crypto.SHA256(data).toString();
+        default:
+            throw &quot;未记录的method: &quot; + method
+    &#125;
+&#125;
 
-    @classmethod
-    def from_crawler(cls, crawler):
-        host = crawler.settings.get(&#39;MONGODB_HOST&#39;)
-        port = crawler.settings.get(&#39;MONGODB_PORT&#39;)
-        dbname = crawler.settings.get(&#39;MONGODB_DBNAME&#39;)
-        docname = crawler.settings.get(&#39;MONGODB_DOCNAME&#39;)
+function _0x213920(_0x4166ab, _0x319b42) &#123;
+    var _0x31fe7f = _0x4af155[&#39;chars&#39;][&#39;length&#39;];
+    for (var _0x282885 = 0; _0x282885 &lt; _0x31fe7f; _0x282885++) &#123;
+        for (var _0x494272 = 0; _0x494272 &lt; _0x31fe7f; _0x494272++) &#123;
+            var _0x587cf2 = (_0x319b42[0] + _0x4af155[&#39;chars&#39;][&#39;substr&#39;](_0x282885, 1) + _0x4af155[&#39;chars&#39;][&#39;substr&#39;](_0x494272, 1)) + _0x319b42[1];
+            if (hash(_0x4af155[&#39;ha&#39;], _0x587cf2) === _0x4166ab) &#123;
+                return _0x587cf2;
+            &#125;
+        &#125;
+    &#125;
+&#125;
 
-        return cls(host, port, dbname, docname)
-
-    def open_spider(self, spider):
-        self.client = pymongo.MongoClient(self.mongo_host, self.mongo_port)
-        self.db = self.client[self.mongo_dbname]
-
-    def close_spider(self, spider):
-        self.client.close()
-
-    def process_item(self, item, spider):
-        self.db[self.mongo_docname].insert_one(dict(item))
-        self.db[self.mongo_docname].update_one(&#123;
-            &#39;sort&#39;: item[&#39;sort&#39;],
-            &#39;title&#39;: item[&#39;title&#39;]
-        &#125;, &#123;&#39;$set&#39;: dict(item)&#125;, True)
-        return item
+function encrypt_cookie(_0x4af155) &#123;
+    global._0x4af155 = _0x4af155; //这是因为_0x213920方法中也用到了这个变量，因此挂在全局上
+    return _0x213920(_0x4af155[&#39;ct&#39;], _0x4af155[&#39;bts&#39;])
+&#125;
 </code></pre>
-<ol start="3">
-<li>middleware</li>
-</ol>
-<pre><code class="python">import random
-
-
-class RandomUserAgentMiddleware:
-    def __init__(self, agents):
-        self.agents = agents
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        return cls(crawler.settings.getlist(&#39;USER_AGENTS&#39;))
-
-    def process_request(self, request, spider):
-        request.headers[&#39;User-Agent&#39;] = random.choice(self.agents)
-
-
-class RandomProxyMiddleware:
-    def __init__(self, proxy_pool):
-        self.proxy_pool = proxy_pool
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        return cls(crawler.settings.getlist(&#39;PROXY_POOL&#39;))
-
-    def process_request(self, request, spider):
-        request.meta[&#39;proxy&#39;] = random.choice(self.proxy_pool)
-</code></pre>
-<ol start="4">
-<li>结果</li>
-</ol>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230516/a06acc2c5a8e4002bf54a4bb531e631c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="结果"></p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本案列考察了scrapy中:</p>
-<ol>
-<li>嵌套页面的处理</li>
-<li>pipeline与mongodb数据保存</li>
-<li>middleware随机更换ua和proxy</li>
-</ol>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，如有问题请邮件至2454612285@qq.com。 </span>
