@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>补环境之补window对象 | cthousand</title>
+  <meta name="keywords" content=" javascript , 补环境 , 理论 ">
+  <meta name="description" content="补环境之补window对象 | cthousand">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="[TOC] 一、前言在js逆向中补环境这个方向一般是根据网站定制，即所谓的缺什么补什么，但网站补多了就会发现其实很多环境可以通用，如能将这部分抽离以复用，可以减少很大一部分逆向工作。 基于此，本文以window对象为例，参照浏览器端window对象，在本地node环境实现模仿，主要做了以下几点工作：  window原型继承关系梳理 window及其原型属性补充 实现一键脱环境脚本  二、思路在js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="补环境之补window对象">
+<meta property="og:url" content="http://example.com/2023/07/09/%E8%A1%A5%E7%8E%AF%E5%A2%83%E4%B9%8B%E8%A1%A5window%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="cthousand">
+<meta property="og:description" content="[TOC] 一、前言在js逆向中补环境这个方向一般是根据网站定制，即所谓的缺什么补什么，但网站补多了就会发现其实很多环境可以通用，如能将这部分抽离以复用，可以减少很大一部分逆向工作。 基于此，本文以window对象为例，参照浏览器端window对象，在本地node环境实现模仿，主要做了以下几点工作：  window原型继承关系梳理 window及其原型属性补充 实现一键脱环境脚本  二、思路在js">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/82a7ffefec4244f6b44cf1c1193766e9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/5a46d98421db44789eb34f23e65f9e24.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/ce8e1c4c15db445c8dc2d0a65060c22f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/43f2a602abd2407bbce89a21ac01ff1e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/c9fdef905359425cafec81edd1ab36f6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/521035fe51ea4e1fa2614feff65c8066.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/74a5b132d8944d1e98aac4dec0b2b438.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/c253dd015deb4f3fa9352a12056f9704.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/18f3601df97846a89da3f9d56e86ddc4.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/9b7353634e304f7c8b1632a6456ed3be.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/63241fa682d54317af3a0d21064cc9fe.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/f5c92e43997e404abb9b54f31990d75c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/d9f0bd78e8e542b185595ed173a0e224.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/0156aa9bf02345bfb04406c88f6337b8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="article:published_time" content="2023-07-08T16:01:55.000Z">
+<meta property="article:modified_time" content="2023-07-10T10:00:00.709Z">
+<meta property="article:author" content="Cthousand">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="补环境">
+<meta property="article:tag" content="理论">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/82a7ffefec4244f6b44cf1c1193766e9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/darcula.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>Cthousand</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="github"
+               href="https://github.com/Cthousand"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="email"
+               href="mailto:2454612285@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=2454612285&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(11)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                <li>
+                    <div data-rel="开发">
+                        
+                        开发
+                        <small>(1)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="爬虫">
+                        
+                        爬虫
+                        <small>(10)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="11">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里系</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>补环境</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>谷歌插件</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>加速乐</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>理论</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AST</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>flask</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hook</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>javascript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>rpc</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>scrapy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>web逆向</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>web爬虫</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/07/09/%E8%A1%A5%E7%8E%AF%E5%A2%83%E4%B9%8B%E8%A1%A5window%E5%AF%B9%E8%B1%A1/"
+           data-tag="javascript,补环境,理论"
+           data-author="" >
+            <span class="post-title" title="补环境之补window对象">补环境之补window对象</span>
+            <span class="post-date" title="2023-07-09 00:01:55">2023/07/09</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/07/06/proxy%E4%B8%8Ereflect%E5%97%85%E6%8E%A2%E7%BC%BA%E5%A4%B1%E7%8E%AF%E5%A2%83/"
+           data-tag="补环境"
+           data-author="" >
+            <span class="post-title" title="Proxy与Reflect嗅探缺失环境">Proxy与Reflect嗅探缺失环境</span>
+            <span class="post-date" title="2023-07-06 11:03:49">2023/07/06</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/06/23/document-cookie%E7%9A%84hook%E5%8F%8A%E5%BC%95%E7%94%B3/"
+           data-tag="javascript,hook"
+           data-author="" >
+            <span class="post-title" title="document.cookie的hook及引申">document.cookie的hook及引申</span>
+            <span class="post-date" title="2023-06-23 16:26:03">2023/06/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/06/20/hook%E4%B8%8E%E5%8F%8Dhook%E4%B9%8B%E9%97%B4%E7%9A%84%E5%AF%B9%E6%8A%97/"
+           data-tag="hook"
+           data-author="" >
+            <span class="post-title" title="js逆向中hook与反hook之间的对抗">js逆向中hook与反hook之间的对抗</span>
+            <span class="post-date" title="2023-06-20 15:46:05">2023/06/20</span>
+        </a>
+        
+        
+        <a  class="全部文章 开发 "
+           href="/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E5%B1%8F%E8%94%BD%E7%99%BE%E5%BA%A6%E5%B9%BF%E5%91%8A/"
+           data-tag="javascript,谷歌插件"
+           data-author="" >
+            <span class="post-title" title="谷歌插件屏蔽百度广告">谷歌插件屏蔽百度广告</span>
+            <span class="post-date" title="2023-06-18 18:22:08">2023/06/18</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E7%BB%95%E8%BF%87cookie%E5%8F%8D%E7%88%AC-%E5%A2%83%E5%A4%96%E7%94%B5%E5%95%86%E7%BD%91%E7%AB%99/"
+           data-tag="javascript,web爬虫,python,谷歌插件,flask"
+           data-author="" >
+            <span class="post-title" title="谷歌插件绕过cookie反爬_某境外电商网站">谷歌插件绕过cookie反爬_某境外电商网站</span>
+            <span class="post-date" title="2023-06-18 15:54:04">2023/06/18</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/06/13/RPC%E8%BF%87%E6%9F%90%E4%B9%8Ezse96%E5%8F%82%E6%95%B0-%E6%9F%90%E4%B9%8E%E7%83%AD%E6%90%9C/"
+           data-tag="javascript,web爬虫,rpc,python"
+           data-author="" >
+            <span class="post-title" title="RPC过某乎zse96参数-某乎热搜">RPC过某乎zse96参数-某乎热搜</span>
+            <span class="post-date" title="2023-06-13 14:22:36">2023/06/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/06/07/AST%E5%AF%B9JS%E4%BB%A3%E7%A0%81%E8%BF%9B%E8%A1%8C%E6%B7%B7%E6%B7%86%E4%B8%8E%E8%BF%98%E5%8E%9F/"
+           data-tag="AST,javascript"
+           data-author="" >
+            <span class="post-title" title="AST对JS代码进行混淆与还原">AST对JS代码进行混淆与还原</span>
+            <span class="post-date" title="2023-06-07 00:48:10">2023/06/07</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/05/18/%E7%BA%AF%E6%89%A3%E8%BF%87%E9%98%BF%E9%87%8C%E7%B3%BBsign%E5%8F%82%E6%95%B0-%E6%9F%90%E5%AE%9D%E6%B3%95%E6%8B%8D%E7%BD%91/"
+           data-tag="javascript,python,web逆向,阿里系"
+           data-author="" >
+            <span class="post-title" title="纯扣过阿里系sign参数-某宝法拍网.md">纯扣过阿里系sign参数-某宝法拍网.md</span>
+            <span class="post-date" title="2023-05-18 16:34:23">2023/05/18</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/05/17/%E7%BA%AF%E6%89%A3%E8%BF%87%E5%8A%A0%E9%80%9F%E4%B9%90-%E6%9F%90%E4%BF%A1%E7%94%A8%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/"
+           data-tag="javascript,web爬虫,python,加速乐"
+           data-author="" >
+            <span class="post-title" title="纯扣过加速乐-某信用查询网站">纯扣过加速乐-某信用查询网站</span>
+            <span class="post-date" title="2023-05-17 13:50:48">2023/05/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/05/16/scrapy%E6%89%B9%E9%87%8F%E9%87%87%E9%9B%86-%E6%9F%90%E5%95%86%E5%A4%A7%E6%95%B0%E6%8D%AE/"
+           data-tag="javascript,web爬虫,python,scrapy"
+           data-author="" >
+            <span class="post-title" title="scrapy批量采集-某商大数据">scrapy批量采集-某商大数据</span>
+            <span class="post-date" title="2023-05-16 16:34:23">2023/05/16</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-补环境之补window对象" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">补环境之补window对象</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="爬虫">爬虫</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">javascript</a>
+            
+            <a class="color4">补环境</a>
+            
+            <a class="color3">理论</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2023-07-10 18:00:00'>2023-07-09 00:01</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%80%9D%E8%B7%AF"><span class="toc-text">二、思路</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">三、实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E7%A1%AE%E7%AB%8Bwindow%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB"><span class="toc-text">3.1 确立window对象的继承关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E8%A1%A5%E5%85%85%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7"><span class="toc-text">3.2 补充对象属性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%84%B1%E7%8E%AF%E5%A2%83%E8%84%9A%E6%9C%AC"><span class="toc-text">四、脱环境脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E7%89%B9%E6%AE%8A%E5%AF%B9%E8%B1%A1"><span class="toc-text">4.1 特殊对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E5%8E%9F%E5%9E%8B%E5%87%BD%E6%95%B0"><span class="toc-text">4.2 原型函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E5%AE%9E%E4%BE%8B%E5%AF%B9%E8%B1%A1"><span class="toc-text">4.3 实例对象</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">五、总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%99%84%E5%BD%95"><span class="toc-text">附录</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-6 i,
+    .toc-level-6 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><div class='inner-toc'><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%80%9D%E8%B7%AF"><span class="toc-text">二、思路</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">三、实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E7%A1%AE%E7%AB%8Bwindow%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB"><span class="toc-text">3.1 确立window对象的继承关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E8%A1%A5%E5%85%85%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7"><span class="toc-text">3.2 补充对象属性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%84%B1%E7%8E%AF%E5%A2%83%E8%84%9A%E6%9C%AC"><span class="toc-text">四、脱环境脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E7%89%B9%E6%AE%8A%E5%AF%B9%E8%B1%A1"><span class="toc-text">4.1 特殊对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E5%8E%9F%E5%9E%8B%E5%87%BD%E6%95%B0"><span class="toc-text">4.2 原型函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E5%AE%9E%E4%BE%8B%E5%AF%B9%E8%B1%A1"><span class="toc-text">4.3 实例对象</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">五、总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%99%84%E5%BD%95"><span class="toc-text">附录</span></a></li></ol></div></p>
+<h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><p>在js逆向中补环境这个方向一般是根据网站定制，即所谓的缺什么补什么，但网站补多了就会发现其实很多环境可以通用，如能将这部分抽离以复用，可以减少很大一部分逆向工作。</p>
+<p>基于此，本文以window对象为例，参照浏览器端window对象，在本地node环境实现模仿，主要做了以下几点工作：</p>
+<ol>
+<li>window原型继承关系梳理</li>
+<li>window及其原型属性补充</li>
+<li>实现一键脱环境脚本</li>
+</ol>
+<h1 id="二、思路"><a href="#二、思路" class="headerlink" title="二、思路"></a>二、思路</h1><p>在js中一个对象由自身属性和原型属性构成，例如：</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/82a7ffefec4244f6b44cf1c1193766e9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<p>所以想要模仿构造window对象，也就是要补充其自身属性和原型属性，有趣的地方在于，原型属性也是一个对象，也有自身属性和原型属性，原型属性也是。。。，所有首要是要把window对象的继承关系搞清楚。</p>
+<p>然后再为这些对象补上相应的属性，这里有几点需要注意：</p>
+<ol>
+<li>有些对象的有些属性可以<strong>不用补</strong>，来看一个例子：</li>
+</ol>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/5a46d98421db44789eb34f23e65f9e24.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<p>上图中Window对象中的<code>length、arguments、caller、name、prototype</code>是构造函数建立时就自动生成的，也就是说其实只要补<code>TEMPORARY</code>和<code>PERSISTENT</code>，这点通过一个简单的例子可以直接看出，见下图：</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/ce8e1c4c15db445c8dc2d0a65060c22f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<p>同理，构造函数附带的原型对象中的<code>constructor</code>属性也不需要实现，这同样是自动生成的，见下图案列：</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/43f2a602abd2407bbce89a21ac01ff1e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<ol start="2">
+<li>window对象属性太多了（1000+），全部补完不太现实，因此只补几个属性作为代表。</li>
+</ol>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/c9fdef905359425cafec81edd1ab36f6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="window属性"></p>
+<p>用思维导图整理梳理要补的对象和属性，作为实现蓝图：</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/521035fe51ea4e1fa2614feff65c8066.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="window关系图"></p>
+<h1 id="三、实现"><a href="#三、实现" class="headerlink" title="三、实现"></a>三、实现</h1><h2 id="3-1-确立window对象的继承关系"><a href="#3-1-确立window对象的继承关系" class="headerlink" title="3.1 确立window对象的继承关系"></a>3.1 确立window对象的继承关系</h2><pre><code class="javascript">//定义各对象，构造函数
+let window=&#123;&#125;
+let Window=function Window()&#123;&#125;
+let WindowProperties=&#123;&#125;
+let EventTarget=function EventTarget()&#123;&#125;
+//设置继承关系
+Object.setPrototypeOf(window,Window.prototype)
+Object.setPrototypeOf(Window.prototype,WindowProperties)
+Object.setPrototypeOf(WindowProperties,EventTarget.prototype)
+</code></pre>
+<p>上述代码中的继承关系是依据浏览器控制台打印的输出结果确定：</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/74a5b132d8944d1e98aac4dec0b2b438.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<p>这里要<strong>注意</strong>的是<code>WindowProperties</code>没有<code>constructor</code>属性，说明可能不是由构造函数创建，因此当成普通对象构建，接下来补充对象属性。</p>
+<h2 id="3-2-补充对象属性"><a href="#3-2-补充对象属性" class="headerlink" title="3.2 补充对象属性"></a>3.2 补充对象属性</h2><pre><code class="javascript">//定义对象属性
+    //window
+Object.defineProperty(window, &#39;atob&#39;, &#123;&quot;value&quot;: global.atob, &quot;writable&quot;: true, &quot;enumerable&quot;: true, &quot;configurable&quot;: true&#125;)
+Object.defineProperty(window, &#39;btoa&#39;, &#123;&quot;value&quot;: global.btoa, &quot;writable&quot;: true, &quot;enumerable&quot;: true, &quot;configurable&quot;: true&#125;)
+Object.defineProperty(window, &#39;name&#39;, &#123;&quot;enumerable&quot;: true, &quot;configurable&quot;: true,&quot;get&quot;:function ()&#123;return &#39;&#39;&#125;,&quot;set&quot;:function ()&#123;&#125;&#125;)
+
+    //Window构造函数
+Object.defineProperty(Window, &#39;PERSISTENT&#39;, &#123;&quot;value&quot;: 1, &quot;writable&quot;: false, &quot;enumerable&quot;: true, &quot;configurable&quot;: false&#125;)
+Object.defineProperty(Window, &#39;TEMPORARY&#39;, &#123;&quot;value&quot;: 0, &quot;writable&quot;: false, &quot;enumerable&quot;: true, &quot;configurable&quot;: false&#125;)
+    //Window原型对象
+Object.defineProperty(Window.prototype, &#39;PERSISTENT&#39;, &#123;&quot;value&quot;: 1, &quot;writable&quot;: false, &quot;enumerable&quot;: true, &quot;configurable&quot;: false&#125;)
+Object.defineProperty(Window.prototype, &#39;TEMPORARY&#39;, &#123;&quot;value&quot;: 0, &quot;writable&quot;: false, &quot;enumerable&quot;: true, &quot;configurable&quot;: false&#125;)
+Object.defineProperty(Window.prototype, Symbol.toStringTag, &#123;&quot;value&quot;: &#39;Window&#39;, &quot;writable&quot;: false, &quot;enumerable&quot;: false, &quot;configurable&quot;: true&#125;)
+    //WindowProperties
+Object.defineProperty(WindowProperties, Symbol.toStringTag, &#123;&quot;value&quot;: &#39;WindowProperties&#39;, &quot;writable&quot;: false, &quot;enumerable&quot;: false, &quot;configurable&quot;: true&#125;)
+    //EventTarget构造函数没有需要补的属性，因此无须补
+    //EventTarget原型对象
+Object.defineProperty(EventTarget.prototype, &#39;addEventListener&#39;, &#123;&quot;writable&quot;: true, &quot;enumerable&quot;: true, &quot;configurable&quot;: true, &#39;value&#39;: function addEventListener() &#123;&#125;&#125;)
+Object.defineProperty(EventTarget.prototype, Symbol.toStringTag, &#123;&quot;value&quot;: &#39;EventTarget&#39;, &quot;writable&quot;: false, &quot;enumerable&quot;: false, &quot;configurable&quot;: true&#125;)
+</code></pre>
+<p>先看一下和浏览器的对比结果（左：浏览器，右：本地node）：</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/c253dd015deb4f3fa9352a12056f9704.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<p>由上图可知，在整体结构上两者相近，但要注意的有3点：</p>
+<ol>
+<li><p><code>window.name</code>是一个存取器型属性，即实现了get和set方法的属性，这两个方法从浏览器端无法获得（底层实现是c++，展现在浏览器端是<code>native code</code>标识），对于这种情况，一般需要手动在网站调试来动态补充；</p>
+</li>
+<li><p><code>EventTarget.prototype</code>对象<code>addEventListener</code>属性的<code>value</code>方法，也是看不到底层源码，对外以<code>native code</code>显示，因此这里直接赋予了一个空方法，需要用时，调试网站动态实现；</p>
+</li>
+<li><p>是一个解释，<code>Symbol.toStringTag</code>这个属性的作用是什么？它是一个浏览器内置属性，代表实例对象的类型，通过调用<code>实例对象.toString()</code>得到，来看一个例子：</p>
+</li>
+</ol>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/18f3601df97846a89da3f9d56e86ddc4.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<p>由上图可知，<code>Symbol.toStringTag</code>的作用是用来标识实例对象的类型，同时也是该原型对象在控制台的显示名称（默认情况下与其构造函数名相同）。</p>
+<h1 id="四、脱环境脚本"><a href="#四、脱环境脚本" class="headerlink" title="四、脱环境脚本"></a>四、脱环境脚本</h1><p>浏览器环境中的对象颇多，一个个补下来难免伤手劳神，回想第三节中window对象的实现流程，在脑海中缕清思绪后，笔者认为可以分为3种情况：特殊对象、原型函数和实例对象。</p>
+<h2 id="4-1-特殊对象"><a href="#4-1-特殊对象" class="headerlink" title="4.1 特殊对象"></a>4.1 特殊对象</h2><p>该类对象有：window、WindowProperties等。</p>
+<p>window对象属性太多，node环境下globalThis对象作用和window类似，因此可以用来作为代替品。</p>
+<pre><code class="javascript">let window =globalThis;
+Object.setPrototypeOf(window,Window.prototype)
+</code></pre>
+<p>WindowProperties因在浏览器端不可访问，因此也列为特殊对象特别处理，如图：</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/9b7353634e304f7c8b1632a6456ed3be.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<pre><code class="javascript">let WindowProperties = &#123;&#125;
+Object.defineProperty(WindowProperties, Symbol.toStringTag, &#123;&quot;value&quot;: &#39;WindowProperties&#39;, &quot;writable&quot;: false, &quot;enumerable&quot;: false, &quot;configurable&quot;: true&#125;)
+Object.setPrototypeOf(WindowProperties,EventTarget.prototype)
+</code></pre>
+<h2 id="4-2-原型函数"><a href="#4-2-原型函数" class="headerlink" title="4.2 原型函数"></a>4.2 原型函数</h2><p>例如Window，EventTarget等，该类对象的实现可分为4步：</p>
+<ol>
+<li>定义构造函数</li>
+<li>设置函数属性</li>
+<li>设置原型属性</li>
+<li>为原型对象绑定原型对象</li>
+</ol>
+<p>第四点的意思是，原型对象本身既然也是一个对象，那么必然是某个构造函数的实例，具有prototype属性，该属性必然指向一个原型对象，而该原型对象也必定是某个构造函数的实例对象，这样无限套娃直到顶层是<code>Object</code>为止，下图是一个简单的例子，可以说明这种情况：</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/63241fa682d54317af3a0d21064cc9fe.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<p><strong>脱环境脚本：</strong></p>
+<pre><code class="javascript">// 获取原型函数环境代码
+let getProtoFuncEnvCode = function getProtoFuncEnvCode(ProtoFunc, instanceObj) &#123;
+    // ProtoFunc: 原型函数
+    // instanceObj: 实例对象, 可选参数
+    let code = &quot;&quot;;
+    let protoName = ProtoFunc.name;
+    // 添加注释
+    code += `// $&#123;protoName&#125;对象\r\n`;
+    // 1.定义原型函数
+    code += `let $&#123;protoName&#125; = function $&#123;protoName&#125;()&#123;&#125;\r\n`;
+    // 2.设置原型函数属性
+    for (const key in Object.getOwnPropertyDescriptors(ProtoFunc)) &#123;
+        if (key === &quot;arguments&quot; || key === &quot;caller&quot; || key === &quot;length&quot; || key === &quot;name&quot; || key === &quot;prototype&quot;) &#123;
+            continue;
+        &#125;
+        let propertyDescriptor = Object.getOwnPropertyDescriptor(ProtoFunc, key);
+        code += `Object.defineProperty($&#123;protoName&#125;, &quot;$&#123;key&#125;&quot;,&#123;&quot;configurable&quot;:$&#123;propertyDescriptor.configurable&#125;,&quot;enumerable&quot;:$&#123;propertyDescriptor.enumerable&#125;,`;
+        if (propertyDescriptor.hasOwnProperty(&#39;writable&#39;)) &#123;
+            code += `&quot;writable&quot;:$&#123;propertyDescriptor.writable&#125;,`
+        &#125;
+
+        if (propertyDescriptor.hasOwnProperty(&#39;value&#39;)) &#123;
+            if (propertyDescriptor.value instanceof Object) &#123;
+                if (typeof propertyDescriptor.value === &#39;function&#39;) &#123;
+                    code += `&quot;value&quot;: function $&#123;key&#125;()&#123;&#125;,`
+                &#125; else &#123;
+                    code += `&quot;value&quot;:&#123;&#125;,` //需要额外实现实例对象的补充，可手动可自动
+                &#125;
+            &#125; else if (typeof propertyDescriptor.value === &#39;symbol&#39;) &#123;
+                code += `&quot;value&quot;:$&#123;propertyDescriptor.value.toString()&#125;,`;
+            &#125; else if (typeof propertyDescriptor.value === &quot;string&quot;) &#123;
+                code += `&quot;value&quot;:&quot;$&#123;propertyDescriptor.value&#125;&quot;,`;
+            &#125; else &#123;
+                code += `&quot;value&quot;:$&#123;propertyDescriptor.value&#125;,`;
+            &#125;
+        &#125;
+        if (propertyDescriptor.hasOwnProperty(&#39;get&#39;)) &#123;
+            if (typeof propertyDescriptor.get === &#39;function&#39;) &#123;
+                let get_result = propertyDescriptor.get.call(instanceObj)
+                code += `&quot;get&quot;: function $&#123;key&#125;_get()&#123;return &quot;$&#123;get_result&#125;&quot;&#125;,`
+            &#125; else &#123;
+                code += `get:undefined, `
+            &#125;
+        &#125;
+        if (propertyDescriptor.hasOwnProperty(&#39;set&#39;)) &#123;
+            if (typeof propertyDescriptor.set === &#39;function&#39;) &#123;
+                code += `&quot;set&quot;: function $&#123;key&#125;_set()&#123;&#125;,`
+            &#125; else &#123;
+                code += `set:undefined, `
+            &#125;
+        &#125;
+        code += &#39;&#125;)\r\n&#39;
+    &#125;
+    // 3.设置原型对象的属性
+    code += `Object.defineProperty($&#123;protoName&#125;.prototype, Symbol.toStringTag,&#123;&quot;value&quot;:&quot;$&#123;protoName&#125;&quot;,&quot;writable&quot;:false,&quot;enumerable&quot;:false,&quot;configurable&quot;:true&#125;)\r\n`;
+    for (const key in Object.getOwnPropertyDescriptors(ProtoFunc.prototype)) &#123;
+        if (key === &quot;constructor&quot;) &#123;
+            continue;
+        &#125;
+        let propertyDescriptor = Object.getOwnPropertyDescriptor(ProtoFunc.prototype, key);
+        code += `Object.defineProperty($&#123;protoName&#125;.prototype, &quot;$&#123;key&#125;&quot;,&#123;&quot;configurable&quot;:$&#123;propertyDescriptor.configurable&#125;,&quot;enumerable&quot;:$&#123;propertyDescriptor.enumerable&#125;,`;
+        if (propertyDescriptor.hasOwnProperty(&#39;writable&#39;)) &#123;
+            code += `&quot;writable&quot;:$&#123;propertyDescriptor.writable&#125;,`
+        &#125;
+
+        if (propertyDescriptor.hasOwnProperty(&#39;value&#39;)) &#123;
+            if (propertyDescriptor.value instanceof Object) &#123;
+                if (typeof propertyDescriptor.value === &#39;function&#39;) &#123;
+                    code += `&quot;value&quot;: function $&#123;key&#125;()&#123;&#125;,`
+                &#125; else &#123;
+                    code += `&quot;value&quot;:&#123;&#125;,`
+                &#125;
+            &#125; else if (typeof propertyDescriptor.value === &#39;symbol&#39;) &#123;
+                code += `&quot;value&quot;:$&#123;propertyDescriptor.value.toString()&#125;,`;
+            &#125; else if (typeof propertyDescriptor.value === &quot;string&quot;) &#123;
+                code += `&quot;value&quot;:&quot;$&#123;propertyDescriptor.value&#125;&quot;,`;
+            &#125; else &#123;
+                code += `&quot;value&quot;:$&#123;propertyDescriptor.value&#125;,`;
+            &#125;
+        &#125;
+        if (propertyDescriptor.hasOwnProperty(&#39;get&#39;)) &#123;
+            if (typeof propertyDescriptor.get === &#39;function&#39;) &#123;
+                let get_result = propertyDescriptor.get.call(instanceObj)
+                code += `&quot;get&quot;: function $&#123;key&#125;_get()&#123;return &quot;$&#123;get_result&#125;&quot;&#125;,`
+            &#125; else &#123;
+                code += `get:undefined, `
+            &#125;
+        &#125;
+        if (propertyDescriptor.hasOwnProperty(&#39;set&#39;)) &#123;
+            if (typeof propertyDescriptor.set === &#39;function&#39;) &#123;
+                code += `&quot;set&quot;: function $&#123;key&#125;_set()&#123;&#125;,`
+            &#125; else &#123;
+                code += `set:undefined, `
+            &#125;
+        &#125;
+        code += &#39;&#125;)\r\n&#39;
+    &#125;
+    // 4.设置原型对象的原型属性
+    let protoProtoName = Object.getPrototypeOf(ProtoFunc.prototype)[Symbol.toStringTag];
+    if (protoProtoName !== undefined) &#123; //undefined说明直接是继承于object
+        code += `Object.setPrototypeOf($&#123;protoName&#125;.prototype, $&#123;protoProtoName&#125;.prototype);\r\n`;
+    &#125;
+    
+    console.log(code);
+    copy(code);
+&#125;
+</code></pre>
+<p><strong>效果：</strong></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/f5c92e43997e404abb9b54f31990d75c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<p>参数传想要补的原型函数，即可得到本文第三节所做的工作。这段脚本有3处需要注意的地方：</p>
+<ol>
+<li>对于具体的功能属性，即在属性描述符中<code>value</code>类型为<code>function</code>，需要自行在本地实现相同功能，例如<code>window</code>的<code>atob</code>属性。</li>
+<li>对于属性描述符实现了get&#x2F;set的属性：<ul>
+<li>当访问某对象属性时，并不会如value函数需要使用<code>.()</code>调用，而是以取值赋值形式呈现，例如<code>window.location</code>会调用get函数，使用<code>window.location=123</code>会调用set方法。</li>
+<li>所以最上层函数参数中引入了<code>instanceObj</code>，即当前构造函数的实例对象，将原get函数的this指向改到该实例对象，并将结果作为新get函数的返回值。</li>
+<li>set方法用于改变get方法的返回值，由于get已直接返回最终的结果，因此set函数可以忽略。</li>
+</ul>
+</li>
+<li>在属性描述符中value类型为Object（非function）的属性，属于实例对象，存在继承关系链，情况复杂，因此归到第三种情况：实例对象的脱环境脚本。</li>
+</ol>
+<h2 id="4-3-实例对象"><a href="#4-3-实例对象" class="headerlink" title="4.3 实例对象"></a>4.3 实例对象</h2><p>例如<code>window，location，navigator</code>等，以location对象为例：</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/d9f0bd78e8e542b185595ed173a0e224.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="浏览器中location对象"></p>
+<p><strong>脱环境脚本：</strong></p>
+<pre><code class="javascript">let getObjEnvCode = function getObjEnvCode(obj, objName) &#123;
+    let code = &quot;&quot;;
+    // 添加注释
+    code += `// $&#123;objName&#125;对象\r\n`;
+    // 1. 定义对象
+    code += `let $&#123;objName&#125; = &#123;&#125;\r\n`;
+    // 2. 定义对象属性
+    for (const key in Object.getOwnPropertyDescriptors(obj)) &#123;
+        let propertyDescriptor = Object.getOwnPropertyDescriptor(obj, key);
+        code += `Object.defineProperty($&#123;objName&#125;, &quot;$&#123;key&#125;&quot;,&#123;&quot;configurable&quot;:$&#123;propertyDescriptor.configurable&#125;,&quot;enumerable&quot;:$&#123;propertyDescriptor.enumerable&#125;,`;
+        if (propertyDescriptor.hasOwnProperty(&#39;writable&#39;)) &#123;
+            code += `&quot;writable&quot;:$&#123;propertyDescriptor.writable&#125;,`
+        &#125;
+
+        if (propertyDescriptor.hasOwnProperty(&#39;value&#39;)) &#123;
+            if (propertyDescriptor.value instanceof Object) &#123;
+                if (typeof propertyDescriptor.value === &#39;function&#39;) &#123;
+                    code += `&quot;value&quot;: function $&#123;key&#125;()&#123;&#125;,`
+                &#125; else &#123;
+                    code += `&quot;value&quot;:&#123;&#125;,`
+                &#125;
+            &#125; else if (typeof propertyDescriptor.value === &#39;symbol&#39;) &#123;
+                code += `&quot;value&quot;:$&#123;propertyDescriptor.value.toString()&#125;,`;
+            &#125; else if (typeof propertyDescriptor.value === &quot;string&quot;) &#123;
+                code += `&quot;value&quot;:&quot;$&#123;propertyDescriptor.value&#125;&quot;,`;
+            &#125; else &#123;
+                code += `&quot;value&quot;:$&#123;propertyDescriptor.value&#125;,`;
+            &#125;
+        &#125;
+        if (propertyDescriptor.hasOwnProperty(&#39;get&#39;)) &#123;
+            if (typeof propertyDescriptor.get === &#39;function&#39;) &#123;
+                let get_result = propertyDescriptor.get.call(obj)
+                code += `&quot;get&quot;: function $&#123;key&#125;_get()&#123;return &quot;$&#123;get_result&#125;&quot;&#125;,`
+            &#125; else &#123;
+                code += `get:undefined, `
+            &#125;
+        &#125;
+        if (propertyDescriptor.hasOwnProperty(&#39;set&#39;)) &#123;
+            if (typeof propertyDescriptor.set === &#39;function&#39;) &#123;
+                code += `&quot;set&quot;: function $&#123;key&#125;_set()&#123;&#125;,`
+            &#125; else &#123;
+                code += `set:undefined, `
+            &#125;
+        &#125;
+        code += &#39;&#125;)\r\n&#39;
+    &#125;
+    // 3. 设置原型
+    let protoName = Object.getPrototypeOf(obj)[Symbol.toStringTag];
+    if (protoName !== undefined) &#123; //undefined说明直接是继承于object
+        code += `Object.setPrototypeOf($&#123;objName&#125;, $&#123;protoName&#125;.prototype);\r\n`;
+    &#125;
+    
+    console.log(code);
+    copy(code);
+&#125;
+</code></pre>
+<p>实例对象与原型函数相比少了”补原型函数属性”这一步，其余步骤大体相同，主要注意的是在第三步设置原型时：</p>
+<ol>
+<li>使用<code>Object.getPrototypeOf(obj)[Symbol.toStringTag]</code>拿到实例对象的原型名称；</li>
+<li>如该名称是<code>undefined</code>，说明该对象直接上层是<code>Object</code>，那么无须为其设置原型（所有对象的原型尽头是Object）。</li>
+</ol>
+<p>以<code>window.location</code>为例，结果如下：</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/0156aa9bf02345bfb04406c88f6337b8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<h1 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h1><p>本文以补<code>window</code>对象为例，尝试在本地node环境复现<code>window</code>对象，在这个过程中归纳了补环境对象时的3种情形：</p>
+<ol>
+<li>特殊对象的处理，如<code>window</code>、<code>Windowproperties</code>，前者属性太多，需要借助node对象实现，后者浏览器端无法直接获取。</li>
+<li>原型函数的处理，并归纳成了4个步骤：<ol>
+<li>定义构造函数</li>
+<li>设置原型函数属性</li>
+<li>设置原型对象属性</li>
+<li>为原型对象绑定原型</li>
+</ol>
+</li>
+<li>实例对象的处理，并归纳了成了3个步骤：<ol>
+<li>定义对象</li>
+<li>设置对象属性</li>
+<li>为对象绑定原型</li>
+</ol>
+</li>
+</ol>
+<p>在实际操作中，完成一个对象的补充，往往这三种情况会同时存在，相互嵌套，对于逆向者而言，这是培养耐心和细心的良好道场。</p>
+<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><p><strong>借助一键脱环境脚本得到的window对象</strong>：</p>
+<pre><code class="javascript">// EventTarget对象
+let EventTarget = function EventTarget()&#123;&#125;
+Object.defineProperty(EventTarget.prototype, Symbol.toStringTag,&#123;&quot;value&quot;:&quot;EventTarget&quot;,&quot;writable&quot;:false,&quot;enumerable&quot;:false,&quot;configurable&quot;:true&#125;)
+Object.defineProperty(EventTarget.prototype, &quot;addEventListener&quot;,&#123;&quot;configurable&quot;:true,&quot;enumerable&quot;:true,&quot;writable&quot;:true,&quot;value&quot;: function addEventListener()&#123;&#125;,&#125;)
+Object.defineProperty(EventTarget.prototype, &quot;dispatchEvent&quot;,&#123;&quot;configurable&quot;:true,&quot;enumerable&quot;:true,&quot;writable&quot;:true,&quot;value&quot;: function dispatchEvent()&#123;&#125;,&#125;)
+Object.defineProperty(EventTarget.prototype, &quot;removeEventListener&quot;,&#123;&quot;configurable&quot;:true,&quot;enumerable&quot;:true,&quot;writable&quot;:true,&quot;value&quot;: function removeEventListener()&#123;&#125;,&#125;)
+
+
+//WindowProperties对象
+let WindowProperties = &#123;&#125;
+Object.defineProperty(WindowProperties, Symbol.toStringTag, &#123;&quot;value&quot;: &#39;WindowProperties&#39;, &quot;writable&quot;: false, &quot;enumerable&quot;: false, &quot;configurable&quot;: true&#125;)
+Object.setPrototypeOf(WindowProperties,EventTarget.prototype)
+
+
+// Window对象
+let Window = function Window()&#123;&#125;
+Object.defineProperty(Window, &quot;TEMPORARY&quot;,&#123;&quot;configurable&quot;:false,&quot;enumerable&quot;:true,&quot;writable&quot;:false,&quot;value&quot;:0,&#125;)
+Object.defineProperty(Window, &quot;PERSISTENT&quot;,&#123;&quot;configurable&quot;:false,&quot;enumerable&quot;:true,&quot;writable&quot;:false,&quot;value&quot;:1,&#125;)
+Object.defineProperty(Window.prototype, Symbol.toStringTag,&#123;&quot;value&quot;:&quot;Window&quot;,&quot;writable&quot;:false,&quot;enumerable&quot;:false,&quot;configurable&quot;:true&#125;)
+Object.defineProperty(Window.prototype, &quot;TEMPORARY&quot;,&#123;&quot;configurable&quot;:false,&quot;enumerable&quot;:true,&quot;writable&quot;:false,&quot;value&quot;:0,&#125;)
+Object.defineProperty(Window.prototype, &quot;PERSISTENT&quot;,&#123;&quot;configurable&quot;:false,&quot;enumerable&quot;:true,&quot;writable&quot;:false,&quot;value&quot;:1,&#125;)
+Object.setPrototypeOf(Window.prototype, WindowProperties);
+
+
+
+//window对象
+let window =globalThis;
+Object.setPrototypeOf(window,Window.prototype)
+</code></pre>
+<p><strong>一键脱环境脚本</strong>：</p>
+<p>第4节中获取属性描述符这部分可以解耦，因此这部分分离出来单独形成一个函数。</p>
+<pre><code class="javascript">// 获取原型函数环境代码
+let getProtoFuncEnvCode = function getProtoFuncEnvCode(ProtoFunc, instanceObj) &#123;
+    // ProtoFunc: 原型函数
+    // instanceObj: 实例对象,可选
+    let code = &quot;&quot;;
+    let protoName = ProtoFunc.name;
+    // 添加注释
+    code += `// $&#123;protoName&#125;对象\r\n`;
+    // 1.定义原型函数
+    code += `let $&#123;protoName&#125; = function $&#123;protoName&#125;()&#123;&#125;\r\n`;
+    // 2.设置原型函数属性
+    for (const key in Object.getOwnPropertyDescriptors(ProtoFunc)) &#123;
+        if (key === &quot;arguments&quot; || key === &quot;caller&quot; || key === &quot;length&quot; || key === &quot;name&quot; || key === &quot;prototype&quot;) &#123;
+            continue;
+        &#125;
+        let definePropertyDescriptor = getDescriptor(ProtoFunc, key, instanceObj);
+        code += definePropertyDescriptor
+    &#125;
+    // 3.设置原型对象的属性
+    code += `Object.defineProperty($&#123;protoName&#125;.prototype, Symbol.toStringTag,&#123;&quot;value&quot;:&quot;$&#123;protoName&#125;&quot;,&quot;writable&quot;:false,&quot;enumerable&quot;:false,&quot;configurable&quot;:true&#125;)\r\n`;
+    for (const key in Object.getOwnPropertyDescriptors(ProtoFunc.prototype)) &#123;
+        if (key === &quot;constructor&quot;) &#123;
+            continue;
+        &#125;
+        let definePropertyDescriptor = getDescriptor(ProtoFunc.prototype, key,`$&#123;protoName&#125;.prototype`, instanceObj);
+        code += definePropertyDescriptor
+    &#125;
+    // 4.设置原型对象的原型属性
+    let protoProtoName = Object.getPrototypeOf(ProtoFunc.prototype)[Symbol.toStringTag];
+    if (protoProtoName !== undefined) &#123; //undefined说明直接是继承于object
+        code += `Object.setPrototypeOf($&#123;protoName&#125;.prototype, $&#123;protoProtoName&#125;.prototype);\r\n`;
+    &#125;
+
+    console.log(code);
+    copy(code);
+&#125;
+
+//获取实例对象环境
+let getObjEnvCode = function getObjEnvCode(obj, objName) &#123;
+    let code = &quot;&quot;;
+    // 添加注释
+    code += `// $&#123;objName&#125;对象\r\n`;
+    // 1. 定义对象
+    code += `let $&#123;objName&#125; = &#123;&#125;\r\n`;
+    // 2. 定义对象属性
+    for (const key in Object.getOwnPropertyDescriptors(obj)) &#123;
+        let definePropertyDescriptor = getDescriptor(obj, key,objName, obj);
+        code += definePropertyDescriptor
+    &#125;
+    // 3. 设置原型
+    let protoName = Object.getPrototypeOf(obj)[Symbol.toStringTag];
+    if (protoName !== undefined) &#123; //undefined说明直接是继承于object
+        code += `Object.setPrototypeOf($&#123;objName&#125;, $&#123;protoName&#125;.prototype);\r\n`;
+    &#125;
+
+    console.log(code);
+    copy(code);
+&#125;
+
+//获取属性描述符
+let getDescriptor = function getDescriptor(obj, prop,objName, instanceObj) &#123;
+    let code = &#39;&#39;
+    let propertyDescriptor = Object.getOwnPropertyDescriptor(obj, prop);
+    code += `Object.defineProperty($&#123;objName&#125;, &quot;$&#123;prop&#125;&quot;,&#123;&quot;configurable&quot;:$&#123;propertyDescriptor.configurable&#125;,&quot;enumerable&quot;:$&#123;propertyDescriptor.enumerable&#125;,`;
+    if (propertyDescriptor.hasOwnProperty(&#39;writable&#39;)) &#123;
+        code += `&quot;writable&quot;:$&#123;propertyDescriptor.writable&#125;,`
+    &#125;
+
+    if (propertyDescriptor.hasOwnProperty(&#39;value&#39;)) &#123;
+        if (propertyDescriptor.value instanceof Object) &#123;
+            if (typeof propertyDescriptor.value === &#39;function&#39;) &#123;
+                code += `&quot;value&quot;: function $&#123;prop&#125;()&#123;&#125;,`
+            &#125; else &#123;
+                code += `&quot;value&quot;:&#123;&#125;,` //需要额外实现实例对象的补充，可手动可自动
+            &#125;
+        &#125; else if (typeof propertyDescriptor.value === &#39;symbol&#39;) &#123;
+            code += `&quot;value&quot;:$&#123;propertyDescriptor.value.toString()&#125;,`;
+        &#125; else if (typeof propertyDescriptor.value === &quot;string&quot;) &#123;
+            code += `&quot;value&quot;:&quot;$&#123;propertyDescriptor.value&#125;&quot;,`;
+        &#125; else &#123;
+            code += `&quot;value&quot;:$&#123;propertyDescriptor.value&#125;,`;
+        &#125;
+    &#125;
+    if (propertyDescriptor.hasOwnProperty(&#39;get&#39;)) &#123;
+        if (typeof propertyDescriptor.get === &#39;function&#39;) &#123;
+            if (instanceObj) &#123;
+                let get_result = propertyDescriptor.get.call(instanceObj)
+                code += `&quot;get&quot;: function $&#123;prop&#125;_get()&#123;return &quot;$&#123;get_result&#125;&quot;&#125;,`
+            &#125;else &#123;
+                code += `&quot;get&quot;: function $&#123;prop&#125;_get()&#123;&#125;,`
+            &#125;
+        &#125; else &#123;
+            code += `get:undefined, `
+        &#125;
+    &#125;
+    if (propertyDescriptor.hasOwnProperty(&#39;set&#39;)) &#123;
+        if (typeof propertyDescriptor.set === &#39;function&#39;) &#123;
+            code += `&quot;set&quot;: function $&#123;prop&#125;_set()&#123;&#125;,`
+        &#125; else &#123;
+            code += `set:undefined, `
+        &#125;
+    &#125;
+    code += &#39;&#125;);\r\n&#39;
+    return code
+&#125;
+</code></pre>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，如有问题请邮件至2454612285@qq.com。 </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2021-2025 Yelog
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
