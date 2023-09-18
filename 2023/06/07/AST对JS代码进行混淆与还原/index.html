@@ -6,28 +6,35 @@
   <meta name="keywords" content=" javascript , AST ">
   <meta name="description" content="AST对JS代码进行混淆与还原 | 跃迁blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="[TOC] 一、前言1.1 为什么需要补环境同样一份js代码，在浏览器环境中可以执行出结果，在本地node环境却报错或者运行的结果是错的，将node环境补充到与浏览器环境相似到可以正确执行代码的程度，这种技术就叫做补环境。 浏览器环境：是指js代码在浏览器中的运行时环境，包括v8引擎、BOM和DOM三个部分。node环境：：是指js代码在node中的运行时环境，包括v8引擎、node内置api。">
+<meta name="description" content="[TOC] 一、前言在js逆向中补环境这个方向一般是根据网站定制，即所谓的缺什么补什么，但网站补多了就会发现其实很多环境可以通用，如能将这部分抽离以复用，可以减少很大一部分逆向工作。 基于此，本文以window对象为例，参照浏览器端window对象，在本地node环境实现模仿，主要做了以下几点工作：  window原型继承关系梳理 window及其原型属性补充 实现一键脱环境脚本  二、思路在js">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Proxy与Reflect嗅探缺失环境">
-<meta property="og:url" content="http://example.com/2023/07/06/proxy%E4%B8%8Ereflect%E5%97%85%E6%8E%A2%E7%BC%BA%E5%A4%B1%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:title" content="补环境之补window对象">
+<meta property="og:url" content="http://example.com/2023/07/09/%E8%A1%A5%E7%8E%AF%E5%A2%83%E4%B9%8B%E8%A1%A5window%E5%AF%B9%E8%B1%A1/index.html">
 <meta property="og:site_name" content="跃迁blog">
-<meta property="og:description" content="[TOC] 一、前言1.1 为什么需要补环境同样一份js代码，在浏览器环境中可以执行出结果，在本地node环境却报错或者运行的结果是错的，将node环境补充到与浏览器环境相似到可以正确执行代码的程度，这种技术就叫做补环境。 浏览器环境：是指js代码在浏览器中的运行时环境，包括v8引擎、BOM和DOM三个部分。node环境：：是指js代码在node中的运行时环境，包括v8引擎、node内置api。">
+<meta property="og:description" content="[TOC] 一、前言在js逆向中补环境这个方向一般是根据网站定制，即所谓的缺什么补什么，但网站补多了就会发现其实很多环境可以通用，如能将这部分抽离以复用，可以减少很大一部分逆向工作。 基于此，本文以window对象为例，参照浏览器端window对象，在本地node环境实现模仿，主要做了以下几点工作：  window原型继承关系梳理 window及其原型属性补充 实现一键脱环境脚本  二、思路在js">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230706/5c55e6bc7cd24abcb695ab9aad457e2a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230706/247d9b0b767f4decaa6d742c3887ed5f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230706/a32093691aad4ddcb1b745fbb851b6b8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230706/27be60afcd9741138f4f8e146ad578de.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230706/cf3b1a79a0aa45c4aa57cecb1eff4025.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230706/b76bac85d4ba4520ad115a9d862b7105.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230706/72a9eccede4349d7b9f9702b0989c76d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230706/b622f2617a8944478a89b83f683a3f9b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230706/eeec313c41b74c5181f80b9547327488.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="article:published_time" content="2023-07-06T03:03:49.000Z">
-<meta property="article:modified_time" content="2023-07-06T12:25:08.432Z">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/82a7ffefec4244f6b44cf1c1193766e9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/5a46d98421db44789eb34f23e65f9e24.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/ce8e1c4c15db445c8dc2d0a65060c22f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/43f2a602abd2407bbce89a21ac01ff1e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/c9fdef905359425cafec81edd1ab36f6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/521035fe51ea4e1fa2614feff65c8066.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/74a5b132d8944d1e98aac4dec0b2b438.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/c253dd015deb4f3fa9352a12056f9704.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/18f3601df97846a89da3f9d56e86ddc4.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/9b7353634e304f7c8b1632a6456ed3be.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/63241fa682d54317af3a0d21064cc9fe.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/f5c92e43997e404abb9b54f31990d75c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/d9f0bd78e8e542b185595ed173a0e224.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/0156aa9bf02345bfb04406c88f6337b8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="article:published_time" content="2023-07-08T16:01:55.000Z">
+<meta property="article:modified_time" content="2023-07-12T09:53:41.876Z">
 <meta property="article:author" content="跃迁">
+<meta property="article:tag" content="javascript">
 <meta property="article:tag" content="补环境">
+<meta property="article:tag" content="理论">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230706/5c55e6bc7cd24abcb695ab9aad457e2a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/82a7ffefec4244f6b44cf1c1193766e9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
 
 
 <link rel="icon" href="/img/avatar.jpg">
