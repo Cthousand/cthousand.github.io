@@ -2,39 +2,93 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>⭐️半自动补瑞数4环境全流程 | cthousand</title>
-  <meta name="keywords" content=" javascript , python , web逆向 , 瑞数 ">
-  <meta name="description" content="⭐️半自动补瑞数4环境全流程 | cthousand">
+  <title>⭐️半自动补瑞数4环境全流程 | 跃迁blog</title>
+  <meta name="keywords" content=" python , javascript , web逆向 , 瑞数 ">
+  <meta name="description" content="⭐️半自动补瑞数4环境全流程 | 跃迁blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="[TOC] 一、前言在js逆向中补环境这个方向一般是根据网站定制，即所谓的缺什么补什么，但网站补多了就会发现其实很多环境可以通用，如能将这部分抽离以复用，可以减少很大一部分逆向工作。 基于此，本文以window对象为例，参照浏览器端window对象，在本地node环境实现模仿，主要做了以下几点工作：  window原型继承关系梳理 window及其原型属性补充 实现一键脱环境脚本  二、思路在js">
+<meta name="description" content="[TOC] 一、前言想拿瑞数做逆向分析案例由来已久（盛名之下）,但一直不知道如何下笔, 之前通过补环境框架和手动补环境虽然通过了瑞数环境检测，但拿来写博客还是压力山大。 先说手动补环境,需要扣eval层代码,流程太多,导致写起来也会太多,而且中间全是干巴巴的跟栈调试, 于读者而言未免太过枯燥；然后是补环境框架，这其实没什么可写的, 环境全在框架里, 代码一跑就通, 如何搭建补环境框架拿又是另外一码">
 <meta property="og:type" content="article">
-<meta property="og:title" content="补环境之补window对象">
-<meta property="og:url" content="http://example.com/2023/07/09/%E8%A1%A5%E7%8E%AF%E5%A2%83%E4%B9%8B%E8%A1%A5window%E5%AF%B9%E8%B1%A1/index.html">
-<meta property="og:site_name" content="cthousand">
-<meta property="og:description" content="[TOC] 一、前言在js逆向中补环境这个方向一般是根据网站定制，即所谓的缺什么补什么，但网站补多了就会发现其实很多环境可以通用，如能将这部分抽离以复用，可以减少很大一部分逆向工作。 基于此，本文以window对象为例，参照浏览器端window对象，在本地node环境实现模仿，主要做了以下几点工作：  window原型继承关系梳理 window及其原型属性补充 实现一键脱环境脚本  二、思路在js">
+<meta property="og:title" content="⭐️半自动补瑞数4环境全流程">
+<meta property="og:url" content="http://example.com/2023/09/17/%E2%AD%90%EF%B8%8F%E5%8D%8A%E8%87%AA%E5%8A%A8%E8%A1%A5%E7%91%9E%E6%95%B04%E7%8E%AF%E5%A2%83%E5%85%A8%E6%B5%81%E7%A8%8B/index.html">
+<meta property="og:site_name" content="跃迁blog">
+<meta property="og:description" content="[TOC] 一、前言想拿瑞数做逆向分析案例由来已久（盛名之下）,但一直不知道如何下笔, 之前通过补环境框架和手动补环境虽然通过了瑞数环境检测，但拿来写博客还是压力山大。 先说手动补环境,需要扣eval层代码,流程太多,导致写起来也会太多,而且中间全是干巴巴的跟栈调试, 于读者而言未免太过枯燥；然后是补环境框架，这其实没什么可写的, 环境全在框架里, 代码一跑就通, 如何搭建补环境框架拿又是另外一码">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/82a7ffefec4244f6b44cf1c1193766e9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/5a46d98421db44789eb34f23e65f9e24.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/ce8e1c4c15db445c8dc2d0a65060c22f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/43f2a602abd2407bbce89a21ac01ff1e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/c9fdef905359425cafec81edd1ab36f6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/521035fe51ea4e1fa2614feff65c8066.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/74a5b132d8944d1e98aac4dec0b2b438.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/c253dd015deb4f3fa9352a12056f9704.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/18f3601df97846a89da3f9d56e86ddc4.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/9b7353634e304f7c8b1632a6456ed3be.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/63241fa682d54317af3a0d21064cc9fe.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/f5c92e43997e404abb9b54f31990d75c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/d9f0bd78e8e542b185595ed173a0e224.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230710/0156aa9bf02345bfb04406c88f6337b8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="article:published_time" content="2023-07-08T16:01:55.000Z">
-<meta property="article:modified_time" content="2023-07-12T09:53:41.876Z">
-<meta property="article:author" content="Cthousand">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/6cc88da2e0844f3894c5876ed41033c1.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/471c5c725ab949eca6f619ab4b7452e5.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/6b637710002e47edb2a16aed359d48a6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/0291ffd5dc274aa9a7bde3f6f05f7c2b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/a468acbcae7b4b15b442a45497a6c8da.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/afb0c791a4a9461f874554fab5adba7c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/ef778724ce9c4e399115f0fcf853b635.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/545f4ddec5c447edb0890f68c6f8fe6f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/a40ce9f47cc34104a7581b064e28a720.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/8822638b4d4248fd80728beaba84d47d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/445a4c6720a74606af75d63cc0b5f804.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/34931fc62c0c4b5e9ae71532c3ea9e77.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/f179b3a9b13e4f5caeea3c967ad4c3e2.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/113cad0f9cd84efeb4797b5d858de71a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/f29636a8e0f7451588fa7501541b661e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/99b8bdc2b4e240aab76d335392be4c6d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/0eb15052eaef45849c3de29327c8baf8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/5c5afe92486f4d7d8c03715d6f28506f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/58471651acb54903a970a696e77fd8d0.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/b94bdb816f504df98f3c8da6b08e2b89.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/7201fbe66b6143f8af15e4b0838d9378.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/707bba495a96482eaa0c6d6fb0ce1990.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/62d6580d22884fbe88ad7ab6351f05fa.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/cd46667b4c144b68876547f7509da931.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/701cba4bdf61433bae9595f5fd8bb860.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/823c192fcfac4a3aa8f54301209bf0ee.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/7a059a7de6e14953b81a07a910821735.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/d76bd3bec17e4d389e2803deb56c6150.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/ff30ee12237640c3a2ae0b84f923ad04.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/57516d5169214564b5faca690c169cbd.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/c72661cb72084292b5b43eb4249999d0.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/f48f74eabafd482da73bad00fbb86e6d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/b8b36a0f31194d51ad1469f975bbfab6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/9aae7c7cc92a496dae4e502e86b957a3.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/7d5f9af62e2c4bd6a32a34c825e40943.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/05ca3694a91c4444b23f1dd1bd914cc7.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/08afd04b291447859ed5ca5b24fa9d74.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/c0bcade5289740ca83c69dfd46f7bfc1.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/f0252518f4e84613a1d7c7131fd967a6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/4fc5b69c87d64662818ec94459208393.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/f29a754c0da64ec0a250a6dbf6ca138d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/6aefaaf983584a7c83a8516f28f49dff.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/1faf19340d674f3f81c9960c01e0ce5f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/6c18482d367c4b6c9834b441f9d87474.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/9257641cc51145e784fea7d26a5e0a57.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/a169b9ff8a2e423fa2cb631cd08d086e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/bf1b9653ed894e64a21635dac67144f9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/85e747811bbb4c88aad2dbc51e7f3d5b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/070f157b53ee4aba8920137a4db37e53.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/684bdafe0140410ca83d53951be61f1a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/ad7d49f0f0c94e1095c9baabf08e5435.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/357b1fa5e5ea41edb974b43e93fd51e8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/7fc5cc40980e4d6d8c4b0022273a0d42.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/f193a344d94e405fa164e4eb9af897dd.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/77b6ce4801c7487983cc957061af0867.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/dddc25c204bc4e139b7aab780d8876db.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/8330bd8ad83d4ecb85ed10db1d7eafe2.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/ebf7356dcd654293b5113a51635a4947.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/90d9da7f160546b6b19b42671d71da94.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/91e0d5a076d04f9dafd16ef2a279ac96.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/db89e89287ab4333b535cdf387564f51.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/fa8fd311dc33409997de7f99a755a12c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/ba5abbf0d019406e9dd472c6d8b27855.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/5fa4af1504a54099b483a33a63138432.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/4a3bbf2282b84697ad9b7c978c4f28a9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/af3ed8b60641419399a7363cadaf6578.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/9c0fa3541c204bd689709c9a05ec1df2.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta property="article:published_time" content="2023-09-17T08:34:23.000Z">
+<meta property="article:modified_time" content="2023-09-18T08:10:41.933Z">
+<meta property="article:author" content="跃迁">
+<meta property="article:tag" content="python">
 <meta property="article:tag" content="javascript">
-<meta property="article:tag" content="补环境">
-<meta property="article:tag" content="理论">
+<meta property="article:tag" content="web逆向">
+<meta property="article:tag" content="瑞数">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230709/82a7ffefec4244f6b44cf1c1193766e9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/6cc88da2e0844f3894c5876ed41033c1.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -82,7 +136,7 @@
          src="/img/avatar.jpg"/>
 </a>
 <div class="author">
-    <span>Cthousand</span>
+    <span>跃迁</span>
 </div>
 
 <div class="icon">
@@ -152,7 +206,7 @@
                 <a class="dynamic-menu "
                    target="_self"
                    
-                   href="http://106.54.217.16/">跃迁</a>
+                   href="http://106.54.217.16/">跃迁主页</a>
         
             
     </div>
@@ -277,7 +331,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/09/17/%E2%AD%90%EF%B8%8F%E5%8D%8A%E8%87%AA%E5%8A%A8%E8%A1%A5%E7%91%9E%E6%95%B04%E7%8E%AF%E5%A2%83%E5%85%A8%E6%B5%81%E7%A8%8B/"
-           data-tag="javascript,python,web逆向,瑞数"
+           data-tag="python,javascript,web逆向,瑞数"
            data-author="" >
             <span class="post-title" title="⭐️半自动补瑞数4环境全流程">⭐️半自动补瑞数4环境全流程</span>
             <span class="post-date" title="2023-09-17 16:34:23">2023/09/17</span>
@@ -331,7 +385,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E7%BB%95%E8%BF%87cookie%E5%8F%8D%E7%88%AC-%E5%A2%83%E5%A4%96%E7%94%B5%E5%95%86%E7%BD%91%E7%AB%99/"
-           data-tag="javascript,web爬虫,python,谷歌插件,flask"
+           data-tag="web爬虫,python,javascript,谷歌插件,flask"
            data-author="" >
             <span class="post-title" title="谷歌插件绕过cookie反爬_某境外电商网站">谷歌插件绕过cookie反爬_某境外电商网站</span>
             <span class="post-date" title="2023-06-18 15:54:04">2023/06/18</span>
@@ -340,7 +394,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/06/13/RPC%E8%BF%87%E6%9F%90%E4%B9%8Ezse96%E5%8F%82%E6%95%B0-%E6%9F%90%E4%B9%8E%E7%83%AD%E6%90%9C/"
-           data-tag="javascript,web爬虫,rpc,python"
+           data-tag="web爬虫,rpc,python,javascript"
            data-author="" >
             <span class="post-title" title="RPC过某乎zse96参数-某乎热搜">RPC过某乎zse96参数-某乎热搜</span>
             <span class="post-date" title="2023-06-13 14:22:36">2023/06/13</span>
@@ -349,7 +403,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/06/07/AST%E5%AF%B9JS%E4%BB%A3%E7%A0%81%E8%BF%9B%E8%A1%8C%E6%B7%B7%E6%B7%86%E4%B8%8E%E8%BF%98%E5%8E%9F/"
-           data-tag="AST,javascript"
+           data-tag="javascript,AST"
            data-author="" >
             <span class="post-title" title="AST对JS代码进行混淆与还原">AST对JS代码进行混淆与还原</span>
             <span class="post-date" title="2023-06-07 00:48:10">2023/06/07</span>
@@ -358,7 +412,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/05/18/%E7%BA%AF%E6%89%A3%E8%BF%87%E9%98%BF%E9%87%8C%E7%B3%BBsign%E5%8F%82%E6%95%B0-%E6%9F%90%E5%AE%9D%E6%B3%95%E6%8B%8D%E7%BD%91/"
-           data-tag="javascript,python,web逆向,阿里系"
+           data-tag="python,javascript,web逆向,阿里系"
            data-author="" >
             <span class="post-title" title="纯扣过阿里系sign参数-某宝法拍网.md">纯扣过阿里系sign参数-某宝法拍网.md</span>
             <span class="post-date" title="2023-05-18 16:34:23">2023/05/18</span>
@@ -367,7 +421,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/05/17/%E7%BA%AF%E6%89%A3%E8%BF%87%E5%8A%A0%E9%80%9F%E4%B9%90-%E6%9F%90%E4%BF%A1%E7%94%A8%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/"
-           data-tag="javascript,web爬虫,python,加速乐"
+           data-tag="web爬虫,python,javascript,加速乐"
            data-author="" >
             <span class="post-title" title="纯扣过加速乐-某信用查询网站">纯扣过加速乐-某信用查询网站</span>
             <span class="post-date" title="2023-05-17 13:50:48">2023/05/17</span>
@@ -376,7 +430,7 @@
         
         <a  class="全部文章 爬虫 "
            href="/2023/05/16/scrapy%E6%89%B9%E9%87%8F%E9%87%87%E9%9B%86-%E6%9F%90%E5%95%86%E5%A4%A7%E6%95%B0%E6%8D%AE/"
-           data-tag="javascript,web爬虫,python,scrapy"
+           data-tag="web爬虫,python,javascript,scrapy"
            data-author="" >
             <span class="post-title" title="scrapy批量采集-某商大数据">scrapy批量采集-某商大数据</span>
             <span class="post-date" title="2023-05-16 16:34:23">2023/05/16</span>
@@ -420,9 +474,9 @@
         <span class="tag">
             <i class="iconfont icon-tag"></i>
             
-            <a class="color1">javascript</a>
-            
             <a class="color2">python</a>
+            
+            <a class="color1">javascript</a>
             
             <a class="color1">web逆向</a>
             
@@ -433,7 +487,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-09-17 20:35:41'>2023-09-17 16:34</time>
+            发布时间 : <time class="date" title='最后更新: 2023-09-18 16:10:41'>2023-09-17 16:34</time>
         
     </div>
     <div class="article-meta">
@@ -455,7 +509,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81"><span class="toc-text">二、</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E7%AC%AC%E4%B8%80%E5%9B%9E%E5%90%88"><span class="toc-text">2.1 第一回合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E7%AC%AC%E4%BA%8C%E5%9B%9E%E5%90%88"><span class="toc-text">2.2 第二回合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E7%AC%AC%E4%B8%89%E5%9B%9E%E5%90%88"><span class="toc-text">2.3 第三回合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E7%AC%AC%E5%9B%9B%E5%9B%9E%E5%90%88"><span class="toc-text">2.4 第四回合</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%8F%8D%E5%8F%8Dhook%E5%B0%81%E8%A3%85%E6%88%90%E6%96%B9%E6%B3%95"><span class="toc-text">三、反反hook封装成方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%B5%8B%E8%AF%95"><span class="toc-text">四、测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">五、总结</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%9B%AE%E6%A0%87%E7%A1%AE%E5%AE%9A"><span class="toc-text">二、目标确定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%89%8D%E6%9C%9F%E5%B7%A5%E4%BD%9C"><span class="toc-text">三、前期工作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%AE%9A%E4%BD%8D%E6%8E%A5%E5%8F%A3"><span class="toc-text">3.1 定位接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%B2%BE%E7%AE%80%E5%8F%82%E6%95%B0"><span class="toc-text">3.2 精简参数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B"><span class="toc-text">四、逆向工程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-FSSBBIl1UgzbN7N80S"><span class="toc-text">4.1 FSSBBIl1UgzbN7N80S</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-FSSBBIl1UgzbN7N80T"><span class="toc-text">4.2 FSSBBIl1UgzbN7N80T</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%E5%AE%9A%E4%BD%8Djs%E5%8A%A0%E5%AF%86%E5%85%A5%E5%8F%A3"><span class="toc-text">4.2.1 定位js加密入口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%E5%89%8D%E7%BD%AE%E5%87%86%E5%A4%87"><span class="toc-text">4.2.2 前置准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-%E8%AE%A9%E4%BB%A3%E7%A0%81%E8%B7%91%E9%80%9A"><span class="toc-text">4.2.3 让代码跑通</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E8%B0%83%E5%90%8C%E7%AC%AC1%E6%AC%A1cookie"><span class="toc-text">4.2.4 调同第1次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E8%B0%83%E5%90%8C%E7%AC%AC2%E6%AC%A1cookie"><span class="toc-text">4.2.4 调同第2次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-5-%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E9%80%BB%E8%BE%91"><span class="toc-text">4.2.5 实现异步逻辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-6-%E8%B0%83%E5%90%8C%E7%AC%AC3%E6%AC%A1cookie"><span class="toc-text">4.2.6 调同第3次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-7-%E8%B0%83%E5%90%8C%E7%AC%AC4%E6%AC%A1cookie"><span class="toc-text">4.2.7 调同第4次cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-1-%E5%AD%97%E4%BD%93%E6%8C%87%E7%BA%B9"><span class="toc-text">4.2.7.1 字体指纹</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-2-%E6%8F%92%E4%BB%B6%E6%A3%80%E6%B5%8B-plugins%E5%92%8CmimeTypes"><span class="toc-text">4.2.7.2 插件检测(plugins和mimeTypes)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-3-%E6%89%B9%E9%87%8F%E7%8E%AF%E5%A2%83%E5%B8%83%E5%B0%94%E6%A3%80%E6%B5%8B"><span class="toc-text">4.2.7.3 批量环境布尔检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-4-canvas-2d%E6%8C%87%E7%BA%B9%E6%A3%80%E6%B5%8B"><span class="toc-text">4.2.7.4 canvas_2d指纹检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-5-canvas-webgl%E6%8C%87%E7%BA%B9"><span class="toc-text">4.2.7.5 canvas_webgl指纹</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-6-%E6%9C%80%E5%90%8E%E7%9A%84%E5%B0%8F%E7%8E%AF%E5%A2%83"><span class="toc-text">4.2.7.6 最后的小环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-7-%E5%B0%8F%E7%BB%93"><span class="toc-text">4.2.7.7 小结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-MmEwMD-url%E7%AD%BE%E5%90%8D"><span class="toc-text">4.3 MmEwMD(url签名)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-a%E6%A0%87%E7%AD%BE%E6%A3%80%E6%B5%8B"><span class="toc-text">4.3.1 a标签检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-sessionId1"><span class="toc-text">4.4 sessionId1</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E8%AF%B7%E6%B1%82%E6%B5%8B%E8%AF%95"><span class="toc-text">5. 请求测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E6%80%BB%E7%BB%93"><span class="toc-text">6.总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E9%99%84%E5%BD%95"><span class="toc-text">7 附录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1-%E8%A1%A5%E7%8E%AF%E5%A2%83%E6%BA%90%E7%A0%81"><span class="toc-text">7.1 补环境源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2-python%E8%AF%B7%E6%B1%82%E6%BA%90%E7%A0%81"><span class="toc-text">7.2 python请求源码</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -471,119 +525,1528 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><div class='inner-toc'><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81"><span class="toc-text">二、</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E7%AC%AC%E4%B8%80%E5%9B%9E%E5%90%88"><span class="toc-text">2.1 第一回合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E7%AC%AC%E4%BA%8C%E5%9B%9E%E5%90%88"><span class="toc-text">2.2 第二回合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E7%AC%AC%E4%B8%89%E5%9B%9E%E5%90%88"><span class="toc-text">2.3 第三回合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E7%AC%AC%E5%9B%9B%E5%9B%9E%E5%90%88"><span class="toc-text">2.4 第四回合</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%8F%8D%E5%8F%8Dhook%E5%B0%81%E8%A3%85%E6%88%90%E6%96%B9%E6%B3%95"><span class="toc-text">三、反反hook封装成方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%B5%8B%E8%AF%95"><span class="toc-text">四、测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">五、总结</span></a></li></ol></div></p>
+        <p><div class='inner-toc'><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%9B%AE%E6%A0%87%E7%A1%AE%E5%AE%9A"><span class="toc-text">二、目标确定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%89%8D%E6%9C%9F%E5%B7%A5%E4%BD%9C"><span class="toc-text">三、前期工作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%AE%9A%E4%BD%8D%E6%8E%A5%E5%8F%A3"><span class="toc-text">3.1 定位接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%B2%BE%E7%AE%80%E5%8F%82%E6%95%B0"><span class="toc-text">3.2 精简参数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B"><span class="toc-text">四、逆向工程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-FSSBBIl1UgzbN7N80S"><span class="toc-text">4.1 FSSBBIl1UgzbN7N80S</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-FSSBBIl1UgzbN7N80T"><span class="toc-text">4.2 FSSBBIl1UgzbN7N80T</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%E5%AE%9A%E4%BD%8Djs%E5%8A%A0%E5%AF%86%E5%85%A5%E5%8F%A3"><span class="toc-text">4.2.1 定位js加密入口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%E5%89%8D%E7%BD%AE%E5%87%86%E5%A4%87"><span class="toc-text">4.2.2 前置准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-%E8%AE%A9%E4%BB%A3%E7%A0%81%E8%B7%91%E9%80%9A"><span class="toc-text">4.2.3 让代码跑通</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E8%B0%83%E5%90%8C%E7%AC%AC1%E6%AC%A1cookie"><span class="toc-text">4.2.4 调同第1次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E8%B0%83%E5%90%8C%E7%AC%AC2%E6%AC%A1cookie"><span class="toc-text">4.2.4 调同第2次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-5-%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E9%80%BB%E8%BE%91"><span class="toc-text">4.2.5 实现异步逻辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-6-%E8%B0%83%E5%90%8C%E7%AC%AC3%E6%AC%A1cookie"><span class="toc-text">4.2.6 调同第3次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-7-%E8%B0%83%E5%90%8C%E7%AC%AC4%E6%AC%A1cookie"><span class="toc-text">4.2.7 调同第4次cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-1-%E5%AD%97%E4%BD%93%E6%8C%87%E7%BA%B9"><span class="toc-text">4.2.7.1 字体指纹</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-2-%E6%8F%92%E4%BB%B6%E6%A3%80%E6%B5%8B-plugins%E5%92%8CmimeTypes"><span class="toc-text">4.2.7.2 插件检测(plugins和mimeTypes)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-3-%E6%89%B9%E9%87%8F%E7%8E%AF%E5%A2%83%E5%B8%83%E5%B0%94%E6%A3%80%E6%B5%8B"><span class="toc-text">4.2.7.3 批量环境布尔检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-4-canvas-2d%E6%8C%87%E7%BA%B9%E6%A3%80%E6%B5%8B"><span class="toc-text">4.2.7.4 canvas_2d指纹检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-5-canvas-webgl%E6%8C%87%E7%BA%B9"><span class="toc-text">4.2.7.5 canvas_webgl指纹</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-6-%E6%9C%80%E5%90%8E%E7%9A%84%E5%B0%8F%E7%8E%AF%E5%A2%83"><span class="toc-text">4.2.7.6 最后的小环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-7-%E5%B0%8F%E7%BB%93"><span class="toc-text">4.2.7.7 小结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-MmEwMD-url%E7%AD%BE%E5%90%8D"><span class="toc-text">4.3 MmEwMD(url签名)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-a%E6%A0%87%E7%AD%BE%E6%A3%80%E6%B5%8B"><span class="toc-text">4.3.1 a标签检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-sessionId1"><span class="toc-text">4.4 sessionId1</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E8%AF%B7%E6%B1%82%E6%B5%8B%E8%AF%95"><span class="toc-text">5. 请求测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E6%80%BB%E7%BB%93"><span class="toc-text">6.总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E9%99%84%E5%BD%95"><span class="toc-text">7 附录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1-%E8%A1%A5%E7%8E%AF%E5%A2%83%E6%BA%90%E7%A0%81"><span class="toc-text">7.1 补环境源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2-python%E8%AF%B7%E6%B1%82%E6%BA%90%E7%A0%81"><span class="toc-text">7.2 python请求源码</span></a></li></ol></li></ol></div></p>
 <h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><p>想拿瑞数做逆向分析案例由来已久（盛名之下）,但一直不知道如何下笔, 之前通过补环境框架和手动补环境虽然通过了瑞数环境检测，但拿来写博客还是压力山大。</p>
 <p>先说手动补环境,需要扣eval层代码,流程太多,导致写起来也会太多,而且中间全是干巴巴的跟栈调试, 于读者而言未免太过枯燥；然后是补环境框架，这其实没什么可写的, 环境全在框架里, 代码一跑就通, 如何搭建补环境框架拿又是另外一码事了；</p>
-<p>最终在一个机缘巧合之下(灵光一现)萌生了这种半自动扣法。其原理是借助Proxy将常用浏览器全局对象,一共6个(window,navigator,location,document,localStorage,sessionStorage)全部挂上代理,并hook<code>console.log</code>方法, 把日志写到文件里去形成一份代理日志, 利用代理日志去补环境。</p>
+<p>最终在一个机缘巧合之下(灵光一现)萌生了这种半自动扣法。其原理是借助Proxy将常用浏览器全局对象,一共6个(window,navigator,location,document,localStorage,sessionStorage)全部挂上代理,并hook<code>console.log</code>方法（有关hook的使用,可见<a target="_blank" rel="noopener" href="https://blog.cthousand.cn/2023/06/23/document-cookie%E7%9A%84hook%E5%8F%8A%E5%BC%95%E7%94%B3/">document.cookie的hook及引申</a>, 把日志写到文件里去形成一份代理日志, 利用代理日志去补环境。</p>
 <p>这里面的精髓在于递归代理，也就是说由以上6个对象衍生出来的对象也会被自动套上代理，如对象有动作也会被记录到代理日志当中。</p>
 <p>这种方式的优势在于, 即无需在源代码前牢底坐穿只为获得一丁点的环境, 也不需从0开始构建一套补环境框架, 笔者最终代理日志约在3000行左右(什么你说眼睛都要看花了? em…手动补环境的话, 笔者扣了9000行), 那么废话不多说, 准备发车(文末贴源码，分析过程all in图)。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/6cc88da2e0844f3894c5876ed41033c1.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="代理日志总行数"></p>
-<h1 id="二、"><a href="#二、" class="headerlink" title="二、"></a>二、</h1><h2 id="2-1-第一回合"><a href="#2-1-第一回合" class="headerlink" title="2.1 第一回合"></a>2.1 第一回合</h2><p><strong>hook方:</strong></p>
-<pre><code class="javascript">let _btoa = btoa;
-btoa = function (str) &#123;
-    console.log(&#39;待编码的str&#39;, str)
-    result = _btoa(str)
-    console.log(&#39;编码后的结果&#39;, result)
-    return result
-&#125;
-</code></pre>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/0f0798b62cb14f60a09add62254b59f2.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br><strong>反hook方</strong></p>
-<pre><code class="javascript">if (btoa.toString() !== &#39;function btoa() &#123; [native code] &#125;&#39;) &#123;
-    console.log(&#39;你方已被识别出来&#39;)
-&#125;
-</code></pre>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/075e0a1200f942bc9619eb90b21cd33c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>可以看出调用<code>btoa</code>的<code>toString</code>方法得到函数字符串形式，用于和真实函数字符串比对，可以检测出函数被hook。</p>
-<h2 id="2-2-第二回合"><a href="#2-2-第二回合" class="headerlink" title="2.2 第二回合"></a>2.2 第二回合</h2><p><strong>hook方:</strong></p>
-<pre><code class="javascript">btoa.toString = function () &#123;
-    return &#39;function btoa() &#123; [native code] &#125;&#39;
-&#125;
-</code></pre>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/f83cd2e669d84ce1a3861375229019cf.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>hook方直接修改<code>btoa.toString</code>方法调用的返回结果，伪装成功。</p>
-<p><strong>反hook方:</strong></p>
-<pre><code class="javascript">if (Function.prototype.toString.call(btoa) !== &#39;function btoa() &#123; [native code] &#125;&#39;) &#123;
-    console.log(&#39;你方已被识别出来&#39;)
-&#125;
-</code></pre>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/5fb25d7af74142b88bf5f5627130841a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>反hook方不直接调用btoa的toString方法，而改为从Function原型链上的toString调用，并用call方法改变了对象指向为btoa，成功检测出hook痕迹。</p>
-<h2 id="2-3-第三回合"><a href="#2-3-第三回合" class="headerlink" title="2.3 第三回合"></a>2.3 第三回合</h2><p><strong>hook方:</strong></p>
-<pre><code class="javascript">Function.prototype.toString = function () &#123;
-    return `function $&#123;this.name&#125; () &#123; [native code] &#125;`
-&#125;
-</code></pre>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/fa38536154d44846b498d633e982bb42.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>hook方修改<code>Function.prototype.toString</code>方法，并且其还特别”贴心”的使用模版字符串，让返回字符串的函数名指向调用方，伪装成功。</p>
-<p><strong>反hook方:</strong></p>
-<pre><code class="javascript">if (Function.prototype.toString.toString() !== &#39;function () &#123; [native code] &#125;&#39;) &#123;
-    console.log(&#39;你方已被识别出来&#39;)
-&#125;
-</code></pre>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/37caccf6f3a2407a9cbde0506c8a4b2f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>反hook方检测<code>Function.prototype.toString.toString</code>方法有无被修改，成功检测出hook痕迹。</p>
-<h2 id="2-4-第四回合"><a href="#2-4-第四回合" class="headerlink" title="2.4 第四回合"></a>2.4 第四回合</h2><p><strong>hook方:</strong></p>
-<pre><code class="javascript">Function.prototype.toString.toString = function () &#123;
-    return `function () &#123; [native code] &#125;`
-&#125;
-</code></pre>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/641c9772a7b74ece9586ad0d13b3107c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>hook方法重写了<code>Function.prototype.toString.toString</code>方法，伪装成功～</p>
-<p><strong>反hook方:</strong></p>
-<pre><code class="javascript">//能不能别搞我了？有那时间干点正事不行吗？
-</code></pre>
-<p>至此，hook方暂时取得本次对抗的胜利。</p>
-<p>总结一下双方的对抗过程：</p>
+<h1 id="二、目标确定"><a href="#二、目标确定" class="headerlink" title="二、目标确定"></a>二、目标确定</h1><p>地址:aHR0cDovL3d3dy5mYW5nZGkuY29tLmNuL2luZGV4Lmh0bWw&#x3D;<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/471c5c725ab949eca6f619ab4b7452e5.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="爬取&quot;行业动态&quot;专栏列表"></p>
+<h1 id="三、前期工作"><a href="#三、前期工作" class="headerlink" title="三、前期工作"></a>三、前期工作</h1><h2 id="3-1-定位接口"><a href="#3-1-定位接口" class="headerlink" title="3.1 定位接口"></a>3.1 定位接口</h2><p>通过开发者工具定位到了接口:<code>./service/index/getHouseNews.action</code><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/6b637710002e47edb2a16aed359d48a6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="定位接口"></p>
+<h2 id="3-2-精简参数"><a href="#3-2-精简参数" class="headerlink" title="3.2 精简参数"></a>3.2 精简参数</h2><p>请求返回400, 经过调试, 每次请求时有2个参数都在动态变化(这两个参数使用一次就不能再用了)<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/0291ffd5dc274aa9a7bde3f6f05f7c2b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="精简参数但请求失败"></p>
+<p>动态参数:<code>FSSBBIl1UgzbN7N80T(cookie)</code>,<code>MmEwMD(params)</code><br>静态参数:<code>JSESSIONID1(cookie)</code>,<code>FSSBBIl1UgzbN7N80S(cookie)</code><br>所以一共有4个参数需要逆向。</p>
+<h1 id="四、逆向工程"><a href="#四、逆向工程" class="headerlink" title="四、逆向工程"></a>四、逆向工程</h1><h2 id="4-1-FSSBBIl1UgzbN7N80S"><a href="#4-1-FSSBBIl1UgzbN7N80S" class="headerlink" title="4.1 FSSBBIl1UgzbN7N80S"></a>4.1 FSSBBIl1UgzbN7N80S</h2><p><strong>思路</strong>:先验证是否是response返回, 后判断是否是js生成。<br>通过抓包工具搜索<code>response.headers</code>,确认了是由response返回得到,且接口是:<code>./index.html</code>, 且来源请求无加密参数。</p>
+<h2 id="4-2-FSSBBIl1UgzbN7N80T"><a href="#4-2-FSSBBIl1UgzbN7N80T" class="headerlink" title="4.2 FSSBBIl1UgzbN7N80T"></a>4.2 FSSBBIl1UgzbN7N80T</h2><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/a468acbcae7b4b15b442a45497a6c8da.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="response返回验证"><br>搜索不到结果，说明是js生成。<br><em>tip:如在调试过程中遇无限debugger, 右击<code>永不在此处暂停</code>,或<code>条件断点false</code>即可。</em></p>
+<h3 id="4-2-1-定位js加密入口"><a href="#4-2-1-定位js加密入口" class="headerlink" title="4.2.1 定位js加密入口"></a>4.2.1 定位js加密入口</h3><p>通过hook定位, 通过油猴在<code>document.start</code>时机注入hook。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/afb0c791a4a9461f874554fab5adba7c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="hook cookie"><br>成功hook住,并通过堆栈上寻。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/ef778724ce9c4e399115f0fcf853b635.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="上寻"><br>document.cookie赋值语句,继续上寻。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/545f4ddec5c447edb0890f68c6f8fe6f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="生成cookie值的关键代码"><br><code>var _$Pz = _$5i(5)</code>是生成cookie值的关键代码。<br>但并没有这么简单, 放开断点, 可以看到, cookie连续生成了4次, 而只有最后一次长度为324的cookie才是最终发起请求的cookie。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/a40ce9f47cc34104a7581b064e28a720.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="生成了4次cookie"><br>统计这4次cookie的堆栈生成path如下：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>第1次</th>
+<th>第2次</th>
+<th>第3次</th>
+<th>第4次</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>index.html中的ret &#x3D; <em>$cn.call(</em>$H2, _$oc);</td>
+<td>index.html下的ret &#x3D; <em>$os.call(</em>$V4, _$Zd);</td>
+<td>window.load</td>
+<td>_$k6:return _$vi.apply(this, _$eS);</td>
+</tr>
+<tr>
+<td>2</td>
+<td>vm2581下的大自执行函数</td>
+<td>VM2556中的大自执行函数</td>
+<td>_$vi(768, 2);</td>
+<td>_$fz();</td>
+</tr>
+<tr>
+<td>3</td>
+<td>_$Qo();</td>
+<td>_$Qo();</td>
+<td><em>$<em>b(</em>$ub(</em>$cn), _$fy);</td>
+<td>_$vi(768, 13);</td>
+</tr>
+<tr>
+<td>4</td>
+<td>_$bT();</td>
+<td>_$bT();</td>
+<td><em>$UO[</em>$zo[39]] &#x3D; _$sx + ‘&#x3D;’ + _$5k + _$PU() + _$zo[494] + <em>$Rp(</em>$CT);</td>
+<td><em>$<em>b(</em>$ub(</em>$cn), _$fy);</td>
+</tr>
+<tr>
+<td>5</td>
+<td>_$<em>b(</em>$dF, _$fy);</td>
+<td>_$vi(768, 1);</td>
+<td></td>
+<td><em>$UO[</em>$zo[39]] &#x3D; _$sx + ‘&#x3D;’ + _$5k + _$PU() + _$zo[494] + <em>$Rp(</em>$CT);</td>
+</tr>
+<tr>
+<td>6</td>
+<td><em>$UO[</em>$zo[39]] &#x3D; _$sx + ‘&#x3D;’ + _$5k + _$PU() + _$zo[494] + <em>$Rp(</em>$CT);</td>
+<td><em>$UO[</em>$zo[39]] &#x3D; _$sx + ‘&#x3D;’ + _$5k + _$PU() + _$zo[494] + <em>$Rp(</em>$CT);</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>总结一下入口规律:</strong></p>
 <ol>
-<li>hook方修改指定函数的方法体，在其中加了一些自己的代码。反hook方则利用函数(函数也是对象)自身的toString方法查看函数有无被修改。</li>
-<li>hook方修改函数的toString调用返回值，反hook方法用Function原型链上的toString检查。</li>
-<li>hook方修改Function原型链上的toString，反hook方用Function原型链上的toString的toString检查。</li>
-<li>最后hook方修改Function原型链上的toString的toString方法绕过检查。</li>
+<li>第1次与第2次是在同步代码阶段执行。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/8822638b4d4248fd80728beaba84d47d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="第1/2次cookie生成"></li>
+<li>第3次是在load异步事件中执行, 第4次是在setTimout异步事件中执行的</li>
 </ol>
-<p>对于hook方来说，每次为了hook一个方法，做这么多伪装多有些方便，那么可否封装一下，在需要hook某个方法的时候，直接调用封装好的反反hook方法绕过toString检测？这是合理且可行的要求。</p>
-<h1 id="三、反反hook封装成方法"><a href="#三、反反hook封装成方法" class="headerlink" title="三、反反hook封装成方法"></a>三、反反hook封装成方法</h1><pre><code class="javascript">!function () &#123;
-    const $toString = Function.prototype.toString;
-    const symbol = Symbol()
-    const myToString = function () &#123;
-        return typeof this === &#39;function&#39; &amp;&amp; this[symbol] || $toString.call(this);
+<p>接下来的目标是在本地nodejs环境将这4次cookie生成都模拟成功，且值校验一致。</p>
+<p><strong>思路</strong>:第1&#x2F;2次cookie是在eval代码中生成的, 那么补充该eval代码执行的上下文环境, 让eval顺利执行完就可以得到1次和2次的cookie代码。紧接着执行异步代码，让第3&#x2F;4也得以生成。首先要先做一些前置准备，把初始化环境搭建出来。</p>
+<h3 id="4-2-2-前置准备"><a href="#4-2-2-前置准备" class="headerlink" title="4.2.2 前置准备"></a>4.2.2 前置准备</h3><p><strong>静态文件固定：</strong><br>在调试中发现每刷新一次代码结果都会产生变化, 说明瑞数是动态加密, 那么需固定住一份静态代码以方便调试, 一切始于<code>index.html</code>, 那么index.html是一定要在本地替换一份(方法有很多,笔者这里采用的是<code>proxyman</code>抓包软件的map local功能)。</p>
+<p>观察一下index.html内部有无引用一些外链文件,发现一份<code>dfe1675.js</code>文件, 该文件也是动态变化的,因此也需固定。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/445a4c6720a74606af75d63cc0b5f804.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="index.html的外链文件"></p>
+<p><strong>随机值与时间戳固定：</strong></p>
+<pre><code class="javascript">performance = &#123;&#125; //浏览器性能相关的api
+Performance = function () &#123; &#125;
+Object.setPrototypeOf(performance, Performance.prototype) 
+Date.now = function () &#123; return 1666666666666 &#125;;
+Date.parse = function () &#123; return 1666666666666 &#125;;
+Date.prototype.valueOf = function () &#123; return 1666666666666 &#125;;
+Date.prototype.getTime = function () &#123; return 1666666666666 &#125;;
+Date.prototype.toString = function () &#123; return 1666666666666 &#125;;
+Performance.prototype.now = function () &#123; return 51523 &#125;
+Math.random = function () &#123; return 0.5 &#125;; //表示从页面打开到执行该api所经过的毫秒时间数
+</code></pre>
+<p><strong>把eval执行上下文扣到本地nodejs中, 包括一个外链js和3个自执行函数, meta中content内容暂时先不管。</strong><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/34931fc62c0c4b5e9ae71532c3ea9e77.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="eval代码的执行上下文和外链js"><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/f179b3a9b13e4f5caeea3c967ad4c3e2.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="扣到本地nodejs"></p>
+<p><strong>补充浏览器对象</strong><br>一共6个对象：window,navigator,location,document,localStorage,sessionStorage。</p>
+<p>对于window, 先补一个<code>window.name=&#39;&#39;</code>。</p>
+<p>对于document, 先补一个<code>document.cookie=&#39;&#39;</code>。</p>
+<p>对于location和navigator，笔者提供一个copy脚本，在控制台执行可以快速把对象中值为字符串、数字、布尔和列表的属性复制出来。</p>
+<pre><code class="javascript">let obj2copy = &#123;&#125;
+function objectCopy(obj) &#123;
+    for (key in Object.getOwnPropertyDescriptors(obj)) &#123;
+        // console.log(key)
+        if (Object.getOwnPropertyDescriptor(obj, key)[&#39;value&#39;] &amp;&amp; typeof (Object.getOwnPropertyDescriptor(obj, key)[&#39;value&#39;]) === &#39;string&#39;) &#123;
+            console.log(key, Object.getOwnPropertyDescriptor(obj, key)[&#39;value&#39;])
+            obj2copy[key] = Object.getOwnPropertyDescriptor(obj, key)[&#39;value&#39;]
+        &#125;
+        if (Object.getOwnPropertyDescriptor(obj, key)[&#39;get&#39;]) &#123;
+            try &#123;
+                result = obj[key]
+            &#125; catch (e) &#123;
+                continue
+            &#125;
+            if ([&#39;string&#39;, &#39;boolean&#39;, &#39;number&#39;].indexOf(typeof result) !== -1) &#123;
+                console.log(key, result)
+                obj2copy[key] = result
+            &#125;
+            if (Object.prototype.toString.call(result) === &#39;[object Array]&#39;) &#123;
+                console.log(key, result)
+                obj2copy[key] = result
+            &#125;
+        &#125;
     &#125;
-
-    function set_native(func, key, value) &#123;
-        Object.defineProperty(func, key, &#123;
-            enumerable: false,
-            configurable: true,
-            writable: true,
-            value: value
-        &#125;)
+    for (key in Object.getOwnPropertyDescriptors(obj.__proto__)) &#123;
+        // console.log(key)
+        if (Object.getOwnPropertyDescriptor(obj.__proto__, key)[&#39;value&#39;] &amp;&amp; typeof (Object.getOwnPropertyDescriptor(obj.__proto__, key)[&#39;value&#39;]) === &#39;string&#39;) &#123;
+            console.log(key, Object.getOwnPropertyDescriptor(obj.__proto__, key)[&#39;value&#39;])
+            obj2copy[key] = Object.getOwnPropertyDescriptor(obj.__proto__, key)[&#39;value&#39;]
+        &#125;
+        if (Object.getOwnPropertyDescriptor(obj.__proto__, key)[&#39;get&#39;]) &#123;
+            result = obj[key]
+            if ([&#39;string&#39;, &#39;boolean&#39;, &#39;number&#39;].indexOf(typeof result) !== -1) &#123;
+                console.log(key, result)
+                obj2copy[key] = result
+            &#125;
+            if (Object.prototype.toString.call(result) === &#39;[object Array]&#39;) &#123;
+                console.log(key, result)
+                obj2copy[key] = result
+            &#125;
+        &#125;
     &#125;
-
-    delete Function.prototype.toString;
-    set_native(Function.prototype, &#39;toString&#39;, myToString);
-    set_native(Function.prototype.toString, symbol, &quot;function toString() &#123; [native code] &#125;&quot;);
-    globalThis.setNative = function (func, funcname) &#123;
-        set_native(func, symbol, `function $&#123;funcname || func.name || &#39;&#39;&#125;() &#123; [native code] &#125;`);
+    for (key in Object.getOwnPropertyDescriptors(obj.__proto__.__proto__)) &#123;
+        // console.log(key)
+        if (Object.getOwnPropertyDescriptor(obj.__proto__.__proto__, key)[&#39;value&#39;] &amp;&amp; typeof (Object.getOwnPropertyDescriptor(obj.__proto__.__proto__, key)[&#39;value&#39;]) === &#39;string&#39;) &#123;
+            console.log(key, Object.getOwnPropertyDescriptor(obj.__proto__.__proto__, key)[&#39;value&#39;])
+            obj2copy[key] = Object.getOwnPropertyDescriptor(obj.__proto__.__proto__, key)[&#39;value&#39;]
+        &#125;
+        if (Object.getOwnPropertyDescriptor(obj.__proto__.__proto__, key)[&#39;get&#39;]) &#123;
+            result = obj[key]
+            if ([&#39;string&#39;, &#39;boolean&#39;, &#39;number&#39;].indexOf(typeof result) !== -1) &#123;
+                console.log(key, result)
+                obj2copy[key] = result
+            &#125;
+            if (Object.prototype.toString.call(result) === &#39;[object Array]&#39;) &#123;
+                console.log(key, result)
+                obj2copy[key] = result
+            &#125;
+        &#125;
+    &#125;
+&#125;
+objectCopy(localStorage) //这里写要复制的对象，可复制本身以及最近2层原型链上的属性
+copy(obj2copy)
+</code></pre>
+<p>对于localStorage和sessionStorage，把常用的三种方法补上：<code>setItem、getItem和removeItem</code>。</p>
+<p>为了避免原型链检测, 给每个对象都设置自己的原型链, 其中把window指向globalThis，一是让window成为顶级&#x2F;全局对象，二是为了方便调用一些内置api, 例如eval,escape等。</p>
+<p>环境初始化如下：</p>
+<pre><code class="javascript">//document
+document = &#123;
+&#125;
+HTMLDocument = function () &#123; &#125;
+Object.assign(HTMLDocument.prototype, &#123;
+    cookie: &#39;&#39;,
+    [Symbol.toStringTag]: &#39;[object HTMLDocument]&#39;, //对象的名字,调用Object.prototype.toString.call()时指向即是该属性值
+&#125;)
+Object.setPrototypeOf(document, HTMLDocument.prototype)
+//navigator
+navigator = &#123;
+&#125;
+Navigator = function () &#123; &#125;
+Object.assign(Navigator.prototype, &#123;
+    &quot;vendorSub&quot;: &quot;&quot;,
+    &quot;productSub&quot;: &quot;20030107&quot;,
+    &quot;vendor&quot;: &quot;Google Inc.&quot;,
+    &quot;maxTouchPoints&quot;: 0,
+    &quot;pdfViewerEnabled&quot;: true,
+    &quot;hardwareConcurrency&quot;: 8,
+    &quot;cookieEnabled&quot;: true,
+    &quot;appCodeName&quot;: &quot;Mozilla&quot;,
+    &quot;appName&quot;: &quot;Netscape&quot;,
+    &quot;appVersion&quot;: &quot;5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36&quot;,
+    &quot;platform&quot;: &quot;MacIntel&quot;,
+    &quot;product&quot;: &quot;Gecko&quot;,
+    &quot;userAgent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36&quot;,
+    &quot;language&quot;: &quot;zh-CN&quot;,
+    &quot;languages&quot;: [
+        &quot;zh-CN&quot;
+    ],
+    &quot;onLine&quot;: true,
+    &quot;webdriver&quot;: false,
+    [Symbol.toStringTag]: &#39;[object Navigator]&#39;,
+&#125;)
+Object.setPrototypeOf(navigator, Navigator.prototype)
+//location
+location = &#123;
+    &quot;href&quot;: &quot;http://www.fangdi.com.cn/index.html&quot;,
+    &quot;origin&quot;: &quot;http://www.fangdi.com.cn&quot;,
+    &quot;protocol&quot;: &quot;http:&quot;,
+    &quot;host&quot;: &quot;www.fangdi.com.cn&quot;,
+    &quot;hostname&quot;: &quot;www.fangdi.com.cn&quot;,
+    &quot;port&quot;: &quot;&quot;,
+    &quot;pathname&quot;: &quot;/index.html&quot;,
+    &quot;search&quot;: &quot;&quot;,
+    &quot;hash&quot;: &quot;&quot;,
+&#125;;
+Location = function () &#123; &#125;
+Object.assign(Location.prototype, &#123;
+    [Symbol.toStringTag]: &#39;[object Location]&#39;
+&#125;)
+Object.setPrototypeOf(location, Location.prototype)
+//localStorage
+localStorage = &#123;
+&#125;
+Storage = function () &#123; &#125;
+Object.assign(Storage.prototype, &#123;
+    setItem: function (name, value) &#123;
+        this[name] = value
+    &#125;,
+    getItem: function (name) &#123;
+        return this[name]
+    &#125;,
+    removeItem: function (name) &#123;
+        delete this[name]
+    &#125;,
+    [Symbol.toStringTag]: &#39;[object Storage]&#39;
+&#125;)
+Object.setPrototypeOf(localStorage, Storage.prototype)
+//sessionStorage
+sessionStorage = &#123;
+&#125;
+Object.setPrototypeOf(sessionStorage, Storage.prototype)
+//window
+window = globalThis
+Object.assign(window, &#123;
+    name: &#39;&#39;,
+&#125;)
+Window = function () &#123; &#125;
+Object.assign(Window.prototype, &#123;
+    [Symbol.toStringTag]: &#39;[object Window]&#39;,
+&#125;)
+Object.setPrototypeOf(window, Window.prototype)
+</code></pre>
+<h3 id="4-2-3-让代码跑通"><a href="#4-2-3-让代码跑通" class="headerlink" title="4.2.3 让代码跑通"></a>4.2.3 让代码跑通</h3><p>准备工作完毕后即可开始执行代码, 这一步的原则是缺啥补啥, 先让代码跑通, 至于跑的结果对不对放在第二步做。(这里先不上代理，用手动补思路，即去浏览器调试为主补充环境，方便对比看出手法的差异)<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/113cad0f9cd84efeb4797b5d858de71a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="报错:不能读取未定义的location属性"><br>复制相关代码, 去浏览器中调试。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/f29636a8e0f7451588fa7501541b661e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="window.top指向window"><br>发现需要补<code>window.top=window</code>，补完之后重新执行：<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/99b8bdc2b4e240aab76d335392be4c6d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="报错:xx is not a function"><br>复制相关代码, 去浏览器中调试。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/0eb15052eaef45849c3de29327c8baf8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="浏览器调试"><br>通过调试可知：该处逻辑是创建一个div标签, 然后用getElementsByTagName取到div标签里的i元素, 返回结果是一个空列表, 补充这两个方法即可, 注意把这些方法都写到原型对象中, 以防原型链检测。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/5c5afe92486f4d7d8c03715d6f28506f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="补充document.createElement"><br>重新运行：<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/58471651acb54903a970a696e77fd8d0.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="报错：xx is not a function"><br>复制相关代码去浏览器中调试：<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/b94bdb816f504df98f3c8da6b08e2b89.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="浏览器调试"><br>这里有一个<code>if..else</code>, 要注意把断点打在if里, 原来是缺少<code>window.addEventListener</code>, 先补一个空方法。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/7201fbe66b6143f8af15e4b0838d9378.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="补充window.addEventListener"><br>重新运行报错, 继续去浏览器中调试，发现是document.getElementsByTagName(‘meta’),返回结果:<code>[meta meta]</code>,取最后一个meta中content属性的值, 最后调用其父元素删除子元素。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/707bba495a96482eaa0c6d6fb0ce1990.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="补上相关逻辑"><br>重新执行报错, 浏览器中调试发现缺少<code>document.write</code>方法, 思路:document.write并无返回值, 创建的标签必然在后面用到, 因此需要把dom节点解析对象然后保存到全局对象中, 笔者这里用的是第三方库(<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/html-dom-parser">html-dom-parser</a>, 为了能够监控这个对象后续的操作, 我们将其封装代理对象然后推入到全局对象中。</p>
+<p>然后跟进_$_T函数内, 里面的逻辑是用getElementByTagName获取所有的script标签, 取最后一个script并调用其父节点删掉此标签, 因此也需要补一下, removeChild给一个空方法即可。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/62d6580d22884fbe88ad7ab6351f05fa.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="补充document.write环境"><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/cd46667b4c144b68876547f7509da931.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="补充getElementbyTagName(&#39;script&#39;)环境"><br>重新运行，报错提示说xx不是一个函数, 调试发现是获取到的script标签缺少attribute属性, 下图代码的逻辑是, 删除当前页面中所有属性r值为m的script的标签, 那么我们需要在script(上一步中补充)内部实现一个getAttribute方法, 该方法置空即可。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/701cba4bdf61433bae9595f5fd8bb860.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="补充script标签的getAttribute方法"><br>重新运行，发现代码一直在执行不停下来, 这说明同步代码已经执行完了, 现在在执行异步代码, 这里是遇到了setInterval(与setTimeout都是nodejs内置api), 我们先赋空该函数(包括setTimeout)。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/823c192fcfac4a3aa8f54301209bf0ee.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="赋空setInterval和setTimout"><br>至此,代码流程已经跑通,第二步是细补环境,出结果并保证结果一致。</p>
+<h3 id="4-2-4-调同第1次cookie"><a href="#4-2-4-调同第1次cookie" class="headerlink" title="4.2.4 调同第1次cookie"></a>4.2.4 调同第1次cookie</h3><p>em..直接在代码末打印document.cookie。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/7a059a7de6e14953b81a07a910821735.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="第1次cookie无需调同，直接一致。"></p>
+<h3 id="4-2-4-调同第2次cookie"><a href="#4-2-4-调同第2次cookie" class="headerlink" title="4.2.4 调同第2次cookie"></a>4.2.4 调同第2次cookie</h3><p>虽然第1次cookie保持了一致，但第2次cookie却并不一致，说明我们本地缺失了某些环境，或者某些环境补的不对。<br>具体而言，主要原因是nodejs没有bom和dom环境, 当然也有其他的原因, 比如nodejs中有些环境浏览器中没有, 这部分就可能变成浏览器端针对nodejs的检测点， 守方利用try.catch或if.else或三元表达式又switch.case等控制流语句,依据环境的差异改变流程执行分支, 这就造成了结果不一致。</p>
+<p>因此,矛盾点在于，作为攻方的我们如何找处哪些环境存在差异？这里顺势引入本文的重头戏，利用Proxy代理嗅探缺失环境。</p>
+<p>利用Proxy之前，首先要有一个认知, 浏览器端所有定义在全局作用域的变量、函数都是window的属性或方法, nodejs端这个对象即是globalThis, 那么我们给全局对象挂一层代理, 把这层环境作为第0层的话，第0层缺失的环境就很容易暴露出来了。<br>紧接着我们给navigator,document,location,localStorage,sessionStorage挂上代理, 这些都是window的属性, 代表第一层环境, 当然还会有第二层, 第三层代理, 我们上递归即可。</p>
+<p>关于具体Proxy如何使用, 之前写过一篇文章<a target="_blank" rel="noopener" href="https://blog.cthousand.cn/2023/07/06/proxy%E4%B8%8Ereflect%E5%97%85%E6%8E%A2%E7%BC%BA%E5%A4%B1%E7%8E%AF%E5%A2%83/">Proxy与Reflect嗅探缺失环境</a>, 本文就不在赘述了，直接贴代码。</p>
+<pre><code class="javascript">yueqian = &#123;
+    symbolProxy: Symbol(&quot;proxy&quot;), //用于避免无限递归(类似window.self=window)
+    symbolRawFatherObj: Symbol(&#39;fatherObj&#39;),//用于更改apply行为内部this指向到原生对象,而非Proxy对象
+    symbolRawSelfObj: Symbol(&#39;selfObj&#39;),//用于更改construct行为内部this指向到原生对象,而非Proxy对象
+    symbolRawName: Symbol(&#39;rawName&#39;),//用于表示被创建的元素名称,方便在内存中通过此属性精准定位到
+&#125;
+//代理部分
+yueqian.proxy = function (obj, objName) &#123;
+    // 代理前需要注意,一些configuable为false的对象不可被代理,需要滤过
+    let propertyDes = obj[yueqian.symbolRawFatherObj] &amp;&amp; Object.getOwnPropertyDescriptor(obj[yueqian.symbolRawFatherObj], obj[yueqian.symbolRawName])
+    let configurable = propertyDes &amp;&amp; propertyDes[&#39;configurable&#39;]
+    if (configurable === false) &#123;
+        return obj
+    &#125;
+    //对于有proxy symbol标记的,返回这个标记中存储的值 1)确保每个对象只被代理一次,2)过window.Top===window类似检测,由于window.Top还是返回window,这句话可以保证不重复代理,直接嫁接到window本身
+    if (Object.hasOwnProperty.call(obj, yueqian.symbolProxy)) &#123;
+        return obj[yueqian.symbolProxy]
+    &#125;
+    let handler = &#123;
+        get: function (target, prop, receiver) &#123;// 三个参数
+            // if(prop===&#39;innerText&#39;)&#123;debugger&#125;
+            let result;
+            result = Reflect.get(target, prop, receiver); //通过反射拿到结果
+            //过滤输出一些属性
+            if ((yueqian.proxy_filters_init.indexOf(prop) !== -1) || typeof prop === &#39;symbol&#39; || (yueqian.proxy_filters_custom.indexOf(prop) !== -1)) &#123;
+                return result;
+            &#125;
+            let type = Object.prototype.toString.call(result);
+            if (result instanceof Object) &#123;
+                //将原生父对象(相对于result)的地址存到result的symbol属性中,方便在apply行为中更改this指向
+                Object.defineProperty(result, yueqian.symbolRawFatherObj, &#123;
+                    value: target
+                &#125;)
+                //将原生对象地址存到result的symbol属性中,方便在construct行为中更改this指向
+                Object.defineProperty(result, yueqian.symbolRawSelfObj, &#123;
+                    value: result
+                &#125;)
+                //将对象名字存到result的symbol属性中,在过滤不可配置属性时(Object.hasOwnProperty)作为prop字符串
+                Object.defineProperty(result, yueqian.symbolRawName, &#123;
+                    value: prop
+                &#125;)
+                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],type:[$&#123;type&#125;]&#125;`);
+                // 递归代理
+                result = yueqian.proxy(result, `$&#123;objName&#125;.$&#123;prop.toString()&#125;`);
+            &#125; else if (typeof result === &quot;symbol&quot;) &#123;
+                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[$&#123;result.toString()&#125;]&#125;`);
+            &#125; else &#123;
+                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[$&#123;result&#125;]&#125;`);
+            &#125;
+            return result;
+        &#125;,
+        set: function (target, prop, value, receiver) &#123;
+            let result;
+            result = Reflect.set(target, prop, value, receiver);
+            //过滤输出一些属性
+            if ((yueqian.proxy_filters_init.indexOf(prop) !== -1) || typeof prop === &#39;symbol&#39; || (yueqian.proxy_filters_custom.indexOf(prop) !== -1)) &#123;
+                return result;
+            &#125;
+            let type = Object.prototype.toString.call(value);
+            if (value instanceof Object) &#123;
+                console.log(`&#123;set|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],value_type:[$&#123;type&#125;]&#125;`);
+            &#125; else if (typeof value === &quot;symbol&quot;) &#123;
+                console.log(`&#123;set|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],value:[$&#123;value.toString()&#125;]&#125;`);
+            &#125; else &#123;
+                let value_length = value &amp;&amp; value.length
+                console.log(`&#123;set|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],value:[$&#123;value&#125;]&#125; length:$&#123;value_length&#125;`)
+            &#125;
+            return result;
+        &#125;,
+        deleteProperty: function (target, propKey) &#123;
+            let result = Reflect.deleteProperty(target, propKey);
+            //过滤输出一些属性
+            if ((yueqian.proxy_filters_init.indexOf(propKey) !== -1) || typeof propKey === &#39;symbol&#39;) &#123;
+                return result;
+            &#125;
+            console.log(`&#123;deleteProperty|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;propKey.toString()&#125;], result:[$&#123;result&#125;]&#125;`);
+            return result;
+        &#125;,
+        apply: function (target, thisArg, argumentsList) &#123;
+            // target: 函数对象
+            // thisArg: 调用函数的this指针
+            // argumentsList: 数组， 函数的入参组成的一个列表
+            let arg = Object.prototype.toString.call(argumentsList[0]);
+            if (typeof argumentsList[0] === &#39;string&#39;) &#123;
+                arg = argumentsList[0].slice(0, 30)
+            &#125;
+            let result;
+            thisArg = target[yueqian.symbolRawFatherObj] //更改apply的this指向为原生对象(内置对象的this指向必须为原生对象,不可以是代理对象)
+            result = Reflect.apply(target, thisArg, argumentsList);
+            let type = Object.prototype.toString.call(result);
+            if (result instanceof Object) &#123;
+                let result_objName = `$&#123;objName&#125;_obj$&#123;yueqian.func_ret_seq++&#125;`
+                result = yueqian.proxy(result, result_objName) //让function返回的对象也自动套上代理
+                console.log(`&#123;apply|function:[$&#123;objName&#125;], arg:$&#123;arg&#125;, type:[$&#123;type&#125;]&#125;`);
+            &#125; else if (typeof result === &quot;symbol&quot;) &#123;
+                console.log(`&#123;apply|function:[$&#123;objName&#125;], arg:$&#123;arg&#125;, result:[$&#123;result.toString()&#125;]&#125;`);
+            &#125; else if (typeof result === &quot;string&quot;) &#123;
+                console.log(`&#123;apply|function:[$&#123;objName&#125;], arg:$&#123;arg&#125;, result:[$&#123;result.slice(0, 50)&#125;]&#125;`);
+            &#125; else &#123;
+                console.log(`&#123;apply|function:[$&#123;objName&#125;], arg:$&#123;arg&#125;, result:[$&#123;result&#125;]&#125;`);
+            &#125;
+            return result;
+        &#125;,
+        construct: function (target, argArray, newTarget) &#123;
+            // target: 函数对象
+            // argArray： 参数列表
+            // newTarget：代理对象
+            let result;
+            newTarget = target[yueqian.symbolRawSelfObj] //更改this指向为原生对象(内置对象的this指向必须为原生对象,不可以是代理对象)
+            result = Reflect.construct(target, argArray, newTarget);
+            let type = Object.prototype.toString.call(result);
+            result = yueqian.proxy(result, objName)
+            console.log(`&#123;construct|function:[$&#123;objName&#125;], type:[$&#123;type&#125;]&#125;`);
+            return result;
+        &#125;,
+    &#125;;
+    let proxyObj = new Proxy(obj, handler);
+    //防止重复代理，导致代理被用嵌套对比的方式检测出来
+    Object.defineProperty(obj, yueqian.symbolProxy, &#123;
+        configurable: true,
+        enumerable: false,
+        writable: false,
+        value: proxyObj
+    &#125;)
+    return proxyObj
+&#125;
+</code></pre>
+<p>关于symbol属性，已在注释中阐明其用途。</p>
+<p>挂上代理后再执行,控制台会自动吐出调用过的环境。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/d76bd3bec17e4d389e2803deb56c6150.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="控制台自动吐环境"><br>用终端看输出日志有些不太方便(显示效果、无法持久保持等),可以hook console.log方法,将其写入到文件中。</p>
+<pre><code class="javascript">//hook console.log方法，将日志写到文件中
+!function () &#123;
+    if (yueqian.log === true) &#123; //配置是否将日志写到文件
+        let _log = console.log
+        fs.writeFileSync(__dirname + &#39;/proxy_log.txt&#39;, &#39;&#39;)
+        console.log = function () &#123;
+            let log = &#39;&#39;
+            for (let i = 0; i &lt; arguments.length; i++) &#123;
+                log += (arguments[i].toString() + &#39; &#39;)
+            &#125;
+            log += &#39;\n&#39;
+            fs.appendFileSync(__dirname + &#39;/proxy_log.txt&#39;, log)
+            _log(...arguments)
+        &#125;
     &#125;
 &#125;()
 </code></pre>
+<p>吐出的环境中可以看见很多是undefined, 这部分去浏览器控制台打印调试查探一下真实返回值什么, 以下是找到的异常环境以及参照浏览器补充的值。<br>参考以下原则:</p>
 <ol>
-<li>为什么要用自执行函数包裹起来？</li>
+<li>如果是对象, 先以{}补之, 看后几层代理暴露情况，暴露了再补，没暴露就不补</li>
+<li>如果是方法, 先以空方法补之，与对象类似，看后几层代理暴露情况，暴露了再补，没暴露就不补</li>
+<li>如果浏览器端也返回undefined,那么就不管</li>
 </ol>
-<ul>
-<li>为了防止内部变量污染外部变量，比如<code>set_native</code>，如果外部也有这么一个同步函数，那么产生覆盖效果。</li>
-</ul>
-<ol start="2">
-<li>为什么要用<code>symbol</code>作为属性名？</li>
+<pre><code class="javascript">window.indexedDB=&#123;&#125;
+window.self=window
+window.webkitRequestFileSystem=function()&#123;&#125;
+window.openDatabase=function()&#123;&#125;
+window.XMLHttpRequest=function()&#123;&#125;
+window.chrome=&#123;&#125;
+document.documentElement.getAttribute=function()&#123;&#125;
+navigator.connection=&#123;&#125;
+</code></pre>
+<p>补充了以上环境后,再重新执行:<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/ff30ee12237640c3a2ae0b84f923ad04.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="第2次cookie生成一致"><br>可见，在代理日志的帮助下，我们很快补齐了环境。<br>接下来是调异步代码，将第3&#x2F;4次cookie也调成一致(先要实现异步逻辑)。</p>
+<h3 id="4-2-5-实现异步逻辑"><a href="#4-2-5-实现异步逻辑" class="headerlink" title="4.2.5 实现异步逻辑"></a>4.2.5 实现异步逻辑</h3><p><strong>思路:</strong><br>nodejs本身的setTimeout&#x2F;setInterval的确实现了异步功能，但addEventListener可是我们自定义的方法，nodejs本身没有提供，因此做一份伪异步代码。怎么实现呢？</p>
+<ol>
+<li>改写addEventListener和setTimeout&#x2F;setInterval方法, 让其把异步回调函数及调用方、入参等信息包装一个对象保存到全局对象中去，假设叫异步任务池。</li>
+<li>在同步代码执行结束后，排列异步任务池中的任务，生成一份异步执行池，排列逻辑依据3点: <strong>push顺序和time参数和异步任务类型</strong>。<ol>
+<li>load事件执行时机等同于setTimout事件time为0,</li>
+<li>对于非load事件time赋予20s(使其执行时机尽量靠后）</li>
+<li>unload事件删除(当前窗口销毁才会触发)</li>
+<li>超过1s的异步任务全部删除(超过几秒由浏览器调试结果而定, 如果想要的结果是在1s后异步任务产生，那么需更改该参数，笔者调试结果是0s的setTimout事件)</li>
+<li>剩余依排列逻辑推入异步执行池</li>
 </ol>
-<ul>
-<li>symbol一但用Symbol创造出来，就具有独一无二的特性，能够有效的避免与对象中其它属性成员的命名冲突。</li>
-</ul>
-<ol start="3">
-<li><code>globalThis</code>是什么意思？</li>
+</li>
+<li>从异步执行池中取异步任务, 判断其类型并分发不同的执行逻辑, 最后while循环确保每次异步任务执行完都会重新排列异步任务池生成异步执行池, 直到异步任务池中无任务。</li>
 </ol>
-<ul>
-<li>在nodejs中，等同于<code>global</code>，在window中，等同于<code>window</code>,这里的作用是将<code>setNative</code>这个对象指向的函数导出来外部作用域中。</li>
-</ul>
-<ol start="4">
-<li>能简单说一下这段代码的逻辑吗？</li>
+<pre><code class="javascript">//异步环境
+//异步事件全局配置
+let async_seq = 0; //记录push的先后次序
+asyncEvents = &#123; //放置异步任务
+    addEventListener: &#123;&#125;,
+    setTI: [], //setTimout和setInterval放在一个列表中
+&#125;
+let init_events_pool = &#123;
+    load: &#123;&#125;, //放置异步事件,主要是addlistener事件,回调函数会默认传一个event,到时候就从这里去
+    other: &#123;&#125;, //把load事情单独拿出来,是因为事件之间携带的信息不同,要有所区分
+&#125;
+let async_exec_pool = [] //异步执行池
+//异步池排列逻辑,每执行完一个异步事件对异步池重新排列(因为异步任务有可能还会注册异步任务)
+function async_pool_get() &#123;
+    //每次执行前,排列异步池事件,逻辑:setTimeout/setInterval time 0权重最大,先于load执行,每执行完一个从池中删除
+    let setTIEventPool = asyncEvents.setTI;
+    async_exec_pool = async_exec_pool.concat(setTIEventPool)
+    //清空池
+    asyncEvents.setTI = []
+
+    delete asyncEvents.addEventListener[&#39;unload&#39;] //删除unload事件
+
+    let otherListeners = asyncEvents.addEventListener
+    for (const listenersKey in otherListeners) &#123;
+        let other_listenPool = otherListeners[listenersKey]
+        async_exec_pool = async_exec_pool.concat(other_listenPool)
+        asyncEvents.addEventListener[listenersKey] = []
+    &#125;
+    let new_async_exec_pool = []
+    //pool中time大于1000的全部丢弃,丢弃阈值由浏览器端调试结论决定,这里笔者调试结论为1s
+    for (let i = 0; i &lt; async_exec_pool.length; i++) &#123;
+        let event = async_exec_pool[i]
+        let time = event.time
+        if (time &lt;= 1000) &#123;
+            new_async_exec_pool.push(event)
+        &#125;
+    &#125;
+    //对pool进行排序 load在监听事件中理应是先的,但不排除非先清空,到时候具体问题具体分析,这里先手动给load time设置为1
+    new_async_exec_pool.sort((a, b) =&gt; &#123;
+        if (a[&#39;time&#39;] &lt; b[&#39;time&#39;]) &#123;
+            return -1
+        &#125; else if (a[&#39;time&#39;] &gt; b[&#39;time&#39;]) &#123;
+            return 1
+        &#125;
+        if (a[&#39;seq&#39;] &lt; b[&#39;seq&#39;]) &#123;
+            return -1
+        &#125; else if (a[&#39;seq&#39;] &gt; b[&#39;seq&#39;]) &#123;
+            return 1
+        &#125;
+        return 0
+    &#125;)
+
+    return new_async_exec_pool
+&#125;
+function async_pool_exec(async_exec_pool) &#123;
+    if (async_exec_pool.length === 0) &#123;
+        return //池空则不执行
+    &#125;
+    //遍历执行pool,用shift取
+    let pool_event = async_exec_pool.shift()
+    let pool_event_out_type = pool_event[&#39;out_type&#39;]
+    if (pool_event_out_type === &#39;addEventListener&#39;) &#123;
+        let inner_type = pool_event[&#39;type&#39;]
+        let self = pool_event[&#39;self&#39;]
+        let func = pool_event[&#39;func&#39;]
+        if (inner_type === &#39;load&#39;) &#123;
+            console.log(`$&#123;this&#125; $&#123;pool_event_out_type&#125; $&#123;inner_type&#125; 事件正在执行 &gt; $&#123;func.name&#125;`)
+            let loadEvent = init_events_pool.load
+            func.call(self, loadEvent)
+        &#125; else &#123;
+            //除load事件外,其余事件均以观察为主,如果调式发现确实用到,则取消注释
+            /*             let loadEvent=init_events_pool.other
+                        func.call(self, loadEvent)
+                        console.log(`$&#123;pool_event_out_type&#125; $&#123;inner_type&#125; 正在执行 &gt; $&#123;func.name&#125;`) */
+        &#125;
+    &#125; else if ([&#39;setInterval&#39;, &#39;setTimeout&#39;].indexOf(pool_event_out_type) !== -1) &#123;
+        let func = pool_event[&#39;func&#39;]
+        let params = pool_event[&#39;params&#39;]
+        let time = pool_event[&#39;time&#39;]
+        console.log(`$&#123;pool_event_out_type&#125;|$&#123;time&#125; 事件正在执行 &gt; $&#123;func.name&#125;`)
+        func.call(window, ...params)
+    &#125; else &#123;
+        console.log(`$&#123;pool_event_out_type&#125; 未实现`)
+    &#125;
+    return async_exec_pool
+&#125;
+</code></pre>
+<h3 id="4-2-6-调同第3次cookie"><a href="#4-2-6-调同第3次cookie" class="headerlink" title="4.2.6 调同第3次cookie"></a>4.2.6 调同第3次cookie</h3><p>重新运行代码:<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/57516d5169214564b5faca690c169cbd.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="报错:xx is not a function"><br>调试: document.getElementById获取__anchor__ 返回null。<br>补环境: 补document.getElementById返回null即可。<br>重新运行代码:<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/c72661cb72084292b5b43eb4249999d0.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="报错:xx没有width属性"><br>调试:缺少screen对象<br>补环境:补充screen对象(使用上面提过的一键copy脚本)<br>从调试过程来看，这里获取screen的各个属性放到一个列表中, 推测这里可能是要拿这部分做加密组件。<br>重新执行, 没有再产生报错, 那么接下来比对一下第3次cookie是否一致:<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/f48f74eabafd482da73bad00fbb86e6d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="比较第3次cookie是否一致"><br>比对结果一致。</p>
+<p><strong>补充:</strong><br>在日志输出中可以看到浏览器对于navigator的原型链进行了检测, 通过hasOwnProperty方法判断一个属性是否是自身的属性:<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/b8b36a0f31194d51ad1469f975bbfab6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="检测navigator原型链"><br>但事实情况是navigator根本就没有属于自己的属性:<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/9aae7c7cc92a496dae4e502e86b957a3.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="navigator对象无自身属性"><br>而我们早在一开始就补充navigator的原型链, 并将属性放置到了原型链中(是是自身属性还是原型链属性需要去浏览器中实地考察), 因此关于navigator的原型链检测我们无感通过。</p>
+<h3 id="4-2-7-调同第4次cookie"><a href="#4-2-7-调同第4次cookie" class="headerlink" title="4.2.7 调同第4次cookie"></a>4.2.7 调同第4次cookie</h3><p><strong>思路:</strong><br>在终端中我们并未见到第4次cookie的生成, 想来应该是某些环境没有补, 导致没有走到正确的分支上(如果是环境值不对则会导致加密结果不一致), 因此这一节的主要打法是借助代理日志补环境。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/7d5f9af62e2c4bd6a32a34c825e40943.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="document.body.firstChid.nextSibling&gt;undefined"><br>异常日志: <code>document.body.firstChid.nextSibling</code>,返回<code>undefined</code><br>调试: 这种DOM对象虽然也属于浏览器环境，但不适合直接控制台调试，因为它会变化，所以此处选择跟栈调试，运行到正确的堆栈，然后在控制台打印输出结果。调查表明，正确返回应该是之前用<code>document.write</code>生成的<code>input</code>标签, 此处采用<code>Proxy.get</code>实现动态拦截并返回事先存在内存中的<code>input</code>对象, 拦截规则以target和prop为凭。</p>
+<p>然后还会出现一些报错, 最终补成如下图所示, 不难看出, 该步逻辑是为了删除页面中的某个<code>script</code>标签, 但对于本地环境而言, 根本就不存在<code>DOM</code>树, 也就是说其实啥也不做也没什么影响。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/05ca3694a91c4444b23f1dd1bd914cc7.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="document.body.firstChid.nextSibling 补环境"></p>
+<p>接下为了加快进程，一些小环境就直接贴结果了，一些重要的环境会停下来，详细分析。<br>补充：<code>window.clientInformation=navigator</code><br>补充：<code>document.createElement(&#39;div&#39;).style=&#123;&#125;</code></p>
+<h4 id="4-2-7-1-字体指纹"><a href="#4-2-7-1-字体指纹" class="headerlink" title="4.2.7.1 字体指纹"></a>4.2.7.1 字体指纹</h4><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/08afd04b291447859ed5ca5b24fa9d74.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="innerHTML环境"><br>这里开始进入字体指纹, 通过<code>innerHTML</code>创造的标签方法参考<code>document.write</code> ,用<code>Proxy.set</code>去实现该功能, 拦截规则依据<code>set-value</code>值判定, 但不同的是, 这次w无需要放到全局对象中, 而是放到这个<code>innerHTML</code>调用者对象下面。<br>补充: <code>document.body.appendChild=function()&#123;&#125;</code><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/c0bcade5289740ca83c69dfd46f7bfc1.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="获取字体宽高"><br>上图中日志显示，浏览器正在获取默认字体宽高(当一种<code>font</code>不被当前浏览器支持时返回的宽高，可以看到这里在设置一种叫<code>mmllii</code>的字体，这显然是浏览器不支持的字体)，这部分环境通过Proxy.get解决。</p>
+<p>可以看到接下来会有非常多的设置字体样式操作，以及获取最新字体宽高的过程，如果依据调试结果逐个用<code>Proxy.get</code>补充的话，会比较辛苦(400+的字体库)，因此这里换一种思路：</p>
+<blockquote>
+<p>将浏览器已经支持的字体库拿下来保存到全局变量中，在设置字体时比较<code>style</code>属性中的字体样式，如果符合则直接返回一个与默认宽高不同的宽高。</p>
+</blockquote>
+<p>实时跟栈调试这部分代码，可以看到支持的字体样式都被push到一个_$RE的变量中，那么把该变量中的值<code>copy</code>出来：<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/f0252518f4e84613a1d7c7131fd967a6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="拿到浏览器支持的字体文件库"></p>
+<p>将浏览器支持的字体列表放置到全局变量中，并动态修改<code>span</code>元素对象的<code>get</code>行为的返回值，由于字体指纹加密用到的是字体样式名称，而与宽高值无关，因此返回值可以任意设置，只要不与默认宽高相同即可：<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/4fc5b69c87d64662818ec94459208393.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="拦截并修改字体宽高值"><br>自此字体指纹已经通过。</p>
+<p>补充：<code>document.body.removeChild=function()&#123;&#125;</code></p>
+<h4 id="4-2-7-2-插件检测-plugins和mimeTypes"><a href="#4-2-7-2-插件检测-plugins和mimeTypes" class="headerlink" title="4.2.7.2 插件检测(plugins和mimeTypes)"></a>4.2.7.2 插件检测(plugins和mimeTypes)</h4><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/f29a754c0da64ec0a250a6dbf6ca138d.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="navigator.plugins检测"><br>补充<code>navigator.plugins=&#123;&#125;</code>，然后重新运行，看能不能走通某些分支，以暴露出更多的环境。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/6aefaaf983584a7c83a8516f28f49dff.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="果然有更多环境暴露出来了"><br>然后就这样一步步往下补，最终补成如下图所示：<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/1faf19340d674f3f81c9960c01e0ce5f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="插件环境补充"><br>这里看出检测点是:</p>
+<ol>
+<li>获取<code>navigator.plugins</code>中插件的<code>name</code>属性。</li>
+<li>获取<code>navigator.mimeTypes</code>中的<code>type</code>属性。</li>
 </ol>
-<ul>
-<li>首先，为传入的函数定义一个叫symbol的属性，这个属性的值是<code>function $&#123;funcname || func.name || &#39;&#39;&#125;() &#123; [native code] &#125;</code><br>，其中funcname是传进来的参数，如果不传，会自动调用<code>func. name</code>获取；其次重写<code>Function.prototype</code><br>的toString属性，让其返回调用对象的symbol属性值，如此，每次调用函数toString方法都会返回事先定义好的symbol属性值；最后，手动为<code>Function.prototype. toString</code>定义一个symbol属性，返回<code>&quot;function toString() &#123; [native code] &#125;&quot;</code>，如此，即使用toSting检测<code>Function.prototype. toString</code>有无被重写，也只会得到指定内容，至此toString型的反反hook检测封装完成。</li>
-</ul>
-<h1 id="四、测试"><a href="#四、测试" class="headerlink" title="四、测试"></a>四、测试</h1><p><strong>未启用<code>setNative</code>时：</strong><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/23bda9ee76ea478aa06edfcf1c475c11.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br><strong>启用<code>setNative</code>后：</strong><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/99473cdcc4364de5a981ce34532ea969.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
-<h1 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h1><p>本文先介绍了hook的原理和作用，其次用<code>btoa</code>为例列举了hook与反hook之间的对抗情形，最后将hook的反反检测手段封装成一个方法并进行测试，测试结果表明，该方法可以有效的对抗toString型的反hook检测。</p>
+<h4 id="4-2-7-3-批量环境布尔检测"><a href="#4-2-7-3-批量环境布尔检测" class="headerlink" title="4.2.7.3 批量环境布尔检测"></a>4.2.7.3 批量环境布尔检测</h4><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/6c18482d367c4b6c9834b441f9d87474.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="批量环境布尔检测"><br>接下来是一系列的环境检测，这个没有什么好说的，见一个补一个，最终笔者取到了38个环境待补，其中有7个环境是<code>nodejs</code>本身就存在的，不需要补，尚需补31个环境：<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/9257641cc51145e784fea7d26a5e0a57.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="31个环境待补"><br>在补充的时候需要注意2点：</p>
+<ol>
+<li>不同的环境给到不同的对象，比如是document下的环境要放到document下，window下的给到window</li>
+<li>与之前补过的环境合并，例如之前补过document.body，这里要进行合并操作，避免覆盖引起之前的环境缺失</li>
+</ol>
+<h4 id="4-2-7-4-canvas-2d指纹检测"><a href="#4-2-7-4-canvas-2d指纹检测" class="headerlink" title="4.2.7.4 canvas_2d指纹检测"></a>4.2.7.4 canvas_2d指纹检测</h4><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/a169b9ff8a2e423fa2cb631cd08d086e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="canvas_2d指纹检测"><br>从日志中可以看到，浏览器创建了一个<code>canvas</code>对象，看来是要拿<code>canvas</code>指纹做加密了。<br>补充：<code>canvas.getContext.fillRect=()=&gt;&#123;&#125;</code><br>补充：<code>canvas.getContext.fillText=()=&gt;&#123;&#125;</code><br>canvas中其余的环境都还好说，但<code>toDateUrl</code>这个方法需要特别注意，由于<code>nodejs</code>环境是无法绘制canvas图形的，因此这个方法的返回值需要从浏览器中取出来,这里hook<code>HTMLCanvasElement.prototype.toDataURL</code>方法拿到返回值，并放到全局变量中方便替换和建立指纹池(因为对于每个浏览器终端而言，canvas指纹具有唯一性，如果想实现高并发，需要建立一个指纹池)。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/bf1b9653ed894e64a21635dac67144f9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="canvas_2d环境补充"><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/85e747811bbb4c88aad2dbc51e7f3d5b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="canvas_2d指纹图片"></p>
+<h4 id="4-2-7-5-canvas-webgl指纹"><a href="#4-2-7-5-canvas-webgl指纹" class="headerlink" title="4.2.7.5 canvas_webgl指纹"></a>4.2.7.5 canvas_webgl指纹</h4><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/070f157b53ee4aba8920137a4db37e53.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="webgl指纹检测"><br><code>canvas_2d</code>指纹通过后,接下来就是<code>3d(webgl)</code>指纹了。<br>通过hook<code>toDateURL</code>定位到<code>webgl</code>指纹生成的代码处，然后参考代理日志和浏览器端跟栈调试进行缺啥补啥。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/684bdafe0140410ca83d53951be61f1a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="webgl定位源码"><br>最终<code>webgl</code>环境补充成如下图所示，注意该对象有一个<code>canvas</code>属性指向创建webgl的<code>canvas</code>对象，浏览器获取之后会进而调用<code>toDateURL</code>从而生成<code>webgl</code>指纹，但这里的<code>canvas</code>赋予的是个空对象，又如何调用<code>toDateURL</code>呢?</p>
+<ol>
+<li>把从浏览器端获取的<code>webgl</code>指纹存在到一个全局变量中</li>
+<li>创建<code>canvas</code>对象时给<code>canvas</code>对象设置一个<code>symbol</code>属性用于记录对象名称，并把这个对象推入到全局对象</li>
+<li>拦截<code>canvas</code>对象的<code>get</code>行为，返回内存中的<code>canvas</code>对象</li>
+<li>拦截<code>toDateURL</code>的<code>apply</code>行为，返回内存中记录的<code>webgl</code>指纹对象，最终成功模拟了<code>webgl</code>指纹<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/ad7d49f0f0c94e1095c9baabf08e5435.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="webgl环境补充"></li>
+</ol>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/357b1fa5e5ea41edb974b43e93fd51e8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="webgl3d指纹图片"></p>
+<p>但<code>webgl</code>指纹检测到这里就结束了吗？别着急继续看日志：<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/7fc5cc40980e4d6d8c4b0022273a0d42.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="webgl指纹后续检测"><br>这里提示获取<code>webgl</code>对象的<code>getSupportedExtensions</code>方法，本地返回了<code>undefined</code>，而浏览器中却是返回一个方法，可见在<code>toDataURL</code>之后还有2个方法和一个if块需要走通。<br>在本地把<code>getSupportedExtensions</code>方法先置空，然后缺啥补啥，见机行事，最终补成如下图所示：<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/f193a344d94e405fa164e4eb9af897dd.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="webgl指纹后续getSupportedExtensions环境补充"><br>重新运行后后，通过代理日志发现<code>webgl</code>对象的<code>getShaderPrecisionFormat</code>方法开始调用，传入了2个数字(来自2次for循环)产生一个对象，然后获取其<code>rangeMix</code>、<code>rangeMax</code>和<code>precison</code>属性，2次for循环加起来的次数有12次，这里需要拦截<code>Proxy.apply</code>动态修改返回结果，但写12次拦截规则还是有些累，笔者这里采取的措施是：</p>
+<ol>
+<li>从浏览器端取出入参的数字组合与返回结果的三次属性调用组合</li>
+<li>以键值对的形式构成一个对象(入参为键,返回为值),并放置到全局对象中(属于webgl指纹)</li>
+<li>写一个<code>Proxy.apply</code>拦截规则，将入参与上步全局对象中的键做比较,符合条件则返回预存好的值，最终顺利过了这一关，这种写法的优势在于只要写一次拦截规则以及便于维护和扩展<code>webgl</code>指纹池。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/77b6ce4801c7487983cc957061af0867.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="webgl指纹后续getShaderPrecisionFormat环境补充"></li>
+</ol>
+<h4 id="4-2-7-6-最后的小环境"><a href="#4-2-7-6-最后的小环境" class="headerlink" title="4.2.7.6 最后的小环境"></a>4.2.7.6 最后的小环境</h4><p>补充：<code>window.Audio=&#123;&#125;</code><br><code>webgl</code>环境之后有一处是获取之前用<code>document.write</code>生成的<code>input</code>元素，补充原理和之前获取<code>webgl</code>的<code>toDateURL</code>调用结果类似,这里不再赘述：<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/dddc25c204bc4e139b7aab780d8876db.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="最后的小环境"><br>当补完该环境之后重新运行，出现了报错，不过通过日志我们可以知道是缺少<code>location.replace</code>方法，该方法作用是替换当前页面url，这里不难猜测网站要带着新生成的<code>cookie</code>准备重新请求当前网页，我们置空即可。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/8330bd8ad83d4ecb85ed10db1d7eafe2.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="补充location.replace方法"><br>第4次cookie最终生成且与浏览器保持了一致：<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/ebf7356dcd654293b5113a51635a4947.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="比较第4次cookie是否一致"></p>
+<h4 id="4-2-7-7-小结"><a href="#4-2-7-7-小结" class="headerlink" title="4.2.7.7 小结"></a>4.2.7.7 小结</h4><p>第4次cookie需要补的环境是最多也是最难的。<br>主要检测点先后次序来说：<br>1.字体指纹<br>2.插件信息<br>3.浏览器环境(布尔检测，多达31个)<br>4.canvas_2d指纹<br>5.webgl指纹<br>最终这些检测点会被提取出来，通过<code>localStorage</code>缓存起来，最后构成第4次cookie的加密原材料。</p>
+<p>如果发现第4次cookie值不一致的话,可以比对本地<code>localStorage</code>对象和浏览器<code>localStorage</code>，尽量保证其中每一项都要一致(笔者也不确定是不是所有的键值对都参与了加密,但标红的一定参与了!)<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/90d9da7f160546b6b19b42671d71da94.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="第4次cookie生成时的localStorage对象"><br>第1次cookie能跑通代码就能出，第2次cookie主要检测了window.self&#x3D;&#x3D;&#x3D;window和一些自动化工具痕迹, 第3次cookie难点在于异步事件的处理，第4次cookie就是上述环境检测，接下来分析<code>MmEwMD</code>参数(url签名)。</p>
+<h2 id="4-3-MmEwMD-url签名"><a href="#4-3-MmEwMD-url签名" class="headerlink" title="4.3 MmEwMD(url签名)"></a>4.3 MmEwMD(url签名)</h2><p><strong>思路：</strong><br>通过hook<code>xhr.open</code>方法来跟值，不过浏览器端的文件已经被我们本地映射掉了,因此直接在映射的html中注入<code>xhr.open()</code>手动触发。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/91e0d5a076d04f9dafd16ef2a279ac96.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="hook xhr.open()"><br>定位到源码后，一个叫<code>_$ry</code>的函数对传进来的<code>path</code>做了一些操作，不过由于是在eval层中的代码，所以我们并不需要扣，模拟执行即可。<br>不管这个<code>path</code>被加了什么样的签名，最终都会调用<code>xhr.open()</code>，所以本地环境在初始化阶段就改写<code>xhr.open</code>方法，在内部把url打印出来，即可取到签名信息。</p>
+<h3 id="4-3-1-a标签检测"><a href="#4-3-1-a标签检测" class="headerlink" title="4.3.1 a标签检测"></a>4.3.1 a标签检测</h3><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/db89e89287ab4333b535cdf387564f51.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="期待落空"><br>不过结果却并未如愿以偿，看来签名部分也检测了环境，且本地环境并不能通过检测，接下来通过代理日志信息把这些缺失的环境补上。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/fa8fd311dc33409997de7f99a755a12c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="a标签检测"><br>其实玄机就在于这里创建的<code>a</code>标签，让我们先来看正常浏览器创建的<code>a</code>标签,传入一段路径返回的是什么：<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/ba5abbf0d019406e9dd472c6d8b27855.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="正常创建a标签并设置href"><br>可以看到，正常浏览器的<code>a</code>标签向<code>href</code>属性设置了<code>path</code>之后会自动根据<code>location</code>的信息把url补全(拼接<code>location.origin</code>)，因此本地也需实现此功能。</p>
+<p>措施是利用<code>proxy.set</code>来更改<code>a</code>标签对于<code>href</code>属性的set行为，但<code>a</code>标签的检测不仅仅需要实现<code>href</code>的自动补全功能，还需要补充一些其他的功能，大部分可以直接返回<code>location</code>对应的结果，除了<code>pathname</code>，因此这里分成2部分实现：</p>
+<ol>
+<li>通过<code>Object.assign</code>将<code>location</code>的所有可迭代对象复制给<code>a</code>对象</li>
+<li>重写<code>href</code>和<code>pathname</code>部分，最终补成如下图所示，重写运行成功拿到了带有签名的url<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/5fa4af1504a54099b483a33a63138432.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="a标签环境补充"></li>
+</ol>
+<p>比对本地与浏览器端的url签名部分(MmEwMD)，结果完全一致，说明我们补的环境已经通过了a标签检测。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/4a3bbf2282b84697ad9b7c978c4f28a9.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="比对MmEwMD(url签名)是否一致"></p>
+<h2 id="4-4-sessionId1"><a href="#4-4-sessionId1" class="headerlink" title="4.4 sessionId1"></a>4.4 sessionId1</h2><p>通过在抓包软件中搜索，可以发现该参数来自<code>./index.html</code>接口(状态吗200)返回结果(response.headers)中<code>set-cookie</code>值。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/af3ed8b60641419399a7363cadaf6578.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="sessionId1来源"><br>自次4个参数全部逆向完毕，接下里开始组装最终的请求。</p>
+<h1 id="5-请求测试"><a href="#5-请求测试" class="headerlink" title="5. 请求测试"></a>5. 请求测试</h1><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230918/9c0fa3541c204bd689709c9a05ec1df2.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="请求测试"><br>最终也是顺利拿到了目标数据，其中要注意的一点是<code>MmEwMD</code>参数的加密材料来源之一是所请求<code>api</code>的<code>path</code>部分，并不是逆向分析时的测试path。</p>
+<h1 id="6-总结"><a href="#6-总结" class="headerlink" title="6.总结"></a>6.总结</h1><p>本文以采用rs4作为防护的网站作为逆向目标，一探瑞数那神秘面纱下的面孔，采用的方式是补环境，最终在代理日志的帮助下补全了所有的环境，在整个逆向过程中：</p>
+<ol>
+<li>加深了对浏览器环境检测的了解，尤其是第四次cookie生成中的5个加密组件:字体指纹、插件环境、api环境、canvas_2d指纹和webgl指纹，以及url签名加密过程中对于<code>a</code>标签检测的理解。</li>
+<li>熟悉了利用代理日志嗅探缺失环境的思维模式，比手动补环境快，比补环境框架灵活，毕竟从刀剑(手动补)到火炮(补环境框架)之间也需要一把半自动手枪(代理日志)代为过渡。</li>
+</ol>
+<h1 id="7-附录"><a href="#7-附录" class="headerlink" title="7 附录"></a>7 附录</h1><h2 id="7-1-补环境源码"><a href="#7-1-补环境源码" class="headerlink" title="7.1 补环境源码"></a>7.1 补环境源码</h2><pre><code class="javascript">let fs = require(&#39;fs&#39;)
+const parse = require(&#39;html-dom-parser&#39;);
+//初始化全局环境
+//自定义对象
+yueqian = &#123;
+    proxy_filters_custom: [&#39;$_ts&#39;],
+    symbolProxy: Symbol(&quot;proxy&quot;),
+    symbolRawFatherObj: Symbol(&#39;fatherObj&#39;),//用于更改apply行为内部this指向到原生对象,而非Proxy对象
+    symbolRawSelfObj: Symbol(&#39;selfObj&#39;),//用于更改construct行为内部this指向到原生对象,而非Proxy对象
+    symbolObjName: Symbol(&#39;name&#39;),//用于表示被创建的元素名称,方便在内存中通过此属性精准定位到
+    symbolRawName: Symbol(&#39;rawName&#39;),//用于表示被创建的元素名称,方便在内存中通过此属性精准定位到
+    eles: [],//创建的需要保存的元素,包扩document.write创建的
+    font_pool: [
+        &quot;Verdana&quot;,
+        &quot;Helvetica Neue LT Pro 35 Thin&quot;,
+        &quot;tahoma&quot;,
+        &quot;Kannada Sangam MN&quot;,
+        &quot;verdana&quot;,
+        &quot;Telugu Sangam MN&quot;,
+        &quot;times new roman&quot;,
+        &quot;Courier New&quot;,
+        &quot;helvetica&quot;,
+        &quot;LG-FZKaTong-M19-V2.2&quot;,
+        &quot;Georgia&quot;,
+        &quot;georgia&quot;,
+        &quot;Malayalam Sangam MN&quot;,
+        &quot;courier new&quot;,
+        &quot;sans-serif&quot;,
+        &quot;monaco&quot;,
+        &quot;Arial&quot;,
+        &quot;Noto Sans Myanmar&quot;,
+        &quot;Myanmar Sangam MN&quot;,
+        &quot;Apple Color Emoji&quot;,
+        &quot;arial&quot;,
+        &quot;Devanagari Sangam MN&quot;,
+        &quot;Gujarati Sangam MN&quot;,
+        &quot;cursive&quot;,
+        &quot;baskerville&quot;,
+        &quot;Noto Sans Kannada&quot;,
+        &quot;fantasy&quot;,
+        &quot;Tamil Sangam MN&quot;,
+        &quot;palatino&quot;,
+        &quot;courier&quot;,
+        &quot;Oriya Sangam MN&quot;,
+        &quot;Bangla Sangam MN&quot;,
+        &quot;Gurmukhi Sangam MN&quot;,
+        &quot;monospace&quot;,
+        &quot;Times New Roman&quot;
+    ],
+    create_ele_seq: 0, //用来区别创建元素,例如创建多个div标签,在日志中凭此区分(用于proxy日志中的objName)
+    func_ret_seq: 0, //用来区别Func返回对象,在日志中凭此区分(用于proxy日志中的objName)
+    canvas_2d_toDateUrl: &#39;data:image/png;base64,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&#39;,
+    canvas_webgl_toDateUrl: &#39;data:image/png;base64,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&#39;,
+    webgl_WebGLShaderPrecisionFormat: &#123;
+        &#39;35633_36337&#39;: &#123; rangeMin: 127, rangeMax: 127, precision: 23 &#125;,
+        &#39;35633_36336&#39;: &#123; rangeMin: 127, rangeMax: 127, precision: 23 &#125;,
+        &#39;35633_36341&#39;: &#123; rangeMin: 31, rangeMax: 30, precision: 0 &#125;,
+        &#39;35633_36340&#39;: &#123; rangeMin: 31, rangeMax: 30, precision: 0 &#125;,
+        &#39;35633_36339&#39;: &#123; rangeMin: 31, rangeMax: 30, precision: 0 &#125;,
+        &#39;35632_36338&#39;: &#123; rangeMin: 127, rangeMax: 127, precision: 23 &#125;,
+        &#39;35632_36337&#39;: &#123; rangeMin: 127, rangeMax: 127, precision: 23 &#125;,
+        &#39;35632_36336&#39;: &#123; rangeMin: 127, rangeMax: 127, precision: 23 &#125;,
+        &#39;35632_36341&#39;: &#123; rangeMin: 31, rangeMax: 30, precision: 0 &#125;,
+        &#39;35632_36340&#39;: &#123; rangeMin: 31, rangeMax: 30, precision: 0 &#125;,
+        &#39;35632_36339&#39;: &#123; rangeMin: 31, rangeMax: 30, precision: 0 &#125;,
+        &#39;35633_36338&#39;: &#123; precision: 23, rangeMax: 127, rangeMin: 127 &#125;
+    &#125;,
+    webgl_getSupportedExtensions: [
+        &quot;ANGLE_instanced_arrays&quot;,
+        &quot;EXT_blend_minmax&quot;,
+        &quot;EXT_color_buffer_half_float&quot;,
+        &quot;EXT_disjoint_timer_query&quot;,
+        &quot;EXT_float_blend&quot;,
+        &quot;EXT_frag_depth&quot;,
+        &quot;EXT_shader_texture_lod&quot;,
+        &quot;EXT_texture_compression_rgtc&quot;,
+        &quot;EXT_texture_filter_anisotropic&quot;,
+        &quot;EXT_sRGB&quot;,
+        &quot;KHR_parallel_shader_compile&quot;,
+        &quot;OES_element_index_uint&quot;,
+        &quot;OES_fbo_render_mipmap&quot;,
+        &quot;OES_standard_derivatives&quot;,
+        &quot;OES_texture_float&quot;,
+        &quot;OES_texture_float_linear&quot;,
+        &quot;OES_texture_half_float&quot;,
+        &quot;OES_texture_half_float_linear&quot;,
+        &quot;OES_vertex_array_object&quot;,
+        &quot;WEBGL_color_buffer_float&quot;,
+        &quot;WEBGL_compressed_texture_s3tc&quot;,
+        &quot;WEBGL_compressed_texture_s3tc_srgb&quot;,
+        &quot;WEBGL_debug_renderer_info&quot;,
+        &quot;WEBGL_debug_shaders&quot;,
+        &quot;WEBGL_depth_texture&quot;,
+        &quot;WEBGL_draw_buffers&quot;,
+        &quot;WEBGL_lose_context&quot;,
+        &quot;WEBGL_multi_draw&quot;
+    ]
+&#125;
+yueqian.proxy_filters_init = [&#39;document&#39;, &#39;navigator&#39;, &#39;location&#39;, &#39;localStorage&#39;, &#39;sessionStorage&#39;, &#39;eval&#39;, &#39;Math&#39;, &#39;constructor&#39;, &#39;__proto__&#39;, &#39;toString&#39;, &#39;setTimeout&#39;, &#39;setInterval&#39;, &#39;escape&#39;, &#39;Number&#39;, &#39;decodeURIComponent&#39;, &#39;JSON&#39;, &#39;RegExp&#39;, &#39;addEventListener&#39;, &#39;removeItem&#39;, &#39;setItem&#39;, &#39;getElementsByTagName&#39;, &#39;clearInterval&#39;, &#39;getItem&#39;, &#39;toJSON&#39;, &#39;visibility&#39;, yueqian.symbolObjName, yueqian.symbolProxy, yueqian.symbolRawFatherObj, yueqian.symbolRawSelfObj]
+yueqian.log = true //配置是否需要把日志输出到文件中,为true表示是
+//日志输出到文件
+
+!function () &#123;
+    if (yueqian.log === true) &#123; //配置是否将日志写到文件
+        let _log = console.log
+        fs.writeFileSync(__dirname + &#39;/proxy_log.txt&#39;, &#39;&#39;)
+        console.log = function () &#123;
+            let log = &#39;&#39;
+            for (let i = 0; i &lt; arguments.length; i++) &#123;
+                log += (arguments[i].toString() + &#39; &#39;)
+            &#125;
+            log += &#39;\n&#39;
+            fs.appendFileSync(__dirname + &#39;/proxy_log.txt&#39;, log)
+            _log(...arguments)
+        &#125;
+    &#125;
+&#125;()
+//异步事件全局配置
+let async_seq = 0; //记录push的先后次序
+asyncEvents = &#123; //放置异步任务
+    addEventListener: &#123;&#125;,
+    setTI: [], //setTimout和setInterval放在一个列表中
+&#125;
+let init_events_pool = &#123;
+    load: &#123;&#125;, //放置异步事件,主要是addlistener事件,回调函数会默认传一个event,到时候就从这里去
+    other: &#123;&#125;, //把load事情单独拿出来,是因为事件之间携带的信息不同,要有所区分
+&#125;
+let async_exec_pool = [] //异步执行池
+//初始化网页环境
+let meta_ele = &#123;
+    content: &#39;yueqian_content&#39;,
+    parentNode: &#123;
+        removeChild: function () &#123; &#125;
+    &#125;
+&#125;
+
+//setInterval,setTimeout
+setInterval = function (func, time, ...params) &#123;
+    let seq = async_seq++
+    let event = &#123;
+        out_type: &#39;setInterval&#39;,
+        func: func,
+        time: time,
+        seq: seq,
+        params: params
+    &#125;
+    let type = Object.prototype.toString.call(params)
+    console.log(`setInterval $&#123;func.name&#125;|$&#123;time&#125; args_type:$&#123;type&#125; 正在注册`)
+    asyncEvents.setTI.push(event)
+    return seq
+&#125;
+setTimeout = function (func, time, ...params) &#123;
+    let seq = async_seq++
+    let event = &#123;
+        out_type: &#39;setTimeout&#39;,
+        func: func,
+        time: time,
+        seq: seq,
+        params: params
+    &#125;
+    let type = Object.prototype.toString.call(params)
+    console.log(`setTimeout $&#123;func.name&#125;|$&#123;time&#125; args_type:$&#123;type&#125; 正在注册`)
+    asyncEvents.setTI.push(event)
+    return seq
+&#125;
+//addEventListener
+addEventListener = function (event, func) &#123;
+    if (event !== &#39;unload&#39;) &#123;
+        console.log(`$&#123;this&#125; &gt; addEventListener &gt;$&#123;event&#125; &gt;$&#123;func.name&#125; 正在注册`)
+        let time = 20000 //除load外所有事件默认执行时机设置成20s
+        if (event === &#39;load&#39;) &#123;
+            time = 0
+        &#125;
+        let eventObj = &#123;
+            out_type: &#39;addEventListener&#39;,
+            type: event,
+            func: func,
+            self: this,
+            seq: async_seq++,
+            time: time //用于pool统一排序,time大于20s的预先丢弃
+        &#125;
+        if (!asyncEvents.addEventListener[event]) &#123;
+            asyncEvents.addEventListener[event] = [] //如果事先没有这个事件的键那么就注册一个空列表
+        &#125;
+        asyncEvents.addEventListener[event].push(eventObj)
+    &#125;
+&#125;
+//浏览器环境
+//screen
+screen = &#123;
+&#125;
+Screen = function () &#123; &#125;
+Object.assign(Screen.prototype, &#123;
+    &quot;availWidth&quot;: 1440,
+    &quot;availHeight&quot;: 900,
+    &quot;width&quot;: 1440,
+    &quot;height&quot;: 900,
+    &quot;colorDepth&quot;: 30,
+    &quot;pixelDepth&quot;: 30,
+    &quot;availLeft&quot;: 0,
+    &quot;availTop&quot;: 0,
+    [Symbol.toStringTag]: &#39;[object Screen]&#39;,
+&#125;)
+Object.setPrototypeOf(screen, Screen.prototype)
+//document
+document = &#123;
+&#125;
+HTMLDocument = function () &#123; &#125;
+Object.assign(HTMLDocument.prototype, &#123;
+    &quot;URL&quot;: &quot;http://www.fangdi.com.cn/index.html&quot;,
+    &quot;documentURI&quot;: &quot;http://www.fangdi.com.cn/index.html&quot;,
+    &quot;compatMode&quot;: &quot;CSS1Compat&quot;,
+    &quot;characterSet&quot;: &quot;UTF-8&quot;,
+    &quot;charset&quot;: &quot;UTF-8&quot;,
+    &quot;inputEncoding&quot;: &quot;UTF-8&quot;,
+    &quot;contentType&quot;: &quot;text/html&quot;,
+    &quot;xmlStandalone&quot;: false,
+    &quot;domain&quot;: &quot;www.fangdi.com.cn&quot;,
+    &quot;referrer&quot;: &quot;http://www.fangdi.com.cn/index.html&quot;,
+    &quot;cookie&quot;: &quot;www.fangdi.com_http_ic=www.fangdi.com.cn_80_RS; www.fangdi.com.cn=www.fangdi.com.cn_rs4; FSSBBIl1UgzbN7N80T=4L6xRQ9Y61iDzp38BrjpUd0HsME20q_xXr.PMYnlCZV517lcYa5Mpvt68B1FxCcFjpIFlpZ7MzRXYVpdq35hDjTxtzNKmGYu9xHcVLCOez0YadFglvIh8kEuxx6rn2tF1auZ_YPI7OtSgkratoNmCv3cC3LZbnCmgfeQG33e4bnZeniv5gtyBsKwDhndPJqH4d.tEe6qaUngw5ItU.iYgCAE7Xzv_ZD_06oty7RP8nvEDW1RXiJNrMlSABgXRSpoeAvvqKg47u7WU8eA8fId.rjKpyRuZxsEttEZGRxURe.pbHKT.53ueaeZMhJePIU63Kba&quot;,
+    &quot;lastModified&quot;: &quot;09/11/2023 23:54:54&quot;,
+    &quot;readyState&quot;: &quot;complete&quot;,
+    &quot;title&quot;: &quot;网上房地产&quot;,
+    &quot;dir&quot;: &quot;&quot;,
+    &quot;designMode&quot;: &quot;off&quot;,
+    &quot;fgColor&quot;: &quot;&quot;,
+    &quot;linkColor&quot;: &quot;&quot;,
+    &quot;vlinkColor&quot;: &quot;&quot;,
+    &quot;alinkColor&quot;: &quot;&quot;,
+    &quot;bgColor&quot;: &quot;&quot;,
+    &quot;hidden&quot;: true,
+    &quot;visibilityState&quot;: &quot;hidden&quot;,
+    &quot;wasDiscarded&quot;: false,
+    &quot;prerendering&quot;: false,
+    &quot;webkitVisibilityState&quot;: &quot;hidden&quot;,
+    &quot;webkitHidden&quot;: true,
+    &quot;fullscreenEnabled&quot;: true,
+    &quot;fullscreen&quot;: false,
+    &quot;webkitIsFullScreen&quot;: false,
+    &quot;webkitFullscreenEnabled&quot;: true,
+    &quot;pictureInPictureEnabled&quot;: true,
+    &quot;childElementCount&quot;: 1,
+    &quot;adoptedStyleSheets&quot;: [],
+    cookie: &#39;&#39;,
+    [Symbol.toStringTag]: &#39;[object HTMLDocument]&#39;,
+    createElement: function (labelName) &#123;
+        let result = &#123;&#125;
+        let objName = `doc_cre_$&#123;labelName&#125;$&#123;yueqian.create_ele_seq++&#125;`
+        if (labelName === &#39;div&#39;) &#123;
+            result = &#123;
+                getElementsByTagName: () =&gt; &#123; return [] &#125;,
+                style: &#123;&#125;,
+                innerHTML: &#39;&#39;,
+                children: [] //innerHTML创造的元素要放到children中
+            &#125;
+        &#125; else if (labelName === &#39;canvas&#39;) &#123;
+            result = &#123;
+                getContext: function (arg) &#123;
+                    if (arg === &#39;2d&#39;) &#123;
+                        return &#123;
+                            fillRect: function () &#123; &#125;,
+                            fillText: function () &#123; &#125;,
+                        &#125;
+                    &#125; else if (arg === &#39;webgl&#39;) &#123;
+                        return &#123;
+                            createBuffer: () =&gt; &#123;
+                                return &#123;
+                                    itemSize: 3,
+                                    numItems: 3
+                                &#125;
+                            &#125;,
+                            bindBuffer: () =&gt; &#123; return &#123;&#125; &#125;,
+                            ARRAY_BUFFER: 34962,
+                            bufferData: () =&gt; &#123; return &#123;&#125; &#125;,
+                            STATIC_DRAW: 35044,
+                            createProgram: () =&gt; &#123;
+                                return &#123;
+                                    vertexPosAttrib: 0,
+                                    offsetUniform: &#123;&#125;,
+                                &#125;
+                            &#125;,
+                            createShader: () =&gt; &#123; return &#123;&#125; &#125;,
+                            VERTEX_SHADER: 35633,
+                            shaderSource: () =&gt; &#123; return &#123;&#125; &#125;,
+                            compileShader: () =&gt; &#123; return &#123;&#125; &#125;,
+                            FRAGMENT_SHADER: 35632,
+                            attachShader: () =&gt; &#123; return &#123;&#125; &#125;,
+                            linkProgram: () =&gt; &#123; return &#123;&#125; &#125;,
+                            useProgram: () =&gt; &#123; return &#123;&#125; &#125;,
+                            getAttribLocation: () =&gt; &#123; return &#123;&#125; &#125;,
+                            getUniformLocation: () =&gt; &#123; return &#123;&#125; &#125;,
+                            enableVertexAttribArray: () =&gt; &#123; return &#123;&#125; &#125;,
+                            FLOAT: 5126,
+                            vertexAttribPointer: () =&gt; &#123; return &#123;&#125; &#125;,
+                            uniform2f: () =&gt; &#123; return &#123;&#125; &#125;,
+                            drawArrays: () =&gt; &#123; return &#123;&#125; &#125;,
+                            TRIANGLE_STRIP: 5,
+                            canvas: &#123;&#125;,
+                            getSupportedExtensions: () =&gt; &#123;
+                                return yueqian.webgl_getSupportedExtensions
+                            &#125;,
+                            getExtension: () =&gt; &#123; return &#123;&#125; &#125;,
+                            getShaderPrecisionFormat: () =&gt; &#123; return &#123;&#125; &#125;,
+                            HIGH_FLOAT: 36338,
+                            MEDIUM_FLOAT: 36337,
+                            LOW_FLOAT: 36336,
+                            HIGH_INT: 36341,
+                            MEDIUM_INT: 36340,
+                            LOW_INT: 36339,
+
+                        &#125;
+                    &#125;
+                &#125;,
+                toDataURL: function () &#123; &#125; //注意这个方式是canvas对象的方法,而不是getContext对象的
+            &#125;
+        &#125;
+        // console.log(`document createElement [$&#123;objName&#125;] [$&#123;result&#125;]`)
+        Object.defineProperty(result, yueqian.symbolObjName, &#123; value: objName &#125;)
+        result = yueqian.proxy(result, objName)
+        yueqian.eles.push(result)
+        return result
+    &#125;,
+    getElementsByTagName: function (labelName) &#123;
+        let result = []
+        if (labelName === &#39;meta&#39;) &#123;
+            result = [meta_ele]
+        &#125; else if (labelName === &#39;script&#39;) &#123;
+            result = [
+                &#123;
+                    parentNode: &#123;
+                        removeChild: function () &#123; &#125;
+                    &#125;,
+                    getAttribute: function () &#123; &#125;
+                &#125;
+            ]
+        &#125;
+        // console.log(`document getElementsByTagName [$&#123;labelName&#125;] [$&#123;result&#125;]`)
+        return result
+    &#125;,
+    addEventListener: addEventListener,
+    exitFullscreen: function () &#123; &#125;,
+    documentElement: &#123;
+        style: &#123;&#125;,
+        getAttribute: function () &#123; &#125;,
+        &#39;onresize&#39;: &#123;&#125;
+    &#125;,
+    write: function (str) &#123;
+        // console.log(`document.write正在执行 parms:[$&#123;str&#125;]`)
+        let html2obj = parse(str);
+        let label = html2obj[0][&#39;name&#39;]
+        let objName = `doc_write_$&#123;label&#125;`
+        let type = html2obj[0][&#39;attribs&#39;][&#39;type&#39;]
+        let id = html2obj[0][&#39;attribs&#39;][&#39;id&#39;]
+        let name = html2obj[0][&#39;attribs&#39;][&#39;name&#39;]
+        let value = html2obj[0][&#39;attribs&#39;][&#39;value&#39;]
+        let result = &#123;
+            label: label,
+            type: type,
+            id: id,
+            name: name,
+            value: value,
+        &#125;
+        Object.defineProperty(result, yueqian.symbolObjName, &#123; value: objName &#125;)
+        result = yueqian.proxy(result, objName)
+        yueqian.eles.push(result)
+    &#125;,
+    getElementById: function () &#123;
+        let result = null
+        // console.log(`document.getElementById [$&#123;id&#125;] return [$&#123;result&#125;]`)
+        return result
+    &#125;,
+    body: &#123;
+        tagName: &#39;BODY&#39;,
+        getAttribute: function (str) &#123;
+            let result = null
+            // console.log(`document.body.getAttribute($&#123;str&#125;) return [$&#123;result&#125;]`)
+            return result
+        &#125;,
+        firstChild: &#123;
+            nodeType: 3,
+            firstChild: null,
+            nextSibling: &#123;&#125;, //这里借助Proxy.get 进行动态返回,以objName和nextSibling名为凭证
+        &#125;,
+        appendChild: function () &#123; &#125;,
+        removeChild: function () &#123; &#125;,
+        &#39;onmouseenter&#39;: &#123;&#125;,
+        &#39;style&#39;: &#123;
+            &#39;backgroundBlendMode&#39;: &#123;&#125;,
+            &#39;lineBreak&#39;: &#123;&#125;,
+            &#39;minWidth&#39;: &#123;&#125;,
+            &#39;textAlignLast&#39;: &#123;&#125;
+        &#125;
+    &#125;,
+    &#39;onmousemove&#39;: &#123;&#125;,
+    &#39;onselectionchange&#39;: &#123;&#125;,
+    &#39;scrollingElement&#39;: &#123; &#39;style&#39;: &#123; &#39;fontVariantNumeric&#39;: &#123;&#125; &#125; &#125;
+&#125;)
+Object.setPrototypeOf(document, HTMLDocument.prototype)
+//navigator
+navigator = &#123;
+&#125;
+Navigator = function () &#123; &#125;
+Object.assign(Navigator.prototype, &#123;
+    &quot;vendorSub&quot;: &quot;&quot;,
+    &quot;productSub&quot;: &quot;20030107&quot;,
+    &quot;vendor&quot;: &quot;Google Inc.&quot;,
+    &quot;maxTouchPoints&quot;: 0,
+    &quot;pdfViewerEnabled&quot;: true,
+    &quot;hardwareConcurrency&quot;: 8,
+    &quot;cookieEnabled&quot;: true,
+    &quot;appCodeName&quot;: &quot;Mozilla&quot;,
+    &quot;appName&quot;: &quot;Netscape&quot;,
+    &quot;appVersion&quot;: &quot;5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36&quot;,
+    &quot;platform&quot;: &quot;MacIntel&quot;,
+    &quot;product&quot;: &quot;Gecko&quot;,
+    &quot;userAgent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36&quot;,
+    &quot;language&quot;: &quot;zh-CN&quot;,
+    &quot;languages&quot;: [
+        &quot;zh-CN&quot;
+    ],
+    &quot;onLine&quot;: true,
+    &quot;webdriver&quot;: false,
+    [Symbol.toStringTag]: &#39;[object Navigator]&#39;,
+    webkitPersistentStorage: function () &#123; &#125;,
+    mimeTypes: &#123;
+        length: 2,
+        0: &#123; type: &#39;application/pdf&#39; &#125;,
+        1: &#123; type: &#39;text/pdf&#39; &#125;,
+    &#125;,
+    connection: &#123;&#125;,
+    plugins: &#123;
+        0: &#123; name: &#39;PDF Viewer&#39; &#125;,
+        1: &#123; name: &#39;Chrome PDF Viewer&#39; &#125;,
+        2: &#123; name: &#39;Chromium PDF Viewer&#39; &#125;,
+        3: &#123; name: &#39;Microsoft Edge PDF Viewer&#39; &#125;,
+        4: &#123; name: &#39;WebKit built-in PDF&#39; &#125;,
+        length: 5
+    &#125;,
+&#125;)
+Object.setPrototypeOf(navigator, Navigator.prototype)
+//location
+location = &#123;
+    &quot;href&quot;: &quot;http://www.fangdi.com.cn/index.html&quot;,
+    &quot;origin&quot;: &quot;http://www.fangdi.com.cn&quot;,
+    &quot;protocol&quot;: &quot;http:&quot;,
+    &quot;host&quot;: &quot;www.fangdi.com.cn&quot;,
+    &quot;hostname&quot;: &quot;www.fangdi.com.cn&quot;,
+    &quot;port&quot;: &quot;&quot;,
+    &quot;pathname&quot;: &quot;/index.html&quot;,
+    &quot;search&quot;: &quot;&quot;,
+    &quot;hash&quot;: &quot;&quot;,
+    replace: () =&gt; &#123; &#125;,
+&#125;;
+Location = function () &#123; &#125;
+Object.assign(Location.prototype, &#123;
+    [Symbol.toStringTag]: &#39;[object Location]&#39;
+&#125;)
+Object.setPrototypeOf(location, Location.prototype)
+//localStorage
+localStorage = &#123;
+&#125;
+Storage = function () &#123; &#125;
+Object.assign(Storage.prototype, &#123;
+    setItem: function (name, value) &#123;
+        // console.log(&#39;window &gt; localStorage &gt; setItem &gt; &#39;, name, value)
+        this[name] = value
+    &#125;,
+    getItem: function (name) &#123;
+        // console.log(&#39;window &gt; localStorage &gt; getItem &gt; &#39;, name)
+        return this[name]
+    &#125;,
+    removeItem: function (name) &#123;
+        // console.log(&#39;window &gt; localStorage &gt; removeItem &gt; &#39;, name)
+        delete this[name]
+    &#125;,
+    [Symbol.toStringTag]: &#39;[object Storage]&#39;
+&#125;)
+Object.setPrototypeOf(localStorage, Storage.prototype)
+//sessionStorage
+sessionStorage = &#123;
+&#125;
+Object.setPrototypeOf(sessionStorage, Storage.prototype)
+//window
+//xhr环境
+XMLHttpRequest = function () &#123; &#125;
+XMLHttpRequest.prototype.open = function (method, url) &#123;
+    console.log(`window.XMLHttpRequest.open正在调用,url是$&#123;url&#125;`)
+    return url
+&#125;
+window = globalThis
+Object.assign(window, &#123;
+    name: &#39;&#39;,
+&#125;)
+Window = function () &#123; &#125;
+Object.assign(Window.prototype, &#123;
+    [Symbol.toStringTag]: &#39;[object Window]&#39;,
+    DOMParser: function () &#123; &#125;,
+    fetch: function () &#123; &#125;,
+    indexedDB: &#123;
+        open: function () &#123; &#125;
+    &#125;,
+    chrome: &#123; &#39;app&#39;: &#123; &#39;InstallState&#39;: &#123;&#125; &#125;, &#39;csi&#39;: &#123;&#125; &#125;,
+    TEMPORARY: 0,
+    clientInformation: navigator,
+    //浏览器api 布尔检测
+    &#39;CDATASection&#39;: &#123; &#39;prototype&#39;: &#123; &#39;remove&#39;: &#123;&#125; &#125; &#125;,
+    &#39;HTMLFrameSetElement&#39;: &#123; &#39;prototype&#39;: &#123; &#39;hasPointerCapture&#39;: &#123;&#125;, &#39;webkitRequestFullScreen&#39;: &#123;&#125; &#125; &#125;,
+    &#39;MediaEncryptedEvent&#39;: &#123;&#125;,
+    &#39;Notification&#39;: &#123;&#125;,
+    &#39;OffscreenCanvasRenderingContext2D&#39;: &#123;&#125;,
+    &#39;Path2D&#39;: &#123; &#39;prototype&#39;: &#123; &#39;addPath&#39;: &#123;&#125; &#125; &#125;,
+    &#39;PerformancePaintTiming&#39;: &#123;&#125;,
+    &#39;ScreenOrientation&#39;: &#123;&#125;,
+    &#39;SourceBuffer&#39;: &#123; &#39;prototype&#39;: &#123; &#39;changeType&#39;: &#123;&#125; &#125; &#125;,
+    &#39;SpeechSynthesisUtterance&#39;: &#123;&#125;,
+    &#39;TextTrackList&#39;: &#123; &#39;prototype&#39;: &#123; &#39;getTrackById&#39;: &#123;&#125; &#125; &#125;,
+    &#39;external&#39;: &#123; &#39;IsSearchProviderInstalled&#39;: &#123;&#125; &#125;,
+    &#39;onerror&#39;: &#123;&#125;,
+    &#39;onmessage&#39;: &#123;&#125;,
+    &#39;openDatabase&#39;: &#123;&#125;,
+    &#39;webkitRequestFileSystem&#39;: &#123;&#125;,
+    Audio: &#123;&#125;,
+&#125;)
+Object.setPrototypeOf(window, Window.prototype)
+//hook
+//hook随机
+performance = &#123;&#125;
+Performance = function () &#123; &#125;
+Object.setPrototypeOf(performance, Performance.prototype)
+Date.now = function () &#123; return 1666666666666 &#125;;
+Date.parse = function () &#123; return 1666666666666 &#125;;
+Date.prototype.valueOf = function () &#123; return 1666666666666 &#125;;
+Date.prototype.getTime = function () &#123; return 1666666666666 &#125;;
+Date.prototype.toString = function () &#123; return 1666666666666 &#125;;
+Performance.prototype.now = function () &#123; return 51523 &#125; //表示从页面打开到执行该api所经过的毫秒时间数
+Math.random = function () &#123; return 0.5 &#125;;
+
+//代理部分
+yueqian.proxy = function (obj, objName) &#123;
+    // 代理前需要注意,一些configuable为false的对象不可被代理,需要滤过
+    let propertyDes = obj[yueqian.symbolRawFatherObj] &amp;&amp; Object.getOwnPropertyDescriptor(obj[yueqian.symbolRawFatherObj], obj[yueqian.symbolRawName])
+    let configurable = propertyDes &amp;&amp; propertyDes[&#39;configurable&#39;]
+    if (configurable === false) &#123;
+        return obj
+    &#125;
+    //对于有proxy symbol标记的,返回这个标记中存储的值 1)确保每个对象只被代理一次,2)过window.Top===window类似检测,由于window.Top还是返回window,这句话可以保证不重复代理,直接嫁接到window本身
+    if (Object.hasOwnProperty.call(obj, yueqian.symbolProxy)) &#123;
+        return obj[yueqian.symbolProxy]
+    &#125;
+    let handler = &#123;
+        get: function (target, prop, receiver) &#123;// 三个参数
+            // if(prop===&#39;innerText&#39;)&#123;debugger&#125;
+            let result;
+            //动态修改返回结果
+            if (objName === &#39;document.body.firstChild&#39; &amp;&amp; prop === &#39;nextSibling&#39;) &#123;
+                result = yueqian.eles.find((ele) =&gt; &#123; return ele.id === &#39;__onload__&#39; &#125;)
+                result[&#39;nodeType&#39;] = 1
+                result[&#39;tagName&#39;] = &#39;INPUT&#39;
+                result[&#39;nextSibling&#39;] = &#123;
+                    nodeType: 3,
+                    nextSibling: &#123;
+                        nodeType: 1,
+                        firstChild: &#123;&#125;,
+                        tagName: &#39;SCRIPT&#39;,
+                        getAttribute: function (str) &#123; if (str === &#39;r&#39;) &#123; return &#39;m&#39; &#125; else &#123; return null &#125; &#125;,
+                        parentElement: &#123;
+                            removeChild: function () &#123; &#39;doc_write_input.nextSibling.nextSibling.parentElement.removeChild 正在执行&#39; &#125;
+                        &#125;
+                    &#125;
+                &#125;
+                result[&#39;getAttribute&#39;] = function (str) &#123;
+                    console.log(`doc_write_input.getAttribute($&#123;str&#125;) return null`)
+                    return null
+                &#125;
+                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[&#39;doc_write_input&#39;]&#125;`);
+                return result
+            &#125; else if (objName === &#39;doc_cre_div1.children.0&#39; &amp;&amp; prop === &#39;offsetHeight&#39; &amp;&amp; yueqian.font_pool.indexOf(target.style.fontFamily) !== -1) &#123;
+                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[99]&#125;`);
+                return 99
+            &#125; else if (objName === &#39;doc_cre_div1.children.0&#39; &amp;&amp; prop === &#39;offsetWidth&#39; &amp;&amp; yueqian.font_pool.indexOf(target.style.fontFamily) !== -1) &#123;
+                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[999]&#125;`);
+                return 999
+            &#125; else if (objName === &#39;doc_cre_div1.children.0&#39; &amp;&amp; prop === &#39;offsetWidth&#39;) &#123;
+                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[1134]&#125;`);
+                return 1134
+            &#125; else if (objName === &#39;doc_cre_div1.children.0&#39; &amp;&amp; prop === &#39;offsetHeight&#39;) &#123;
+                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[131]&#125;`);
+                return 131
+            &#125; else if (objName === &#39;doc_cre_canvas3.getContext_obj6&#39; &amp;&amp; prop === &#39;canvas&#39;) &#123;
+                let result = yueqian.eles.find((ele) =&gt; &#123; return ele[yueqian.symbolObjName] === &#39;doc_cre_canvas3&#39; &#125;)
+                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[$&#123;result&#125;&#125;`);
+                return result
+            &#125;
+            result = Reflect.get(target, prop, receiver); //通过反射拿到结果
+            //过滤输出一些属性
+            if ((yueqian.proxy_filters_init.indexOf(prop) !== -1) || typeof prop === &#39;symbol&#39; || (yueqian.proxy_filters_custom.indexOf(prop) !== -1)) &#123;
+                return result;
+            &#125;
+            let type = Object.prototype.toString.call(result);
+            if (result instanceof Object) &#123;
+                //将原生父对象(相对于result)的地址存到result的symbol属性中,方便在apply行为中更改this指向
+                Object.defineProperty(result, yueqian.symbolRawFatherObj, &#123;
+                    value: target
+                &#125;)
+                //将原生对象地址存到result的symbol属性中,方便在construct行为中更改this指向
+                Object.defineProperty(result, yueqian.symbolRawSelfObj, &#123;
+                    value: result
+                &#125;)
+                //将对象名字存到result的symbol属性中,在过滤不可配置属性时(Object.hasOwnProperty)作为prop字符串
+                Object.defineProperty(result, yueqian.symbolRawName, &#123;
+                    value: prop
+                &#125;)
+                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],type:[$&#123;type&#125;]&#125;`);
+                // 递归代理
+                result = yueqian.proxy(result, `$&#123;objName&#125;.$&#123;prop.toString()&#125;`);
+            &#125; else if (typeof result === &quot;symbol&quot;) &#123;
+                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[$&#123;result.toString()&#125;]&#125;`);
+            &#125; else &#123;
+                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[$&#123;result&#125;]&#125;`);
+            &#125;
+            return result;
+        &#125;,
+        set: function (target, prop, value, receiver) &#123;
+            //定向拦截,do something
+            if (value === &#39;&lt;span style=&quot;font-family:mmllii;font-size:114px&quot;&gt;mmmmmmmmmmmlliii&lt;/span&gt;&#39;) &#123;
+                let html2obj = parse(value)
+                let label = html2obj[0][&#39;name&#39;]
+                let style = &#123;&#125; //style和其他的属性有些不同看上去是个字符串,但其实是个对象
+                let innerText = html2obj[0][&#39;children&#39;][0][&#39;data&#39;]
+                let span = &#123;
+                    label: label,
+                    style: style,
+                    innerText: innerText,
+                &#125;
+                target[&#39;children&#39;].push(span)
+                console.log(`&#123;set|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],value:[$&#123;value&#125;]&#125;`)
+                return span
+            &#125; else if (objName.indexOf(&#39;doc_cre_a&#39;) !== -1 &amp;&amp; prop === &#39;href&#39;) &#123;
+                Object.assign(target, location)
+                if (value.indexOf(&#39;http&#39;) === -1) &#123;
+                    target.href = location.origin + value.replace(&#39;./&#39;, &#39;/&#39;)
+                    target.pathname = value.replace(&#39;./&#39;, &#39;/&#39;)
+                &#125; else &#123;
+                    target.href = value
+                    target.pathname = value.replace(location.origin, &#39;&#39;)
+                &#125;
+                console.log(`&#123;set|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],value:[$&#123;value&#125;]&#125;`)
+                return value
+            &#125;
+            let result;
+            result = Reflect.set(target, prop, value, receiver);
+            //过滤输出一些属性
+            if ((yueqian.proxy_filters_init.indexOf(prop) !== -1) || typeof prop === &#39;symbol&#39; || (yueqian.proxy_filters_custom.indexOf(prop) !== -1)) &#123;
+                return result;
+            &#125;
+            let type = Object.prototype.toString.call(value);
+            if (value instanceof Object) &#123;
+                console.log(`&#123;set|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],value_type:[$&#123;type&#125;]&#125;`);
+            &#125; else if (typeof value === &quot;symbol&quot;) &#123;
+                console.log(`&#123;set|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],value:[$&#123;value.toString()&#125;]&#125;`);
+            &#125; else &#123;
+                let value_length = value &amp;&amp; value.length
+                console.log(`&#123;set|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],value:[$&#123;value&#125;]&#125; length:$&#123;value_length&#125;`)
+                // if (prop === &#39;cookie&#39; &amp;&amp; value.indexOf(&#39;FSSBBIl1UgzbN7N80T&#39;) !== -1) &#123; debugger &#125;
+                // if (prop === &#39;$_fb&#39;) &#123; debugger &#125;
+            &#125;
+            return result;
+        &#125;,
+        deleteProperty: function (target, propKey) &#123;
+            let result = Reflect.deleteProperty(target, propKey);
+            //过滤输出一些属性
+            if ((yueqian.proxy_filters_init.indexOf(propKey) !== -1) || typeof propKey === &#39;symbol&#39;) &#123;
+                return result;
+            &#125;
+            console.log(`&#123;deleteProperty|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;propKey.toString()&#125;], result:[$&#123;result&#125;]&#125;`);
+            return result;
+        &#125;,
+        apply: function (target, thisArg, argumentsList) &#123;
+            // target: 函数对象
+            // thisArg: 调用函数的this指针
+            // argumentsList: 数组， 函数的入参组成的一个列表
+            let arg = Object.prototype.toString.call(argumentsList[0]);
+            if (typeof argumentsList[0] === &#39;string&#39;) &#123;
+                arg = argumentsList[0].slice(0, 30)
+            &#125;
+            let result;
+            //动态拦截并修改函数返回值
+            if (objName === &#39;doc_cre_canvas2.toDataURL&#39;) &#123;
+                result = yueqian.canvas_2d_toDateUrl
+            &#125; else if (objName === &#39;doc_cre_canvas3.toDataURL&#39;) &#123;
+                result = yueqian.canvas_webgl_toDateUrl
+            &#125; else if (objName === &#39;document.getElementById&#39; &amp;&amp; argumentsList[0] === &#39;__onload__&#39;) &#123;
+                result = yueqian.eles.find((ele) =&gt; &#123; return ele[yueqian.symbolObjName] === &#39;doc_write_input&#39; &#125;)
+            &#125; else if (objName === &#39;doc_cre_canvas3.getContext_obj6.getShaderPrecisionFormat&#39; &amp;&amp; yueqian.webgl_WebGLShaderPrecisionFormat[`$&#123;argumentsList[0]&#125;_$&#123;argumentsList[1]&#125;`]) &#123;
+                result = yueqian.webgl_WebGLShaderPrecisionFormat[`$&#123;argumentsList[0]&#125;_$&#123;argumentsList[1]&#125;`]
+            &#125; else &#123;
+                thisArg = target[yueqian.symbolRawFatherObj] //更改apply的this指向为原生对象(内置对象的this指向必须为原生对象,不可以是代理对象)
+                result = Reflect.apply(target, thisArg, argumentsList);
+            &#125;
+            let type = Object.prototype.toString.call(result);
+            if (result instanceof Object) &#123;
+                let result_objName = `$&#123;objName&#125;_obj$&#123;yueqian.func_ret_seq++&#125;`
+                result = yueqian.proxy(result, result_objName) //让function返回的对象也自动套上代理
+                console.log(`&#123;apply|function:[$&#123;objName&#125;], arg:$&#123;arg&#125;, type:[$&#123;type&#125;]&#125;`);
+            &#125; else if (typeof result === &quot;symbol&quot;) &#123;
+                console.log(`&#123;apply|function:[$&#123;objName&#125;], arg:$&#123;arg&#125;, result:[$&#123;result.toString()&#125;]&#125;`);
+            &#125; else if (typeof result === &quot;string&quot;) &#123;
+                console.log(`&#123;apply|function:[$&#123;objName&#125;], arg:$&#123;arg&#125;, result:[$&#123;result.slice(0, 50)&#125;]&#125;`);
+            &#125; else &#123;
+                console.log(`&#123;apply|function:[$&#123;objName&#125;], arg:$&#123;arg&#125;, result:[$&#123;result&#125;]&#125;`);
+            &#125;
+            return result;
+        &#125;,
+        construct: function (target, argArray, newTarget) &#123;
+            // target: 函数对象
+            // argArray： 参数列表
+            // newTarget：代理对象
+            let result;
+            newTarget = target[yueqian.symbolRawSelfObj] //更改this指向为原生对象(内置对象的this指向必须为原生对象,不可以是代理对象)
+            result = Reflect.construct(target, argArray, newTarget);
+            let type = Object.prototype.toString.call(result);
+            result = yueqian.proxy(result, objName)
+            console.log(`&#123;construct|function:[$&#123;objName&#125;], type:[$&#123;type&#125;]&#125;`);
+            return result;
+        &#125;,
+
+    &#125;;
+    let proxyObj = new Proxy(obj, handler);
+    //防止重复代理，导致代理被用嵌套对比的方式检测出来
+    Object.defineProperty(obj, yueqian.symbolProxy, &#123;
+        configurable: true,
+        enumerable: false,
+        writable: false,
+        value: proxyObj
+    &#125;)
+    return proxyObj
+&#125;
+window.self = window.top = window = yueqian.proxy(window, &#39;window&#39;)
+//以下也需要代理,因为如果代码中不加window,默认是从globalThis中获取的,而globalThis并不是一个代理对象,代理日志是无法捕捉到的
+document = yueqian.proxy(document, &#39;document&#39;)
+navigator = yueqian.proxy(navigator, &#39;navigator&#39;)
+location = yueqian.proxy(location, &#39;location&#39;)
+localStorage = yueqian.proxy(localStorage, &#39;localStorage&#39;);
+sessionStorage = yueqian.proxy(sessionStorage, &#39;sessionStorage&#39;)
+
+//异步环境
+//异步池排列逻辑,每执行完一个异步事件对异步池重新排列(因为异步任务有可能还会注册异步任务)
+function async_pool_get() &#123;
+    //每次执行前,排列异步池事件,逻辑:setTimeout/setInterval time 0权重最大,先于load执行,每执行完一个从池中删除
+    let setTIEventPool = asyncEvents.setTI;
+    async_exec_pool = async_exec_pool.concat(setTIEventPool)
+    //清空池
+    asyncEvents.setTI = []
+
+    delete asyncEvents.addEventListener[&#39;unload&#39;] //删除unload事件
+
+    let otherListeners = asyncEvents.addEventListener
+    for (const listenersKey in otherListeners) &#123;
+        let other_listenPool = otherListeners[listenersKey]
+        async_exec_pool = async_exec_pool.concat(other_listenPool)
+        asyncEvents.addEventListener[listenersKey] = []
+    &#125;
+    let new_async_exec_pool = []
+    //pool中time大于1000的全部丢弃,丢弃阈值由浏览器端调试结论决定,这里笔者调试结论为1s
+    for (let i = 0; i &lt; async_exec_pool.length; i++) &#123;
+        let event = async_exec_pool[i]
+        let time = event.time
+        if (time &lt;= 1000) &#123;
+            new_async_exec_pool.push(event)
+        &#125;
+    &#125;
+    //对pool进行排序 load在监听事件中理应是先的,但不排除非先清空,到时候具体问题具体分析,这里先手动给load time设置为1
+    new_async_exec_pool.sort((a, b) =&gt; &#123;
+        if (a[&#39;time&#39;] &lt; b[&#39;time&#39;]) &#123;
+            return -1
+        &#125; else if (a[&#39;time&#39;] &gt; b[&#39;time&#39;]) &#123;
+            return 1
+        &#125;
+        if (a[&#39;seq&#39;] &lt; b[&#39;seq&#39;]) &#123;
+            return -1
+        &#125; else if (a[&#39;seq&#39;] &gt; b[&#39;seq&#39;]) &#123;
+            return 1
+        &#125;
+        return 0
+    &#125;)
+
+    return new_async_exec_pool
+&#125;
+function async_pool_exec(async_exec_pool) &#123;
+    if (async_exec_pool.length === 0) &#123;
+        return //池空则不执行
+    &#125;
+    //遍历执行pool,用shift取
+    let pool_event = async_exec_pool.shift()
+    let pool_event_out_type = pool_event[&#39;out_type&#39;]
+    if (pool_event_out_type === &#39;addEventListener&#39;) &#123;
+        let inner_type = pool_event[&#39;type&#39;]
+        let self = pool_event[&#39;self&#39;]
+        let func = pool_event[&#39;func&#39;]
+        if (inner_type === &#39;load&#39;) &#123;
+            console.log(`$&#123;this&#125; $&#123;pool_event_out_type&#125; $&#123;inner_type&#125; 事件正在执行 &gt; $&#123;func.name&#125;`)
+            let loadEvent = init_events_pool.load
+            func.call(self, loadEvent)
+        &#125; else &#123;
+            //除load事件外,其余事件均以观察为主,如果调式发现确实用到,则取消注释
+            /*             let loadEvent=init_events_pool.other
+                        func.call(self, loadEvent)
+                        console.log(`$&#123;pool_event_out_type&#125; $&#123;inner_type&#125; 正在执行 &gt; $&#123;func.name&#125;`) */
+        &#125;
+    &#125; else if ([&#39;setInterval&#39;, &#39;setTimeout&#39;].indexOf(pool_event_out_type) !== -1) &#123;
+        let func = pool_event[&#39;func&#39;]
+        let params = pool_event[&#39;params&#39;]
+        let time = pool_event[&#39;time&#39;]
+        console.log(`$&#123;pool_event_out_type&#125;|$&#123;time&#125; 事件正在执行 &gt; $&#123;func.name&#125;`)
+        func.call(window, ...params)
+    &#125; else &#123;
+        console.log(`$&#123;pool_event_out_type&#125; 未实现`)
+    &#125;
+    return async_exec_pool
+&#125;
+
+function main(path) &#123;
+    //外链js
+    &#39;yueqian_outjs&#39;
+    //自执行函数
+    &#39;yueqian_script0&#39;
+    &#39;yueqian_script1&#39;
+    &#39;yueqian_script2&#39;
+    //异步执行
+    while (async_exec_pool) &#123;
+        async_exec_pool = async_pool_get()
+        async_exec_pool = async_pool_exec(async_exec_pool)
+    &#125;
+    //触发xhr.open()获取签名
+    let yq_xml = new XMLHttpRequest
+    let url = yq_xml.open(&#39;POST&#39;, path)
+    let cookie_80T = document.cookie.split(&#39;FSSBBIl1UgzbN7N80T=&#39;)[1].split(&#39;; &#39;)[0]
+    // 创建一个新的URL对象,获取URL中的参数
+    let urlObject = new URL(url);
+    let params = new URLSearchParams(urlObject.search);
+    let param_MmEwMD = params.get(&#39;MmEwMD&#39;);
+    let res = &#123;
+        coo_80t: cookie_80T,
+        para_mm: param_MmEwMD
+    &#125;
+    return JSON.stringify(res)
+&#125;
+</code></pre>
+<h2 id="7-2-python请求源码"><a href="#7-2-python请求源码" class="headerlink" title="7.2 python请求源码"></a>7.2 python请求源码</h2><pre><code class="python">import requests
+from parsel import Selector
+import json
+import execjs
+
+
+class FangdiSpider:
+    def __init__(self) -&gt; None:
+        self.encjs = open(&#39;./enc.js&#39;).read()
+
+    def get_index_1(self):
+        headers = &#123;
+            &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36&quot;
+        &#125;
+        url = &quot;http://www.fangdi.com.cn/index.html&quot;
+        response = requests.get(url, headers=headers, verify=False)
+        print(response)
+        s = Selector(text=response.text)
+        content = s.xpath(&#39;//meta[@content][2]/@content&#39;).get()
+        self.encjs = self.encjs.replace(&#39;yueqian_content&#39;, content)
+        yueqian_content_script0 = s.xpath(
+            &quot;//script[@r=&#39;m&#39;]/text()&quot;).getall()[0]
+        self.encjs = self.encjs.replace(
+            &#39;\&#39;yueqian_script0\&#39;&#39;, yueqian_content_script0)
+        yueqian_content_script1 = s.xpath(
+            &quot;//script[@r=&#39;m&#39;]/text()&quot;).getall()[1]
+        self.encjs = self.encjs.replace(
+            &#39;\&#39;yueqian_script1\&#39;&#39;, yueqian_content_script1)
+        yueqian_content_script2 = s.xpath(
+            &quot;//script[@r=&#39;m&#39;]/text()&quot;).getall()[2]
+        self.encjs = self.encjs.replace(
+            &#39;\&#39;yueqian_script2\&#39;&#39;, yueqian_content_script2)
+        cookie = response.cookies.get_dict()
+        coo_80s = cookie[&#39;FSSBBIl1UgzbN7N80S&#39;]
+        return coo_80s
+
+    def get_outjs(self, N80S):
+        headers = &#123;
+            &quot;Referer&quot;: &quot;http://www.fangdi.com.cn/index.html&quot;,
+            &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36&quot;
+        &#125;
+        cookies = &#123;
+            &quot;FSSBBIl1UgzbN7N80S&quot;: N80S,
+            &quot;www.fangdi.com_http_ic&quot;: &quot;www.fangdi.com.cn_80_RS&quot;
+        &#125;
+        url = &quot;http://www.fangdi.com.cn/4QbVtADbnLVIc/c.FxJzG50F.dfe1675.js&quot;
+        response = requests.get(url, headers=headers,
+                                cookies=cookies)
+        print(response)
+        self.encjs = self.encjs.replace(&#39;\&#39;yueqian_outjs\&#39;&#39;, response.text)
+
+    def get_index_2(self, N80S, N80T):
+        cookies = &#123;
+            &#39;FSSBBIl1UgzbN7N80S&#39;: N80S,
+            &#39;www.fangdi.com_http_ic&#39;: &#39;www.fangdi.com.cn_80_RS&#39;,
+            &#39;FSSBBIl1UgzbN7N80T&#39;: N80T,
+        &#125;
+        headers = &#123;
+            &#39;Referer&#39;: &#39;http://www.fangdi.com.cn/index.html&#39;,
+            &#39;User-Agent&#39;: &#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36&#39;,
+        &#125;
+
+        response = requests.get(
+            &#39;http://www.fangdi.com.cn/index.html&#39;, cookies=cookies, headers=headers)
+        print(response)
+        cookies = response.cookies.get_dict()
+        coo_sessId1 = cookies[&#39;JSESSIONID1&#39;]
+        return coo_sessId1
+
+    def get_house_news(self, coo_80s, coo_80t, para_mm, coo_sessId1):
+        headers = &#123;
+            &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36&quot;,
+            &quot;Referer&quot;: &quot;http://www.fangdi.com.cn/index.html&quot;,
+        &#125;
+        url = &quot;http://www.fangdi.com.cn/service/index/getHouseNews.action&quot;
+        params = &#123;
+            &quot;MmEwMD&quot;: para_mm
+        &#125;
+        cookies = &#123;
+            &#39;www.fangdi.com_http_ic&#39;: &#39;www.fangdi.com.cn_80_RS&#39;,
+            &#39;FSSBBIl1UgzbN7N80S&#39;: coo_80s,
+            &#39;JSESSIONID1&#39;: coo_sessId1,
+            &#39;www.fangdi.com.cn&#39;: &#39;www.fangdi.com.cn_rs4&#39;,
+            &#39;FSSBBIl1UgzbN7Nenable&#39;: &#39;true&#39;,
+            &#39;FSSBBIl1UgzbN7N80T&#39;: coo_80t,
+        &#125;
+        response = requests.post(url, headers=headers,
+                                 params=params, cookies=cookies)
+        print(response)
+        print(response.text)
+
+    def main(self):
+        coo_80s = self.get_index_1()
+        self.get_outjs(coo_80s)
+        enc_info = execjs.compile(self.encjs).call(
+            &#39;main&#39;, &#39;./service/index/getHouseNews.action&#39;)
+        coo_80t, para_mm = json.loads(enc_info).values()
+        coo_sessId1 = self.get_index_2(coo_80s, coo_80t)
+        self.get_house_news(coo_80s, coo_80t, para_mm, coo_sessId1)
+
+
+if __name__ == &quot;__main__&quot;:
+    spider = FangdiSpider()
+    spider.main()
+</code></pre>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，如有问题请邮件至2454612285@qq.com。 </span>
@@ -746,7 +2209,7 @@ btoa = function (str) &#123;
     
     
     
-    <a class="dynamic-menu " target="_self"   href="http://106.54.217.16/">跃迁</a>
+    <a class="dynamic-menu " target="_self"   href="http://106.54.217.16/">跃迁主页</a>
     
     
 </div>
