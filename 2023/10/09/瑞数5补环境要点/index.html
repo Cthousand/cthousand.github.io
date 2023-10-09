@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>debug | 跃迁blog</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="debug | 跃迁blog">
+  <title>瑞数5补环境要点 | 跃迁blog</title>
+  <meta name="keywords" content=" javascript , web逆向 , 瑞数 , python ">
+  <meta name="description" content="瑞数5补环境要点 | 跃迁blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="[TOC] 一、前言之前分析过瑞数4的补环境方案，本篇分析一下瑞数5，一开始笔者试图直接拿瑞数4的环境来运行瑞数5，但请求失败了，cookie也不一致，这说明rs5在rs4的基础上多了一些环境检测点。 本篇的目的即是将这些新增的检测点找出来, 方案选择补环境框架。 二、目标成功爬取首页html。 aHR0cDovL3d3dy5jaGluYXN0b2NrLmNvbS5jbi9uZXdzaXRlL2N">
 <meta property="og:type" content="article">
@@ -406,19 +406,40 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-02&lt;a-song-of-ice-and-fire&gt;阅读笔记" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-瑞数5补环境要点" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">debug</h1>
+        <h1 class="article-title">瑞数5补环境要点</h1>
     
     <div class="article-meta">
         
         
         
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="爬虫">爬虫</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">javascript</a>
+            
+            <a class="color1">web逆向</a>
+            
+            <a class="color3">瑞数</a>
+            
+            <a class="color2">python</a>
+            
+        </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-07-06 11:01:21'>2023-05-15 18:05</time>
+            发布时间 : <time class="date" title='最后更新: 2023-10-09 16:31:18'>2023-10-09 10:36</time>
         
     </div>
     <div class="article-meta">
@@ -440,7 +461,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E5%89%A7%E6%83%85%E8%B5%B0%E5%90%91%E6%A6%82%E5%86%B5"><span class="toc-text">本周剧情走向概况</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%89%BE%E8%8E%89%E4%BA%9A"><span class="toc-text">艾莉亚</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%B9%E5%A6%AE%E8%8E%89%E4%B8%9D"><span class="toc-text">丹妮莉丝</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B2%BE%E9%80%89%E8%AF%AD%E5%8F%A5"><span class="toc-text">精选语句</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%A7%E6%83%85%E5%88%86%E6%9E%90"><span class="toc-text">剧情分析</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%9B%AE%E6%A0%87"><span class="toc-text">二、目标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%88%90%E6%9E%9C"><span class="toc-text">三、成果</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E4%B8%8E4%E4%BB%A3%E7%8E%AF%E5%A2%83%E7%9A%84%E4%B8%BB%E8%A6%81%E5%B7%AE%E5%BC%82"><span class="toc-text">四、与4代环境的主要差异</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-document-all%E6%A3%80%E6%B5%8B"><span class="toc-text">4.1 document.all检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-form%E6%A0%87%E7%AD%BE%E6%A3%80%E6%B5%8B"><span class="toc-text">4.2 form标签检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E9%9F%B3%E8%A7%86%EF%B8%8F%E9%A2%91%E6%8C%87%E7%BA%B9%E6%A3%80%E6%B5%8B"><span class="toc-text">4.3 音视️频指纹检测</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">五、总结</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -456,107 +477,65 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="本周剧情走向概况"><a href="#本周剧情走向概况" class="headerlink" title="本周剧情走向概况"></a>本周剧情走向概况</h1><p>title: 02<a song of ice and fire>阅读笔记<br>date: 2023-06-04 20:29:34<br>categories:<br>tags: <a song of ice and fire><br>hidden: true</p>
-<h2 id="艾莉亚"><a href="#艾莉亚" class="headerlink" title="艾莉亚"></a>艾莉亚</h2><ol>
-<li><p>艾莉亚落寞地来到神木林，练习西利欧老师交给她的剑术，后在鱼梁木下祈祷时遇到贾坤,<br>贾坤要求她说出第三个名字，艾莉亚趁机要求贾坤解救北境囚犯,贾坤以一命只能换一命为由拒绝，于是艾莉亚说出第三个名字就是贾坤自己，除非帮助她释放囚犯，贾坤只好同意。</p>
-<blockquote>
-<p>Arya came to godswood lonely, worked at the drills Syrio had taught her. Jaqen H’ghar appeared while Arya preyed under the weirwood.He asked Arya<br>to tell the third name. Arya took the opportunity to ask Jaqen to save the northmen confined in dungeons,Jaqen refused Arya ,he told her that a<br>life only worth a life. Finally, Jaqen agreed as Arya tell him the third name will be jaqen H’ghar himself if he won’t help.</p>
-</blockquote>
-</li>
-<li><p>他们伪装成血戏班的人给地牢看守送肉汤，趁机杀死看守，释放了囚犯，随后艾莉亚得知血戏班早已与北境势力达成了私下协议。贾坤给了艾莉亚一枚金币，并告知如果要找他学习本领，就把硬币给任何一个布拉佛斯人，向其说出’Valar<br>morghulis’，随后离去。</p>
-<blockquote>
-<p>They disguised themselves as members of the Bloody Mummers to deliver broth to the dungeon guards.They took the opportunity to kill the guards,<br>and released the prisoners, then Arya learned that the Bloody Mummers had already reached a private agreement with the northern. Jaqun gave Arya a<br>gold coin, told her to give the coin to any man from Braavos and say ‘Valar morghulis’ if Arya wanted to learn from him.</p>
-</blockquote>
-</li>
-<li><p>次日晚，北境恐怖堡领主卢斯·波顿率军接管了赫伦堡，在与卢斯波顿交谈期间，艾莉亚隐瞒了真名,以娜娜为假名,瞒过了卢斯波顿，并被其安排成了侍酒小童。</p>
-<blockquote>
-<p>The next night, Roose Bolton the lord of the Dreadfort in the North, led his army to take over Harrenhal. During conversation with Roose Bolton,<br>Arya concealed her real name and used Nana as pseudonym. Roose Bolton appointed Nana as his cupbearer.</p>
-</blockquote>
-</li>
+        <p><div class='inner-toc'><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%9B%AE%E6%A0%87"><span class="toc-text">二、目标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%88%90%E6%9E%9C"><span class="toc-text">三、成果</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E4%B8%8E4%E4%BB%A3%E7%8E%AF%E5%A2%83%E7%9A%84%E4%B8%BB%E8%A6%81%E5%B7%AE%E5%BC%82"><span class="toc-text">四、与4代环境的主要差异</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-document-all%E6%A3%80%E6%B5%8B"><span class="toc-text">4.1 document.all检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-form%E6%A0%87%E7%AD%BE%E6%A3%80%E6%B5%8B"><span class="toc-text">4.2 form标签检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E9%9F%B3%E8%A7%86%EF%B8%8F%E9%A2%91%E6%8C%87%E7%BA%B9%E6%A3%80%E6%B5%8B"><span class="toc-text">4.3 音视️频指纹检测</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">五、总结</span></a></li></ol></div></p>
+<h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><p>之前分析过瑞数4的补环境方案，本篇分析一下瑞数5，一开始笔者试图直接拿瑞数4的环境来运行瑞数5，但请求失败了，cookie也不一致，这说明rs5在rs4的基础上多了一些环境检测点。</p>
+<p>本篇的目的即是将这些新增的检测点找出来, 方案选择补环境框架。</p>
+<h1 id="二、目标"><a href="#二、目标" class="headerlink" title="二、目标"></a>二、目标</h1><p>成功爬取首页html。</p>
+<pre><code class="javascript">aHR0cDovL3d3dy5jaGluYXN0b2NrLmNvbS5jbi9uZXdzaXRlL2Nncy1zZXJ2aWNlcy9zdG9ja0ZpbmFuY2UvYnVzaW5lc3NBbm5jLmh0bWw/dHlwZT1tYXJnaW5MaXN0
+</code></pre>
+<h1 id="三、成果"><a href="#三、成果" class="headerlink" title="三、成果"></a>三、成果</h1><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/5a0b8d4fb09e4b2f842285646db705dc.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="200返回"><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/157270c3bfa04f6a86d1b51a21072b0f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="cookie一致"></p>
+<h1 id="四、与4代环境的主要差异"><a href="#四、与4代环境的主要差异" class="headerlink" title="四、与4代环境的主要差异"></a>四、与4代环境的主要差异</h1><h2 id="4-1-document-all检测"><a href="#4-1-document-all检测" class="headerlink" title="4.1 document.all检测"></a>4.1 document.all检测</h2><p><strong>代理日志</strong><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/8af13005397d4dff86f3489714943a1f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<p><strong>特性</strong><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/2497f43b90314cf8bac74f9d7ba7cf1e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>从图中可以看出，返回的是一个<code>HTMLALLCollection</code>对象，但用<code>typeof</code>却显示<code>undefined</code></p>
+<p><strong>分析与解决</strong><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/10ae92ff44814477a4a86beaec05ebef.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>这其实是javascript发展史上的一个bug，并且官方也不推荐使用该api</p>
+<p>在js层面这个对象是无法模拟出来的，不过有大佬提出用c++更改nodejs底层代码，或者用c++写一个nodejs插件，笔者这里用的是后者。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/6af316e3ee264a76a4549a85354cf975.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<h2 id="4-2-form标签检测"><a href="#4-2-form标签检测" class="headerlink" title="4.2 form标签检测"></a>4.2 form标签检测</h2><p><strong>代理日志</strong><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/fa5971beaa7848498426689856a09247.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<p><strong>特性</strong><br>在浏览器中form标签的特征可用下面这个案例来表示：</p>
+<pre><code class="javascript">function test_action() &#123;
+    let form = document.createElement(&quot;form&quot;);
+    let input1 = document.createElement(&quot;input&quot;);
+    input1.id = &quot;username&quot;;
+    input1.content = &quot;action&quot;;
+    input1.name = &quot;action&quot;;
+    form.appendChild(input1);
+    let input2 = document.createElement(&quot;input&quot;);
+    input2.name = &quot;textContent&quot;;
+    input2.id = &quot;password&quot;;
+    form.appendChild(input2);
+    let input3 = document.createElement(&quot;input&quot;);
+    input3.id = &quot;innerText&quot;;
+    input3.type = &quot;submit&quot;;
+    input3.name = &quot;id&quot;;
+    form.appendChild(input3);
+    a = form.action;
+    b = form.textContent;
+    c = form.id;
+    d = form.innerText;
+    form.id=&#39;yq&#39;
+    form.name=&#39;yqName&#39;
+    document.body.appendChild(form)
+    
+    if (a.name == &#39;action&#39; &amp;&amp; a.id == &#39;username&#39; &amp;&amp; b.name == &#39;textContent&#39; &amp;&amp; b.id == &#39;password&#39; &amp;&amp; c.id == &quot;innerText&quot; &amp;&amp; c.name == &#39;id&#39; &amp;&amp; d.id == &#39;innerText&#39; &amp;&amp; d.name == &#39;id&#39; &amp;&amp;globalThis.yq==form &amp;&amp;globalThis.yqName==form) &#123;
+        console.log(`test_action 检测通过`)
+    &#125; else &#123;
+        console.log(`test_action 可以被检测`);
+    &#125;
+
+&#125;
+
+test_action()
+</code></pre>
+<p>浏览器测试结果:<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/a143b125d88b468bbfd7ffeed6766b72.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<p>简要概括一下，对于一个form标签，如果添加一个input子标签，并且input设置了id和name值，那么form标签可以直接通过id和name访问到这个input标签，此为第一层；<br>第二层是若form标签设置了id和name，那么对于window对象及其原型链，可以直接通过id和name访问到这个form标签。</p>
+<p><strong>分析和解决</strong><br>这个问题通过js设计解决，在input标签插入form标签的过程中，检查input标签是否有id&#x2F;name标签，如果有，那么给form标签自身添加id&#x2F;name值属性，指向input标签；在form标签添加到body中时，给window的原型链添加id&#x2F;name值属性，指向form标签。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/064fdafa6b3744f9ab58ba835952aad8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<h2 id="4-3-音视️频指纹检测"><a href="#4-3-音视️频指纹检测" class="headerlink" title="4.3 音视️频指纹检测"></a>4.3 音视️频指纹检测</h2><p><strong>代理日志</strong><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/89cc7527d52449899471c795efe71d03.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<p><strong>检测原理</strong><br>通过创建audio&#x2F;video标签，调用其<code>canPlayType</code>方法，传入不同的参数以验证浏览器支持情况。<br><strong>解决</strong><br>缺啥补啥，和浏览器保持一致就行。</p>
+<h1 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h1><p>以上就是5代瑞数环境检测和4代的区别，主要包括3点：</p>
+<ol>
+<li><code>document.all</code>检测，这个检测难以通过纯js解决，需要对v8有所了解，需要会一点c++的基础从底层实现。 </li>
+<li>form标签检测，调试好规律后在js中做一些嫁接引用 。</li>
+<li>音视频指纹检测，和浏览器保持一致就行。</li>
 </ol>
-<h2 id="丹妮莉丝"><a href="#丹妮莉丝" class="headerlink" title="丹妮莉丝"></a>丹妮莉丝</h2><ol>
-<li><p>丹妮莉丝等人来到不朽神殿，意外的发现其并没有想象中的恢弘大气，而更像是古老的灰色废墟，充满着诡异，丹妮莉丝在众人的劝阻下执意前行，乔拉爵士等人想要跟随，但被男巫俳雅•菩厉阻止，于是丹妮妮丝只携带黑龙卓耿入内。</p>
-<blockquote>
-<p>Daenerys along with his delegation arrived the House of Undying ones, unexpectedly found that it was not as magnificent as what they imaged<br>before, but more like an ancient gray ruin, full of weirdness. Daenerys insisted on entering while others persuaded her back, Sir Jorah and others<br>wanted to go with her, but they were stopped by the warlock Pyat Pree, so Denise only brought the black dragon Drogon into it.</p>
-</blockquote>
-</li>
-<li><p>在喝下夜影之水后，丹妮受男巫俳雅•菩厉的告诫，只能走右手边的第一道门，途中无论其他门有什么样的诱惑都不要进去。在经过了种种幻境之后，丹妮妮丝来到了一扇关闭着的门前。</p>
-<blockquote>
-<p>After drinking a cup of the shadow of evening, Dany was warned by the warlock Pyat Pree that she could only enter the first door on the right,<br>and don’t enter other door no matter whatever it would present on the way. After going through various visions, Dany came to a closed door.</p>
-</blockquote>
-</li>
-</ol>
-<h1 id="精选语句"><a href="#精选语句" class="headerlink" title="精选语句"></a>精选语句</h1><ol>
-<li><p>a slow litte stream meandered through the wood,and there was one spot where it had eaten the ground away beneath a deadfall.<br><br><em>一条蜿蜒的小溪缓缓流过林间，一颗树木倒落下来,将下满砸出了个小坑。</em></p>
-<blockquote>
-<p>meander 闲逛 助记：me 和 er子在一起闲逛</p>
-</blockquote>
-</li>
-<li><p>whenever she had a free hour she stole away to work at the drills Syrio had taught her.<br><em>平时只要得空，她就会偷偷溜过来练习从前西利欧传授的技艺。</em></p>
-<blockquote>
-<p>drill 训练 助记: drill 钻,哪有什么钻研,只有日复一日的训练</p>
-</blockquote>
-</li>
-<li><p>he looked down at her pitilessly.<br><em>他低头看着她,不带一丝同情。</em></p>
-<blockquote>
-<p>pitilessly 无情的 助记: pity 可惜 + less &gt; 不足为惜 &gt; 无情</p>
-</blockquote>
-</li>
-<li><p>even in the burning barn,with walls of flame towering all around and him in chains, he had not seemed so distraught as he did now.<br><br><em>即使在燃烧的谷仓,四周是咆哮的火海,身体又被铁链束缚,他也没有此刻惊慌。</em></p>
-<blockquote>
-<p>seem distraught 看起来惊慌失措 助记: distract 分心</p>
-</blockquote>
-</li>
-<li><p>a girl … she makes a jest.<br><em>女孩开玩笑</em></p>
-<blockquote>
-<p>tong 钳子 助记：tongue舌头，用钳子把舌头夹住，拔舌地狱。</p>
-</blockquote>
-</li>
-<li><p>Vargo Hoat’s arrival had thrown off all the routines.<br><em>瓦格赫特的抵达完全打乱了日常作息</em></p>
-<blockquote>
-<p>throw off 摆脱</p>
-</blockquote>
-</li>
-<li><p>he seemed resigned.<br><em>他看起来认命了</em></p>
-<blockquote>
-<p>resigned 顺从的</p>
-</blockquote>
-</li>
-<li><p>a thin smile twitched across his lips.<br><em>他嘴角现出一抹淡淡的微笑.</em></p>
-<blockquote>
-<p>twitch 拉扯</p>
-</blockquote>
-</li>
-<li><p>the child speaks as sagely as a crone.<br><em>这孩子说话如老妪一般睿智</em></p>
-<blockquote>
-<p>sage 睿智的 助记：s 蛇 上了年纪的蛇一般都很睿智</p>
-</blockquote>
-</li>
-<li><p>from another came a dissonant piping that made the dragon lash his tail wildly from side to side.<br><br><em>另一扇后面传来刺耳的笛声,龙一听之下便疯狂地摇尾巴</em></p>
-<blockquote>
-<p>a dissonant piping 刺耳的笛声<br>lash tail 摇尾巴 助记:lash l 金箍棒 ash灰 &gt; 金箍棒抽打灰</p>
-</blockquote>
-</li>
-<li><p>savagely slaughtered, the feasters lay strewn across overturned chairs and hacked trestle tables, asprawl in pools of congealing blood. <br><br><em>被残忍屠杀后的参与者们东倒西歪的趴在倾倒的椅子和劈烂的高架桌边,躺在一滩滩正在凝结的血液中.</em></p>
-<blockquote>
-<p>lay strewn across 凌乱的躺在</p>
-</blockquote>
-</li>
-<li><p>our little lives are no more than a flicker of a moth’s wing to them. <br><em>我们短暂的生命对他们而言如飞蛾扑翅一般渺小.</em></p>
-</li>
-</ol>
-<h1 id="剧情分析"><a href="#剧情分析" class="headerlink" title="剧情分析"></a>剧情分析</h1><ol>
-<li><p>艾莉亚坑了贾坤一把，救出北境囚犯，但为什么要对北境领主卢斯·伯顿隐瞒自己的身份呢？</p>
-<blockquote>
-<p>Arya tricked Jaqen and rescued the northern prisoners, but why did she hide her real name from the northern lord Roose Bolton?</p>
-</blockquote>
-</li>
-<li><p>丹妮妮丝向不朽神殿寻求帮助，众所周知，命运的馈赠早已在暗中标好了筹码，她要为此付出的代价是什么呢，不朽神殿的目的何在？</p>
-<blockquote>
-<p>Dany seeks help from the House of Undying ones. As we all know, life never gives anything for nothing, and that a price is always exacted for<br>what fate bestows. What price will she pay for this?and what is the purpose of the House of Undying ones?</p>
-</blockquote>
-</li>
-</ol>
+<p>由于本次调试借助了补环境框架，因此源码也没什么参考价值，这里就不放了。<br>在调试rs5的源代码过程中，发现rs5的混淆要比rs4更复杂，尤其是那个大while循环，复杂的堆栈，重复使用的变量命名，对于环境的嗅探比4代要难，记得遇到一个<code>!clearInterval</code>的环境检测，在代码海洋中躺了半天，后来看不不&amp;挽风的B站公开视频，学会了通过条件断点一步步缩小搜查范围，才发现这个缺失的隐秘环境(关注大佬的动态益处多多)。<br>后续的方向是rs6+akamai+阿里滑块226，这三个产品准备先借助ast还原一部分（眼睛真的太痛啦，再不用ast，知识真的要还给零点老师了），那么让我们期待后续文章。</p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，如有问题请邮件至2454612285@qq.com。 </span>
