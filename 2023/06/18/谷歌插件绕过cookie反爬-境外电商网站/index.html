@@ -6,12 +6,12 @@
   <meta name="keywords" content=" javascript , web爬虫 , python , 谷歌插件 , flask ">
   <meta name="description" content="谷歌插件绕过cookie反爬_某境外电商网站 | 跃迁blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="[TOC] 一、前言之前分析过瑞数4的补环境方案，本篇分析一下瑞数5，一开始笔者试图直接拿瑞数4的环境来运行瑞数5，但请求失败了，cookie也不一致，这说明rs5在rs4的基础上多了一些环境检测点。 本篇的目的即是将这些新增的检测点找出来, 方案选择补环境框架。 二、目标成功爬取首页html。 aHR0cDovL3d3dy5jaGluYXN0b2NrLmNvbS5jbi9uZXdzaXRlL2N">
+<meta name="description" content="[TOC] 一、前言之前分析过瑞数4的补环境方案，本篇分析一下瑞数5，一开始笔者试图直接拿瑞数4的环境来运行瑞数5，但请求失败了，cookie也不一致，这说明rs5在rs4的基础上多了一些环境检测点。 本篇的目的即是将这些新增的检测点找出来, 方案选择补环境框架。（瑞数6拿瑞数5的环境可以直接过） 二、目标成功爬取首页html。 aHR0cDovL3d3dy5jaGluYXN0b2NrLmNvbS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="瑞数5补环境要点">
-<meta property="og:url" content="http://example.com/2023/10/09/%E7%91%9E%E6%95%B05%E8%A1%A5%E7%8E%AF%E5%A2%83%E8%A6%81%E7%82%B9/index.html">
+<meta property="og:title" content="瑞数5_6补环境要点">
+<meta property="og:url" content="http://example.com/2023/10/09/%E7%91%9E%E6%95%B05_6%E4%BB%A3%E8%A1%A5%E7%8E%AF%E5%A2%83%E8%A6%81%E7%82%B9/index.html">
 <meta property="og:site_name" content="跃迁blog">
-<meta property="og:description" content="[TOC] 一、前言之前分析过瑞数4的补环境方案，本篇分析一下瑞数5，一开始笔者试图直接拿瑞数4的环境来运行瑞数5，但请求失败了，cookie也不一致，这说明rs5在rs4的基础上多了一些环境检测点。 本篇的目的即是将这些新增的检测点找出来, 方案选择补环境框架。 二、目标成功爬取首页html。 aHR0cDovL3d3dy5jaGluYXN0b2NrLmNvbS5jbi9uZXdzaXRlL2N">
+<meta property="og:description" content="[TOC] 一、前言之前分析过瑞数4的补环境方案，本篇分析一下瑞数5，一开始笔者试图直接拿瑞数4的环境来运行瑞数5，但请求失败了，cookie也不一致，这说明rs5在rs4的基础上多了一些环境检测点。 本篇的目的即是将这些新增的检测点找出来, 方案选择补环境框架。（瑞数6拿瑞数5的环境可以直接过） 二、目标成功爬取首页html。 aHR0cDovL3d3dy5jaGluYXN0b2NrLmNvbS">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/5a0b8d4fb09e4b2f842285646db705dc.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
 <meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/157270c3bfa04f6a86d1b51a21072b0f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
@@ -24,7 +24,7 @@
 <meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/064fdafa6b3744f9ab58ba835952aad8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
 <meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/89cc7527d52449899471c795efe71d03.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
 <meta property="article:published_time" content="2023-10-09T02:36:47.000Z">
-<meta property="article:modified_time" content="2023-10-09T08:31:18.332Z">
+<meta property="article:modified_time" content="2023-11-08T06:04:57.428Z">
 <meta property="article:author" content="跃迁">
 <meta property="article:tag" content="javascript">
 <meta property="article:tag" content="python">
@@ -272,21 +272,21 @@
     <nav id="title-list-nav">
         
         
-        <a  class="全部文章 爬虫 "
-           href="/2023/10/09/%E7%91%9E%E6%95%B05%E8%A1%A5%E7%8E%AF%E5%A2%83%E8%A6%81%E7%82%B9/"
+        <a id="top" class="全部文章 爬虫 "
+           href="/2023/09/17/%E5%8D%8A%E8%87%AA%E5%8A%A8%E8%A1%A5%E7%91%9E%E6%95%B04%E7%8E%AF%E5%A2%83%E5%85%A8%E6%B5%81%E7%A8%8B/"
            data-tag="javascript,python,web逆向,瑞数"
            data-author="" >
-            <span class="post-title" title="瑞数5补环境要点">瑞数5补环境要点</span>
-            <span class="post-date" title="2023-10-09 10:36:47">2023/10/09</span>
+            <span class="post-title" title="半自动补瑞数4环境全流程">半自动补瑞数4环境全流程</span>
+            <span class="post-date" title="2023-09-17 16:34:23">2023/09/17</span>
         </a>
         
         
         <a  class="全部文章 爬虫 "
-           href="/2023/09/17/%E2%AD%90%EF%B8%8F%E5%8D%8A%E8%87%AA%E5%8A%A8%E8%A1%A5%E7%91%9E%E6%95%B04%E7%8E%AF%E5%A2%83%E5%85%A8%E6%B5%81%E7%A8%8B/"
+           href="/2023/10/09/%E7%91%9E%E6%95%B05_6%E4%BB%A3%E8%A1%A5%E7%8E%AF%E5%A2%83%E8%A6%81%E7%82%B9/"
            data-tag="javascript,python,web逆向,瑞数"
            data-author="" >
-            <span class="post-title" title="⭐️半自动补瑞数4环境全流程">⭐️半自动补瑞数4环境全流程</span>
-            <span class="post-date" title="2023-09-17 16:34:23">2023/09/17</span>
+            <span class="post-title" title="瑞数5_6补环境要点">瑞数5_6补环境要点</span>
+            <span class="post-date" title="2023-10-09 10:36:47">2023/10/09</span>
         </a>
         
         
@@ -458,6 +458,17 @@
             </span>
         </span>
         
+        
+        <span class="top-comment" title="跳转至评论区">
+            <a href="#comments">
+                评论:<span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </a>
+        </span>
         
     </div>
     
@@ -666,6 +677,27 @@ if __name__ == &#39;__main__&#39;:
 
 
 
+
+
+    <div id="comments"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+<script type="text/javascript">
+    $.getScript('/js/gitalk.js', function () {
+        var gitalk = new Gitalk({
+            clientID: '214c5cb5f884cc696370',
+            clientSecret: 'd8cc5414db1e24724d504f4157d453a7143835c8',
+            repo: 'cthousand.github.io',
+            owner: 'Cthousand',
+            admin: ['cthousand'],
+            id: decodeURI(location.pathname),
+            distractionFreeMode: 'true',
+            language: 'zh-CN',
+            perPage: parseInt('10',10)
+        })
+        gitalk.render('comments')
+    })
+</script>
 
 
 
