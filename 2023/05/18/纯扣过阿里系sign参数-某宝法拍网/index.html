@@ -6,32 +6,20 @@
   <meta name="keywords" content=" python , javascript , web逆向 , 阿里系 ">
   <meta name="description" content="纯扣过阿里系sign参数-某宝法拍网.md | 跃迁blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="[TOC] 一、前言之前分析过瑞数4的补环境方案，本篇分析一下瑞数5，一开始笔者试图直接拿瑞数4的环境来运行瑞数5，但请求失败了，cookie也不一致，这说明rs5在rs4的基础上多了一些环境检测点。 本篇的目的即是将这些新增的检测点找出来, 方案选择补环境框架。（瑞数6拿瑞数5的环境可以直接过） 二、目标成功爬取首页html。 aHR0cDovL3d3dy5jaGluYXN0b2NrLmNvbS">
+<meta name="description" content="1. 什么是tls指纹？1.1 什么是tls指纹？TLS 用于加密常见应用程序的通信（以确保数据安全）和恶意软件（使其可以隐藏在噪音中）。 要启动 SSL 会话，客户端将在 TCP 3 次握手后发送 SSL 客户端 Hello 数据包。 该数据包及其生成方式取决于构建客户端应用程序时使用的包和方法。服务器如果接受 SSL 连接，将使用 SSL Server Hello 数据包进行响应，该数据包是根">
 <meta property="og:type" content="article">
-<meta property="og:title" content="瑞数5_6补环境要点">
-<meta property="og:url" content="http://example.com/2023/10/09/%E7%91%9E%E6%95%B05_6%E4%BB%A3%E8%A1%A5%E7%8E%AF%E5%A2%83%E8%A6%81%E7%82%B9/index.html">
+<meta property="og:title" content="python调用go_cycletls过tls检测">
+<meta property="og:url" content="http://example.com/2023/11/24/python%E8%B0%83%E7%94%A8go-cycletls%E8%BF%87tls%E6%A3%80%E6%B5%8B/index.html">
 <meta property="og:site_name" content="跃迁blog">
-<meta property="og:description" content="[TOC] 一、前言之前分析过瑞数4的补环境方案，本篇分析一下瑞数5，一开始笔者试图直接拿瑞数4的环境来运行瑞数5，但请求失败了，cookie也不一致，这说明rs5在rs4的基础上多了一些环境检测点。 本篇的目的即是将这些新增的检测点找出来, 方案选择补环境框架。（瑞数6拿瑞数5的环境可以直接过） 二、目标成功爬取首页html。 aHR0cDovL3d3dy5jaGluYXN0b2NrLmNvbS">
+<meta property="og:description" content="1. 什么是tls指纹？1.1 什么是tls指纹？TLS 用于加密常见应用程序的通信（以确保数据安全）和恶意软件（使其可以隐藏在噪音中）。 要启动 SSL 会话，客户端将在 TCP 3 次握手后发送 SSL 客户端 Hello 数据包。 该数据包及其生成方式取决于构建客户端应用程序时使用的包和方法。服务器如果接受 SSL 连接，将使用 SSL Server Hello 数据包进行响应，该数据包是根">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/5a0b8d4fb09e4b2f842285646db705dc.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/157270c3bfa04f6a86d1b51a21072b0f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/8af13005397d4dff86f3489714943a1f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/2497f43b90314cf8bac74f9d7ba7cf1e.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/10ae92ff44814477a4a86beaec05ebef.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/6af316e3ee264a76a4549a85354cf975.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/fa5971beaa7848498426689856a09247.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/a143b125d88b468bbfd7ffeed6766b72.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/064fdafa6b3744f9ab58ba835952aad8.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/89cc7527d52449899471c795efe71d03.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
-<meta property="article:published_time" content="2023-10-09T02:36:47.000Z">
-<meta property="article:modified_time" content="2023-11-08T06:04:57.428Z">
+<meta property="og:image" content="http://example.com/images/2023-11-24-15-16-29.png">
+<meta property="article:published_time" content="2023-11-23T20:14:53.000Z">
+<meta property="article:modified_time" content="2023-12-05T13:38:15.741Z">
 <meta property="article:author" content="跃迁">
-<meta property="article:tag" content="python">
-<meta property="article:tag" content="javascript">
-<meta property="article:tag" content="web逆向">
-<meta property="article:tag" content="瑞数">
+<meta property="article:tag" content="tls">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20231009/5a0b8d4fb09e4b2f842285646db705dc.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">
+<meta name="twitter:image" content="http://example.com/images/2023-11-24-15-16-29.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
