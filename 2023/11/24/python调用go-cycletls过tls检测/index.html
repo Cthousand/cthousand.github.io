@@ -13,13 +13,11 @@
 <meta property="og:site_name" content="跃迁blog">
 <meta property="og:description" content="1. 什么是tls指纹？1.1 什么是tls指纹？TLS 用于加密常见应用程序的通信（以确保数据安全）和恶意软件（使其可以隐藏在噪音中）。 要启动 SSL 会话，客户端将在 TCP 3 次握手后发送 SSL 客户端 Hello 数据包。 该数据包及其生成方式取决于构建客户端应用程序时使用的包和方法。服务器如果接受 SSL 连接，将使用 SSL Server Hello 数据包进行响应，该数据包是根">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/2023-11-24-15-16-29.png">
 <meta property="article:published_time" content="2023-11-23T20:14:53.000Z">
-<meta property="article:modified_time" content="2023-12-05T13:38:15.741Z">
+<meta property="article:modified_time" content="2023-12-10T09:24:17.080Z">
 <meta property="article:author" content="跃迁">
 <meta property="article:tag" content="tls">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/2023-11-24-15-16-29.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -443,7 +441,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-12-05 21:38:15'>2023-11-24 04:14</time>
+            发布时间 : <time class="date" title='最后更新: 2023-12-10 17:24:17'>2023-11-24 04:14</time>
         
     </div>
     <div class="article-meta">
@@ -745,12 +743,14 @@ print(result.status)
 print(result.text.decode(&#39;utf-8&#39;)) #结构也需要从字节解码成utf-8字符串
 print(result.err.decode(&#39;utf-8&#39;))
 </code></pre>
-<h2 id="4-4-实测结果"><a href="#4-4-实测结果" class="headerlink" title="4.4 实测结果"></a>4.4 实测结果</h2><p><img src="/images/2023-11-24-15-16-29.png"><br>测试通过。</p>
+<h2 id="4-4-实测结果"><a href="#4-4-实测结果" class="headerlink" title="4.4 实测结果"></a>4.4 实测结果</h2><div align=center> <img src=https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/![](images2023-11-24-15-16-29.png).png width=100%/> </div>
+测试通过。
+
 <h1 id="5-未来与展望"><a href="#5-未来与展望" class="headerlink" title="5. 未来与展望"></a>5. 未来与展望</h1><h1 id="5-1-c内存泄露"><a href="#5-1-c内存泄露" class="headerlink" title="5.1 c内存泄露"></a>5.1 c内存泄露</h1><p>python调用go需要借助c，而c语言的内存管理需要手动回收，目前笔者还未证实长期服务是否会产生内存泄露。</p>
 <p>如果出现内存泄露：</p>
 <ol>
 <li>直接用go重够爬虫全部流程，因为go是自动回收内存的，方案是标记清除，会隔断时间就遍历所有的根变量，如果没有引用标记则回收变量。</li>
-<li>go语言可以主动回收内存，因此将返回体变成c变量的内存地址，在python通过地址访问c变量，并在使用完变量后，通过调用go的free方法传入内存地址，主动回收掉c的内存。<br><code>mygo/cycletls_gc_example</code>是用的这套方案，但通过循环爬虫测试（50次)发现，无论是否回收内存最终产生的内存还比python的requests还稍低。<br>最终这种方案是否会照成内存泄露，仍需进一步实际测试。</li>
+<li>go语言可以主动回收内存，因此将返回体变成c变量的内存地址，在python通过地址访问c变量，并在使用完变量后，通过调用go的free方法传入内存地址，主动回收掉c的内存。笔者采用这种方式通过循环爬虫测试（50次)发现，是否回收内存最终产生的内存开销相近。<br>最终这种方案是否会照成内存泄露，仍需进一步实际测试。</li>
 <li>用go搭建web服务，走http请求。</li>
 </ol>
 
