@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>谷歌插件绕过cookie反爬_某境外电商网站 | 跃迁blog</title>
+  <meta name="keywords" content=" javascript , web爬虫 , python , 谷歌插件 , flask ">
+  <meta name="description" content="谷歌插件绕过cookie反爬_某境外电商网站 | 跃迁blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="[TOC] 一、摘要预先善其事，必先利其器。本文介绍了对pixle3刷机，并配置好逆向环境的过程。其中刷机采用安卓定制系统，root采用apatch，代码注入采用frida，抓包采用reqable。 二、刷机参考文章：https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;1EySfXSucGdiuEBTfLsymA?官方安装包地址：https:&#x2F;&#x2F;developers.google.com&#x2F;and">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓app刷机+逆向环境配置">
+<meta property="og:url" content="http://example.com/2025/02/03/%E5%AE%89%E5%8D%93app%E5%88%B7%E6%9C%BA+%E9%80%86%E5%90%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="跃迁blog">
+<meta property="og:description" content="[TOC] 一、摘要预先善其事，必先利其器。本文介绍了对pixle3刷机，并配置好逆向环境的过程。其中刷机采用安卓定制系统，root采用apatch，代码注入采用frida，抓包采用reqable。 二、刷机参考文章：https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;1EySfXSucGdiuEBTfLsymA?官方安装包地址：https:&#x2F;&#x2F;developers.google.com&#x2F;and">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212226.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212145.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212029.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212458.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212629.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/%E5%B0%86%E9%95%9C%E5%83%8F%E5%8C%85%E4%B8%AD%E7%9A%84boot.im.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203213654.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203213808.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203213854.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203214524.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203214912.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203214953.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203215227.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203215604.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203215804.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203220044.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203220744.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203221130.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203221444.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203222058.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203222427.png">
+<meta property="article:published_time" content="2025-02-03T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-03T21:52:38.000Z">
+<meta property="article:author" content="跃迁">
+<meta property="article:tag" content="安卓app逆向">
+<meta property="article:tag" content="frida">
+<meta property="article:tag" content="pixle3">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212226.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/darcula.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>跃迁</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="email"
+               href="mailto:2454612285@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+    <a class="more-menus">更多菜单</a>
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="全部文章">全部文章
+            
+                <small>(16)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="开发">
+            
+            开发
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="爬虫">
+            
+            爬虫
+            <small>(15)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+                <a class="dynamic-menu "
+                   target="_self"
+                   
+                   href="http://106.54.217.16/">跃迁主页</a>
+        
+            
+    </div>
+    <div>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="16">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>阿里系</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>安卓app逆向</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>补环境</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>谷歌插件</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>加速乐</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>理论</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>瑞数</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>AST</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>flask</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>frida</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>hook</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>javascript</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>pixle3</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>python</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>rpc</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>scrapy</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>tls</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>web逆向</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>web爬虫</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2025/02/03/%E5%AE%89%E5%8D%93app%E5%88%B7%E6%9C%BA+%E9%80%86%E5%90%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"
+           data-tag="安卓app逆向,frida,pixle3"
+           data-author="" >
+            <span class="post-title" title="安卓app刷机+逆向环境配置">安卓app刷机+逆向环境配置</span>
+            <span class="post-date" title="2025-02-03 20:00:00">2025/02/03</span>
+        </a>
+        
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/11/24/python%E8%B0%83%E7%94%A8go-cycletls%E8%BF%87tls%E6%A3%80%E6%B5%8B/"
+           data-tag="tls"
+           data-author="" >
+            <span class="post-title" title="python调用go_cycletls过tls检测">python调用go_cycletls过tls检测</span>
+            <span class="post-date" title="2023-11-24 04:14:53">2023/11/24</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/11/13/%E6%B5%B7%E5%A4%96%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0kroger%E7%88%AC%E8%99%AB/"
+           data-tag="web爬虫,python"
+           data-author="" >
+            <span class="post-title" title="海外电商平台kroger爬虫">海外电商平台kroger爬虫</span>
+            <span class="post-date" title="2023-11-13 15:35:59">2023/11/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/10/09/%E7%91%9E%E6%95%B05_6%E4%BB%A3%E8%A1%A5%E7%8E%AF%E5%A2%83%E8%A6%81%E7%82%B9/"
+           data-tag="javascript,python,web逆向,瑞数"
+           data-author="" >
+            <span class="post-title" title="瑞数5_6补环境要点">瑞数5_6补环境要点</span>
+            <span class="post-date" title="2023-10-09 10:36:47">2023/10/09</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/09/17/%E5%8D%8A%E8%87%AA%E5%8A%A8%E8%A1%A5%E7%91%9E%E6%95%B04%E7%8E%AF%E5%A2%83%E5%85%A8%E6%B5%81%E7%A8%8B/"
+           data-tag="javascript,python,web逆向,瑞数"
+           data-author="" >
+            <span class="post-title" title="半自动补瑞数4环境全流程">半自动补瑞数4环境全流程</span>
+            <span class="post-date" title="2023-09-17 16:34:23">2023/09/17</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/07/09/%E8%A1%A5%E7%8E%AF%E5%A2%83%E4%B9%8B%E8%A1%A5window%E5%AF%B9%E8%B1%A1/"
+           data-tag="javascript,补环境,理论"
+           data-author="" >
+            <span class="post-title" title="补环境之补window对象">补环境之补window对象</span>
+            <span class="post-date" title="2023-07-09 00:01:55">2023/07/09</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/07/06/proxy%E4%B8%8Ereflect%E5%97%85%E6%8E%A2%E7%BC%BA%E5%A4%B1%E7%8E%AF%E5%A2%83/"
+           data-tag="补环境"
+           data-author="" >
+            <span class="post-title" title="Proxy与Reflect嗅探缺失环境">Proxy与Reflect嗅探缺失环境</span>
+            <span class="post-date" title="2023-07-06 11:03:49">2023/07/06</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/06/23/document-cookie%E7%9A%84hook%E5%8F%8A%E5%BC%95%E7%94%B3/"
+           data-tag="javascript,hook"
+           data-author="" >
+            <span class="post-title" title="document.cookie的hook及引申">document.cookie的hook及引申</span>
+            <span class="post-date" title="2023-06-23 16:26:03">2023/06/23</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/06/20/hook%E4%B8%8E%E5%8F%8Dhook%E4%B9%8B%E9%97%B4%E7%9A%84%E5%AF%B9%E6%8A%97/"
+           data-tag="hook"
+           data-author="" >
+            <span class="post-title" title="js逆向中hook与反hook之间的对抗">js逆向中hook与反hook之间的对抗</span>
+            <span class="post-date" title="2023-06-20 15:46:05">2023/06/20</span>
+        </a>
+        
+        
+        <a  class="全部文章 开发 "
+           href="/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E5%B1%8F%E8%94%BD%E7%99%BE%E5%BA%A6%E5%B9%BF%E5%91%8A/"
+           data-tag="javascript,谷歌插件"
+           data-author="" >
+            <span class="post-title" title="谷歌插件屏蔽百度广告">谷歌插件屏蔽百度广告</span>
+            <span class="post-date" title="2023-06-18 18:22:08">2023/06/18</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/06/18/%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E7%BB%95%E8%BF%87cookie%E5%8F%8D%E7%88%AC-%E5%A2%83%E5%A4%96%E7%94%B5%E5%95%86%E7%BD%91%E7%AB%99/"
+           data-tag="javascript,web爬虫,python,谷歌插件,flask"
+           data-author="" >
+            <span class="post-title" title="谷歌插件绕过cookie反爬_某境外电商网站">谷歌插件绕过cookie反爬_某境外电商网站</span>
+            <span class="post-date" title="2023-06-18 15:54:04">2023/06/18</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/06/13/RPC%E8%BF%87%E6%9F%90%E4%B9%8Ezse96%E5%8F%82%E6%95%B0-%E6%9F%90%E4%B9%8E%E7%83%AD%E6%90%9C/"
+           data-tag="javascript,web爬虫,python,rpc"
+           data-author="" >
+            <span class="post-title" title="RPC过某乎zse96参数-某乎热搜">RPC过某乎zse96参数-某乎热搜</span>
+            <span class="post-date" title="2023-06-13 14:22:36">2023/06/13</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/06/07/AST%E5%AF%B9JS%E4%BB%A3%E7%A0%81%E8%BF%9B%E8%A1%8C%E6%B7%B7%E6%B7%86%E4%B8%8E%E8%BF%98%E5%8E%9F/"
+           data-tag="AST,javascript"
+           data-author="" >
+            <span class="post-title" title="AST对JS代码进行混淆与还原">AST对JS代码进行混淆与还原</span>
+            <span class="post-date" title="2023-06-07 00:48:10">2023/06/07</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/05/18/%E7%BA%AF%E6%89%A3%E8%BF%87%E9%98%BF%E9%87%8C%E7%B3%BBsign%E5%8F%82%E6%95%B0-%E6%9F%90%E5%AE%9D%E6%B3%95%E6%8B%8D%E7%BD%91/"
+           data-tag="javascript,python,web逆向,阿里系"
+           data-author="" >
+            <span class="post-title" title="纯扣过阿里系sign参数-某宝法拍网.md">纯扣过阿里系sign参数-某宝法拍网.md</span>
+            <span class="post-date" title="2023-05-18 16:34:23">2023/05/18</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
+           href="/2023/05/17/%E7%BA%AF%E6%89%A3%E8%BF%87%E5%8A%A0%E9%80%9F%E4%B9%90-%E6%9F%90%E4%BF%A1%E7%94%A8%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99/"
+           data-tag="javascript,web爬虫,python,加速乐"
+           data-author="" >
+            <span class="post-title" title="纯扣过加速乐-某信用查询网站">纯扣过加速乐-某信用查询网站</span>
+            <span class="post-date" title="2023-05-17 13:50:48">2023/05/17</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-谷歌插件绕过cookie反爬-境外电商网站" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">谷歌插件绕过cookie反爬_某境外电商网站</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="爬虫">爬虫</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">javascript</a>
+            
+            <a class="color1">web爬虫</a>
+            
+            <a class="color2">python</a>
+            
+            <a class="color5">谷歌插件</a>
+            
+            <a class="color1">flask</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2023-06-18 20:52:54'>2023-06-18 15:54</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87"><span class="toc-text">目标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E6%9C%9F%E5%B7%A5%E4%BD%9C"><span class="toc-text">前期工作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BB%E6%89%BE%E6%8E%A5%E5%8F%A3"><span class="toc-text">寻找接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8C%96%E8%AF%B7%E6%B1%82"><span class="toc-text">简化请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reese84%E5%8F%82%E6%95%B0%E8%A7%A3%E5%AF%86"><span class="toc-text">reese84参数解密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%BD%8D%E5%85%A5%E5%8F%A3"><span class="toc-text">定位入口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%BD%E6%9C%AC%E6%BA%AF%E6%BA%90"><span class="toc-text">追本溯源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6%E5%88%B6%E4%BD%9C"><span class="toc-text">谷歌插件制作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%E8%AE%BE%E6%83%B3"><span class="toc-text">思路设想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#manifest-json"><span class="toc-text">manifest.json</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#popup-html"><span class="toc-text">popup.html</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#popup-js"><span class="toc-text">popup.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#content-scripts-js"><span class="toc-text">content_scripts.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#flask-server-py"><span class="toc-text">flask_server.py</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C"><span class="toc-text">结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-6 i,
+    .toc-level-6 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><p>url: <a target="_blank" rel="noopener" href="https://www.smythstoys.com/de/de-de">https://www.smythstoys.com/de/de-de</a> 搜索任意词,爬取其搜索结果<br>字段:标题,图片,价格,详情页url</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/b0e9f0afd1044ffca00f9236acfcd48a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<h1 id="前期工作"><a href="#前期工作" class="headerlink" title="前期工作"></a>前期工作</h1><h2 id="寻找接口"><a href="#寻找接口" class="headerlink" title="寻找接口"></a>寻找接口</h2><p>在搜索栏搜索<code>toy</code>，在搜索结果中截取关键词在开发者工具中再次搜索，找到关键接口：<strong><a target="_blank" rel="noopener" href="https://www.smythstoys.com/de/de-de/search/?text=toy">https://www.smythstoys.com/de/de-de/search/?text=toy</a></strong></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/88c146bef1f346b99a5c90289e609771.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="定位接口"></p>
+<h2 id="简化请求"><a href="#简化请求" class="headerlink" title="简化请求"></a>简化请求</h2><p>经过测试,存在一个加密参数:<code>reese84</code></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/152d5020d3744b54bce1ce6cdb730125.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<h2 id="reese84参数解密"><a href="#reese84参数解密" class="headerlink" title="reese84参数解密"></a>reese84参数解密</h2><h3 id="定位入口"><a href="#定位入口" class="headerlink" title="定位入口"></a>定位入口</h3><p>利用<code>proxyman</code>抓包工具在<code>response headers</code>和<code>response body</code>搜索<code>reese84</code>并没有搜索到结果；然后尝试搜值,原来是接口body返回的,只不过名字叫<code>token</code>,接口是:<strong><a target="_blank" rel="noopener" href="https://www.smythstoys.com/mbit-And-Dirers-him-Face-and-sure-such-Parry-qui">https://www.smythstoys.com/mbit-And-Dirers-him-Face-and-sure-such-Parry-qui</a></strong></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/8907f1322e3a4279b02831c9a379cf43.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
+<h2 id="追本溯源"><a href="#追本溯源" class="headerlink" title="追本溯源"></a>追本溯源</h2><p>重放测试<code>mbit-And-Dirers-him-Face-and-sure-such-Parry-qui</code>这个接口,但返回的是一个验证码的页面,状态码是400。</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/9e4fd668acce4c05b908e88ded0bb522.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="需要过验证码"><br>如果这个任务并不要求高并法，有没有更简便的方法？有的，仔细观察下接口的内容和收发情况，可以发现这么一个规律：这个参数每隔一段时间会自动通过后端返回，时间约为10min左右。</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/e48cb0b7fed14d1d81ac343917114f2a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="接口的规律性"></p>
+<p>这样一来将爬虫寄生到浏览器里岂不是可以<strong>自动更新cookie参数</strong>？寄生的方式可以选择用谷歌插件的<code>Content Scripts</code>功能，制作插件之前先来测试一下fetch请求是否可以通过。</p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/33d57d3648bf447f8d7b5634c4152dbe.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="fetch请求可以通过"></p>
+<h2 id="谷歌插件制作"><a href="#谷歌插件制作" class="headerlink" title="谷歌插件制作"></a>谷歌插件制作</h2><p><a target="_blank" rel="noopener" href="https://developer.chrome.com/docs/extensions/mv3/intro/">谷歌插件开发官方文档</a></p>
+<h3 id="思路设想"><a href="#思路设想" class="headerlink" title="思路设想"></a>思路设想</h3><ol>
+<li>请求方式采用fetch，其特点无需写cookie参数，它可以自动携带当前域名下的cookie，用来发起请求。</li>
+<li>寄生环境选择网站首页（其它页面也行，只要不跨域）。</li>
+<li>数据接收有2种选择，第一种是rpc（websocket协议）转发，第二种是flask搭建本地服务器，这里选择flask（flask可以通过flask_pymongo拓展很方便地保存数据）。</li>
+<li>控制界面采用<code>popup</code>窗口，内置<code>输入关键词</code>、<code>开始爬取</code>2个按钮。</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/18df43772ccb4599bfa1ece9920da64c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg">pop窗口</a></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/11367940cd8c40f1ad7a00e4c3ca651c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="项目目录结构"></p>
+<h3 id="manifest-json"><a href="#manifest-json" class="headerlink" title="manifest.json"></a>manifest.json</h3><p><code>manifest.json</code>是整个插件的功能和文件配置清单。</p>
+<pre><code class="json">&#123;
+  &quot;name&quot;: &quot;smythstoys Spider&quot;, //插件名称 
+  &quot;version&quot;: &quot;1.0&quot;, //插件版本
+  &quot;manifest_version&quot;: 3, //代表此扩展程序使用的 manifest.json 版本，目前最新版本为3
+  &quot;description&quot;: &quot;crawl&quot;, //插件描述
+  &quot;action&quot;: &#123;
+    &quot;default_title&quot;: &quot;smythstoys Spider&quot;, //pop名称
+    &quot;default_popup&quot;: &quot;popup.html&quot; //pop指向的html
+  &#125;,
+  &quot;content_scripts&quot;: [
+    &#123;
+      &quot;js&quot;: [
+        &quot;content_scripts.js&quot; //内容注入的js脚本
+      ],
+      &quot;matches&quot;: [
+        &quot;*://www.smythstoys.com/*&quot; //需要注入的域名
+      ],
+      &quot;run_at&quot;: &quot;document_start&quot; //注入时机，这里代表页面开始加载和渲染的那个阶段,也就是接收 HTTP 响应之后,开始解析 HTML 并渲染 DOM 结构的那个过程
+    &#125;
+  ],
+  &quot;permissions&quot;: [
+    &quot;tabs&quot; //API权限，需要使用某些API时需要设置该API权限才行
+  ],
+  &quot;host_permissions&quot;: [
+    &quot;&lt;all_urls&gt;&quot; //主机权限，在背景页backgroud.js里面或者popup页面走请求时，请求域名的白名单权限，这里设置为不受限制，向任何域名发送请求都可以
+  ]
+&#125;  
+</code></pre>
+<h3 id="popup-html"><a href="#popup-html" class="headerlink" title="popup.html"></a>popup.html</h3><p>当用户单击扩展程序的图标时出现的弹出窗口内容。</p>
+<pre><code class="html">&lt;html&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;head&gt;
+    &lt;style&gt;
+        .inline &#123;
+            display: inline-block
+        &#125;
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form&gt;
+    &lt;fieldset&gt;
+        &lt;legend&gt;spider&lt;/legend&gt;
+        &lt;p&gt;
+            &lt;input class=&#39;inline&#39; id=&quot;keyword&quot; placeholder=&quot;搜索词&quot;/&gt;
+            &lt;button class=&#39;inline&#39; id=&quot;start&quot;&gt;开始&lt;/button&gt;
+        &lt;/p&gt;
+    &lt;/fieldset&gt;
+&lt;/form&gt;
+&lt;script src=&quot;popup.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;  
+</code></pre>
+<p><code>inline-block</code> 是一个CSS属性，它允许将一个元素既作为行内元素（inline）又作为块级元素（block），从而可以让元素在文档流中既可以水平排列，也可以垂直排列。这里的作用是让<code>搜索词</code>和<code>开始</code>在一行显示，否则他们会分成2行（因为他们本身是块级元素）。</p>
+<h3 id="popup-js"><a href="#popup-js" class="headerlink" title="popup.js"></a>popup.js</h3><p>pop.html的js外链，用于做一些行为交互。</p>
+<pre><code class="javascript">(function () &#123;
+    document.getElementById(&#39;start&#39;).addEventListener(&#39;click&#39;, function () &#123;
+        chrome.tabs.query(&#123;active: true, currentWindow: true&#125;, function (tabs) &#123; //chrome插件组件之间的消息传递，这里先找到当前窗口激活的标签页
+            chrome.tabs.sendMessage(tabs[0].id, &#123;&#39;operation&#39;: &#39;start&#39;, &#39;data&#39;: document.getElementById(&#39;keyword&#39;).value&#125;);//发送开始爬取的指令和带爬取的任务
+        &#125;);
+    &#125;);
+&#125;)();
+</code></pre>
+<h3 id="content-scripts-js"><a href="#content-scripts-js" class="headerlink" title="content_scripts.js"></a>content_scripts.js</h3><p>Content Scripts可以在网页上运行JavaScript代码，并且可以在不被察觉的情况下修改和监控页面的DOM元素和事件。Content Scripts可以与插件程序的其他部分进行通信，并且可以使用插件的权限来访问浏览器的API。</p>
+<pre><code class="javascript">//这些写可以同时处理status和text，常规的.then只能处理text
+function handleResponse(response) &#123;
+    return response.text().then(text =&gt; &#123;
+        return &#123;
+            &#39;status&#39;: response.status,
+            &#39;text&#39;: text,
+        &#125;
+    &#125;)
+&#125;
+
+function crawl(keyword) &#123;
+    let url = `https://www.smythstoys.com/de/de-de/search/?text=$&#123;keyword&#125;`
+    console.log(`请求: $&#123;url&#125;`)
+    fetch(url).then(handleResponse)
+        .then((res) =&gt; &#123;
+                console.log(`下载: $&#123;res.status&#125;`);
+                fetch(`http://127.0.0.1:8081/result`, &#123; //与后端交互的接口
+                    headers: &#123; 
+                        &quot;content-type&quot;: &quot;application/json&quot; //post方法一定要携带这个请求头
+                    &#125;,
+                    method: &#39;POST&#39;,
+                    body: JSON.stringify(&#123;
+                        &#39;keyword&#39;: keyword,
+                        &#39;res&#39;: res
+                    &#125;)
+                &#125;).then(res =&gt; res.text())
+                    .then((res) =&gt; &#123;
+                        console.log(`保存: $&#123;res&#125;`);
+                    &#125;)
+
+            &#125;
+        )
+&#125;
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) =&gt; &#123;
+    if (message[&#39;operation&#39;] === &#39;start&#39;) &#123; //如果接收到开始的指令
+        console.log(&#39;crawl is going to start...&#39;)
+        crawl(message[&#39;data&#39;]) //就启动对应的方法开始爬取
+    &#125;
+&#125;)
+console.log(&#39;content js has injected!&#39;)  
+</code></pre>
+<h3 id="flask-server-py"><a href="#flask-server-py" class="headerlink" title="flask_server.py"></a>flask_server.py</h3><p>Flask是一个轻量级的Web应用框架，基于Werkzeug WSGI工具箱和Jinja2模板引擎。它是一个用Python编写的轻量级Web框架，可以让我们轻松地创建Web应用程序。</p>
+<pre><code class="python">from flask_cors import CORS # 允许接收跨域的请求
+from flask import Flask, request 
+from parsel import Selector # html解析库
+from loguru import logger
+from flask_pymongo import PyMongo # flask的pymongo插件
+
+app = Flask(__name__)
+app.config[&quot;MONGO_URI&quot;] = &quot;mongodb://localhost:27017/spider&quot;
+mongo = PyMongo(app)
+CORS(app)
+
+
+@app.route(&#39;/result&#39;, methods=[&#39;POST&#39;]) # 通过一个路由实现接收数据+解析+保存的工作，与谷歌插件搭配起来很灵活
+def result():
+    keyword = request.json[&#39;keyword&#39;]
+    logger.debug(f&#39;请求: https://www.smythstoys.com/de/de-de/search/?text=&#123;keyword&#125;&#39;)
+    status = request.json[&#39;res&#39;][&#39;status&#39;]
+    logger.debug(f&#39;下载: &#123;status&#125;&#39;)
+    data = request.json[&#39;res&#39;][&#39;text&#39;]
+    s = Selector(text=data)
+    items = s.css(&#39;article.st-layout-item&#39;)
+    data2save = &#123;&#39;keyword&#39;: keyword, &#39;products&#39;: []&#125;
+    for item in items:
+        title = item.xpath(&quot;.//h2[contains(@class,&#39;prodName trackProduct&#39;)]/text()&quot;).get()
+        price = item.xpath(&quot;.//div[@itemprop=&#39;price&#39;]/@content&quot;).get()
+        img = item.xpath(&quot;.//picture/img[@class=&#39;lazy&#39;]/@data-src&quot;).get()
+        href = item.xpath(&quot;.//a[@class=&#39;trackProduct&#39;]/@href&quot;).get()
+        if href:
+            href = &#39;https://www.smythstoys.com&#39; + href
+        data2save[&#39;products&#39;].append(&#123;
+            &#39;title&#39;: title,
+            &#39;price&#39;: price,
+            &#39;img&#39;: img,
+            &#39;href&#39;: href
+        &#125;)
+    logger.debug(f&#39;解析: &#123;data2save&#125;&#39;)
+    mongo.db[&#39;smythstoys&#39;].insert_one(data2save)  # 存入 MongoDB
+    logger.debug(f&#39;保存: success&#39;)
+
+    return &#39;Success&#39;
+
+
+if __name__ == &#39;__main__&#39;:
+    app.run(host=&#39;127.0.0.1&#39;, port=8081)
+  
+</code></pre>
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/e7594809dfbb46e680e23452ffedc4c3.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="浏览器界面"></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/39949d1f10a649d1938e7d8aadec1442.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="flask界面"></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230618/3264b960ddbd4acbb21c910c247fda65.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="mongodb界面"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过这个任务，可以学到一个新的爬虫思路，那就是利用谷歌插件配合flask来制作爬虫，从而绕过一些复杂的参数加密，但这种方案也存在一些自身的局限性，例如：<br>1）不适用某些高并发的爬虫需求<br>2）需要常驻打开一个浏览器<br>但如果对并发的需求并不高，又不想花太多的精力破解加密参数，那么这也不失为一种<code>优雅</code>的选择。</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，如有问题请邮件至2454612285@qq.com。 </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2021-2025 Cthousand
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+<div class="mobile-menus-out" >
+
+</div>
+<div class="mobile-menus">
+    
+    
+    
+    <a class="dynamic-menu " target="_self"   href="http://106.54.217.16/">跃迁主页</a>
+    
+    
+</div>
+
+
+</html>
