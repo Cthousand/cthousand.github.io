@@ -6,42 +6,27 @@
   <meta name="keywords" content=" javascript , 谷歌插件 ">
   <meta name="description" content="谷歌插件屏蔽百度广告 | 跃迁blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="[TOC] 一、摘要预先善其事，必先利其器。本文介绍了对pixle3刷机，并配置好逆向环境的过程。其中刷机采用安卓定制系统，root采用apatch，代码注入采用frida，抓包采用reqable。 二、刷机参考文章：https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;1EySfXSucGdiuEBTfLsymA?官方安装包地址：https:&#x2F;&#x2F;developers.google.com&#x2F;and">
+<meta name="description" content="[TOC] 一、摘要在逆向app时，如果app存在双向证书校验，指服务端校验服务端证书和客户端校验服务端  前者需导出app的证书，无论是抓包还是爬虫发起请求，都需要携带上此证书，否则会发包被拒 后者可通过hook java层的com.android.org.conscrypt.Platform.checkServerTrusted方法，将校验逻辑改为空，即可绕过本文使用r0capture导出ap">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安卓app刷机+逆向环境配置">
-<meta property="og:url" content="http://example.com/2025/02/03/%E5%AE%89%E5%8D%93app%E5%88%B7%E6%9C%BA+%E9%80%86%E5%90%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:title" content="安卓双向证书校验绕过">
+<meta property="og:url" content="http://example.com/2025/02/15/%E5%AE%89%E5%8D%93%E5%8F%8C%E5%90%91%E8%AF%81%E4%B9%A6%E6%A0%A1%E9%AA%8C%E7%BB%95%E8%BF%87/index.html">
 <meta property="og:site_name" content="跃迁blog">
-<meta property="og:description" content="[TOC] 一、摘要预先善其事，必先利其器。本文介绍了对pixle3刷机，并配置好逆向环境的过程。其中刷机采用安卓定制系统，root采用apatch，代码注入采用frida，抓包采用reqable。 二、刷机参考文章：https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;1EySfXSucGdiuEBTfLsymA?官方安装包地址：https:&#x2F;&#x2F;developers.google.com&#x2F;and">
+<meta property="og:description" content="[TOC] 一、摘要在逆向app时，如果app存在双向证书校验，指服务端校验服务端证书和客户端校验服务端  前者需导出app的证书，无论是抓包还是爬虫发起请求，都需要携带上此证书，否则会发包被拒 后者可通过hook java层的com.android.org.conscrypt.Platform.checkServerTrusted方法，将校验逻辑改为空，即可绕过本文使用r0capture导出ap">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212226.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212145.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212029.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212458.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212629.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/%E5%B0%86%E9%95%9C%E5%83%8F%E5%8C%85%E4%B8%AD%E7%9A%84boot.im.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203213654.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203213808.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203213854.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203214524.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203214912.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203214953.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203215227.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203215604.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203215804.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203220044.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203220744.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203221130.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203221444.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203222058.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203222427.png">
-<meta property="article:published_time" content="2025-02-03T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-02-03T21:52:38.000Z">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215152433.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215173643.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215152812.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215153557.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215153835.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215155517.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215155549.png">
+<meta property="article:published_time" content="2025-02-15T06:32:00.000Z">
+<meta property="article:modified_time" content="2025-02-15T10:56:30.818Z">
 <meta property="article:author" content="跃迁">
-<meta property="article:tag" content="安卓app逆向">
 <meta property="article:tag" content="frida">
-<meta property="article:tag" content="pixle3">
+<meta property="article:tag" content="安卓逆向">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212226.png">
+<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215152433.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -118,7 +103,7 @@
     <li>
         <div class="all active" data-rel="全部文章">全部文章
             
-                <small>(16)</small>
+                <small>(17)</small>
             
         </div>
     </li>
@@ -145,7 +130,7 @@
         <div data-rel="爬虫">
             
             爬虫
-            <small>(15)</small>
+            <small>(16)</small>
         </div>
         
     </li>
@@ -171,7 +156,7 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="16">
+<input type="hidden" id="yelog_site_posts_number" value="17">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -219,6 +204,10 @@
         
             <li class="article-tag-list-item">
                 <i class="iconfont icon-tag"></i><a>阿里系</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>安卓逆向</a>
             </li>
         
             <li class="article-tag-list-item">
@@ -302,6 +291,15 @@
         
         
         <a  class="全部文章 爬虫 "
+           href="/2025/02/15/%E5%AE%89%E5%8D%93%E5%8F%8C%E5%90%91%E8%AF%81%E4%B9%A6%E6%A0%A1%E9%AA%8C%E7%BB%95%E8%BF%87/"
+           data-tag="frida,安卓逆向"
+           data-author="" >
+            <span class="post-title" title="安卓双向证书校验绕过">安卓双向证书校验绕过</span>
+            <span class="post-date" title="2025-02-15 14:32:00">2025/02/15</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
            href="/2025/02/03/%E5%AE%89%E5%8D%93app%E5%88%B7%E6%9C%BA+%E9%80%86%E5%90%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"
            data-tag="安卓app逆向,frida,pixle3"
            data-author="" >
@@ -339,10 +337,10 @@
         
         
         <a  class="全部文章 爬虫 "
-           href="/2023/09/17/%E5%8D%8A%E8%87%AA%E5%8A%A8%E8%A1%A5%E7%91%9E%E6%95%B04%E7%8E%AF%E5%A2%83%E5%85%A8%E6%B5%81%E7%A8%8B/"
+           href="/2023/09/17/%E8%A1%A5%E7%91%9E%E6%95%B04%E7%8E%AF%E5%A2%83/"
            data-tag="javascript,python,web逆向,瑞数"
            data-author="" >
-            <span class="post-title" title="半自动补瑞数4环境全流程">半自动补瑞数4环境全流程</span>
+            <span class="post-title" title="补瑞数4环境">补瑞数4环境</span>
             <span class="post-date" title="2023-09-17 16:34:23">2023/09/17</span>
         </a>
         

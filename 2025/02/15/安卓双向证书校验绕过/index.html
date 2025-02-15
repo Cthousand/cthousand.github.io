@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>2023年家庭回顾 | 跃迁blog</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="2023年家庭回顾 | 跃迁blog">
+  <title>安卓双向证书校验绕过 | 跃迁blog</title>
+  <meta name="keywords" content=" frida , 安卓逆向 ">
+  <meta name="description" content="安卓双向证书校验绕过 | 跃迁blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="[TOC] 一、摘要在逆向app时，如果app存在双向证书校验，指服务端校验服务端证书和客户端校验服务端  前者需导出app的证书，无论是抓包还是爬虫发起请求，都需要携带上此证书，否则会发包被拒 后者可通过hook java层的com.android.org.conscrypt.Platform.checkServerTrusted方法，将校验逻辑改为空，即可绕过本文使用r0capture导出ap">
 <meta property="og:type" content="article">
@@ -452,19 +452,36 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-2023年家庭回顾" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-安卓双向证书校验绕过" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">2023年家庭回顾</h1>
+        <h1 class="article-title">安卓双向证书校验绕过</h1>
     
     <div class="article-meta">
         
         
         
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="爬虫">爬虫</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color1">frida</a>
+            
+            <a class="color5">安卓逆向</a>
+            
+        </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2025-02-04 14:22:44'>2024-02-12 19:17</time>
+            发布时间 : <time class="date" title='最后更新: 2025-02-15 18:56:30'>2025-02-15 14:32</time>
         
     </div>
     <div class="article-meta">
@@ -486,7 +503,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E4%B8%AA%E4%BA%BA%E7%AF%87"><span class="toc-text">1. 个人篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E9%99%88%E5%8D%83"><span class="toc-text">1.1 陈千</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-1-4%E6%9C%88-%E7%AC%AC%E4%B8%80%E6%AC%BE%E5%AE%89%E5%8D%93app"><span class="toc-text">1.1.1 4月 第一款安卓app</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-2-5%E6%9C%88-%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99"><span class="toc-text">1.1.2 5月 第一个博客网站</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-3-6%E6%9C%88-%E7%AC%AC%E4%B8%80%E6%AC%BE%E8%B0%B7%E6%AD%8C%E6%8F%92%E4%BB%B6"><span class="toc-text">1.1.3 6月 第一款谷歌插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-4-8%E6%9C%88-%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B"><span class="toc-text">1.1.4 8月 第一个深度学习模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-5-9%E6%9C%88-%E7%AA%81%E7%A0%B4%E4%BA%86%E7%91%9E%E6%95%B04%E7%9A%84%E9%98%B2%E6%8A%A4%E5%B9%B6%E6%92%B0%E5%86%99%E4%BA%86%E5%8D%9A%E5%AE%A2"><span class="toc-text">1.1.5 9月 突破了瑞数4的防护并撰写了博客</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-6-10%E6%9C%88-%E9%9D%A2%E8%AF%95%E6%88%90%E5%8A%9F%E4%B8%8A%E6%B5%B7%E6%90%BA%E7%A8%8B%E7%88%AC%E8%99%AB%E5%B2%97"><span class="toc-text">1.1.6 10月 面试成功上海携程爬虫岗</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E5%AE%8B%E7%84%B1%E5%A8%87"><span class="toc-text">1.2 宋焱娇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-7%E6%9C%88-%E9%80%9A%E8%BF%87fcp%E6%8A%A5%E8%A1%A8%E5%BC%80%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%80%83%E8%AF%95"><span class="toc-text">1.2.1 7月 通过fcp报表开发工程师考试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-9%E6%9C%88-%E9%80%9A%E8%BF%87FINEBI%E6%8A%A5%E8%A1%A8%E5%BC%80%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E8%80%83%E8%AF%95"><span class="toc-text">1.2.2 9月 通过FINEBI报表开发工程师考试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-3-11%E6%9C%88-%E7%A1%AE%E8%AE%A4%E6%80%80%E5%AD%95"><span class="toc-text">1.2.3 11月 确认怀孕</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E5%90%89%E7%BA%A2%E8%8B%B1"><span class="toc-text">1.3 吉红英</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-1-3%E6%9C%88-%E5%8F%82%E5%8A%A0%E5%9B%BD%E5%AE%B61%E7%BA%A7office%E8%80%83%E8%AF%95"><span class="toc-text">1.3.1 3月 参加国家1级office考试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-2-4%E6%9C%88-%E6%8B%BF%E5%88%B0%E9%B8%BF%E8%BE%BE%E7%94%B5%E9%95%80offer"><span class="toc-text">1.3.2 4月 拿到鸿达电镀offer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-3-5%E6%9C%88-%E9%80%9A%E8%BF%87%E5%9B%BD%E5%AE%B6%E4%B8%80%E7%BA%A7%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%80%83%E8%AF%95"><span class="toc-text">1.3.3 5月 通过国家一级计算机考试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-4-6%E6%9C%88-%E5%AD%A6%E4%BC%9A%E4%BD%BF%E7%94%A8%E6%89%93%E5%8D%B0%E6%9C%BA"><span class="toc-text">1.3.4 6月 学会使用打印机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-5-10%E6%9C%88-%E7%A6%BB%E5%BC%80%E9%B8%BF%E8%BE%BE%E7%94%B5%E9%95%80"><span class="toc-text">1.3.5 10月 离开鸿达电镀</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-6-11%E6%9C%88-%E5%8A%A0%E5%85%A5%E9%98%BF%E5%B0%94%E6%B3%95%E7%94%B5%E9%95%80%EF%BC%88%E5%90%8C%E6%9C%88%E7%A6%BB%E5%BC%80%EF%BC%89"><span class="toc-text">1.3.6 11月 加入阿尔法电镀（同月离开）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-%E9%99%88%E7%A7%80%E6%98%8E"><span class="toc-text">1.4  陈秀明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-1-6%E6%9C%88-%E8%83%BD%E5%A4%9F%E9%BB%98%E5%86%99%E4%B8%AD%E8%8B%B1%E6%96%87%E5%AD%97%E6%AF%8D"><span class="toc-text">1.4.1 6月 能够默写中英文字母</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-2-7%E6%9C%88-%E8%BF%9B%E5%85%A5%E8%8B%B1%E6%96%87%E6%89%93%E5%AD%97%E7%AC%AC%E4%B8%80%E5%85%B3"><span class="toc-text">1.4.2 7月 进入英文打字第一关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-3-9%E6%9C%88-%E5%9C%A8%E4%BA%91%E5%8D%97%E6%92%AE%E5%90%88%E4%B8%80%E5%AF%B9%E5%A9%9A%E5%A7%BB"><span class="toc-text">1.4.3 9月 在云南撮合一对婚姻</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-%E6%80%BB%E7%BB%93"><span class="toc-text">1.5 总结</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%91%98%E8%A6%81"><span class="toc-text">一、摘要</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%A0%A1%E9%AA%8C%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-text">二、服务端校验客户端</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%A0%A1%E9%AA%8C%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="toc-text">三、客户端校验服务端</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">四、总结</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -502,95 +519,48 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="1-个人篇"><a href="#1-个人篇" class="headerlink" title="1. 个人篇"></a>1. 个人篇</h1><p>介绍顺序：陈千、宋焱娇、吉红英、陈秀明</p>
-<h2 id="1-1-陈千"><a href="#1-1-陈千" class="headerlink" title="1.1 陈千"></a>1.1 陈千</h2><h3 id="1-1-1-4月-第一款安卓app"><a href="#1-1-1-4月-第一款安卓app" class="headerlink" title="1.1.1 4月 第一款安卓app"></a><strong>1.1.1 4月 第一款安卓app</strong></h3><p>开发了第一款安装app应用&lt;猫千岁&gt;</p>
-<table>
-<thead>
-<tr>
-<th><img src="/Users/qc/Documents/Projects/home/blog/source/_posts/image/2023%E5%B9%B4%E5%AE%B6%E5%BA%AD%E5%9B%9E%E9%A1%BE/1707741552245.png"></th>
-<th><img src="/Users/qc/Documents/Projects/home/blog/source/_posts/image/2023%E5%B9%B4%E5%AE%B6%E5%BA%AD%E5%9B%9E%E9%A1%BE/1707741690641.png"></th>
-</tr>
-</thead>
-</table>
-<h3 id="1-1-2-5月-第一个博客网站"><a href="#1-1-2-5月-第一个博客网站" class="headerlink" title="1.1.2 5月 第一个博客网站"></a><strong>1.1.2 5月 第一个博客网站</strong></h3><p>购买了cthousand.cn顶级域名3年，并以blog.cthousand.cn作为自己的博客主页</p>
-<p><img src="/image/2023%E5%B9%B4%E5%AE%B6%E5%BA%AD%E5%9B%9E%E9%A1%BE/1707741906721.png" alt="1707741906721"></p>
-<h3 id="1-1-3-6月-第一款谷歌插件"><a href="#1-1-3-6月-第一款谷歌插件" class="headerlink" title="1.1.3 6月 第一款谷歌插件"></a><strong>1.1.3 6月 第一款谷歌插件</strong></h3><p>首次制作并发布了人生中的第一款谷歌插件&lt;百度去广告&gt;</p>
-<table>
-<thead>
-<tr>
-<th>有广告</th>
-<th>无广告</th>
-<th>评论</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><img src="/image/2023%E5%B9%B4%E5%AE%B6%E5%BA%AD%E5%9B%9E%E9%A1%BE/1707742371447.png" alt="1707742371447"></td>
-<td><img src="/image/2023%E5%B9%B4%E5%AE%B6%E5%BA%AD%E5%9B%9E%E9%A1%BE/1707742377267.png" alt="1707742377267"></td>
-<td><img src="/image/2023%E5%B9%B4%E5%AE%B6%E5%BA%AD%E5%9B%9E%E9%A1%BE/1707742381731.png" alt="1707742381731"></td>
-</tr>
-</tbody></table>
-<h3 id="1-1-4-8月-第一个深度学习模型"><a href="#1-1-4-8月-第一个深度学习模型" class="headerlink" title="1.1.4 8月 第一个深度学习模型"></a><strong>1.1.4 8月 第一个深度学习模型</strong></h3><p>完成了人生中第一次深度学习模型训练：cifar10,识别率66%</p>
-<p><img src="/image/2023%E5%B9%B4%E5%AE%B6%E5%BA%AD%E5%9B%9E%E9%A1%BE/1707742449129.png" alt="1707742449129"></p>
-<h3 id="1-1-5-9月-突破了瑞数4的防护并撰写了博客"><a href="#1-1-5-9月-突破了瑞数4的防护并撰写了博客" class="headerlink" title="1.1.5 9月 突破了瑞数4的防护并撰写了博客"></a><strong>1.1.5 9月 突破了瑞数4的防护并撰写了博客</strong></h3><p><strong>4日：Django版本chatgpt项目开发完成并上线</strong></p>
-<p><img src="/image/2023%E5%B9%B4%E5%AE%B6%E5%BA%AD%E5%9B%9E%E9%A1%BE/1707742934560.png" alt="1707742934560"></p>
-<p><strong>18日</strong> ：突破了瑞数4（房地产）的防护并撰写了博客</p>
-<p><img src="/image/2023%E5%B9%B4%E5%AE%B6%E5%BA%AD%E5%9B%9E%E9%A1%BE/1707743320192.png" alt="1707743320192"></p>
-<p>25日：面试失败北京新橙科技爬虫岗</p>
-<h3 id="1-1-6-10月-面试成功上海携程爬虫岗"><a href="#1-1-6-10月-面试成功上海携程爬虫岗" class="headerlink" title="1.1.6 10月 面试成功上海携程爬虫岗"></a>1.1.6 10月 面试成功上海携程爬虫岗</h3><p><strong>11日</strong> 投递上海携程获得面试邀约</p>
-<p><img src="/image/2023%E5%B9%B4%E5%AE%B6%E5%BA%AD%E5%9B%9E%E9%A1%BE/1707743703385.png" alt="1707743703385"></p>
-<p><strong>23日 ：</strong>通过携程3轮面试+2轮笔试 拿到offer</p>
-<p><img src="/image/2023%E5%B9%B4%E5%AE%B6%E5%BA%AD%E5%9B%9E%E9%A1%BE/1707743769121.png" alt="1707743769121"></p>
-<p><strong>27日：娇娇电话来说疑似怀孕</strong></p>
-<h2 id="1-2-宋焱娇"><a href="#1-2-宋焱娇" class="headerlink" title="1.2 宋焱娇"></a>1.2 宋焱娇</h2><h3 id="1-2-1-7月-通过fcp报表开发工程师考试"><a href="#1-2-1-7月-通过fcp报表开发工程师考试" class="headerlink" title="1.2.1 7月 通过fcp报表开发工程师考试"></a>1.2.1 7月 通过fcp报表开发工程师考试</h3><p><strong>12日：报名参加fineBI培训班（价格1221）</strong></p>
-<p><strong>17日：通过fcp报表开发工程师考试（成绩93）</strong></p>
-<p>![image-20240212212614019](&#x2F;Users&#x2F;qc&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240212212614019.png)</p>
-<h3 id="1-2-2-9月-通过FINEBI报表开发工程师考试"><a href="#1-2-2-9月-通过FINEBI报表开发工程师考试" class="headerlink" title="1.2.2 9月 通过FINEBI报表开发工程师考试"></a>1.2.2 9月 通过FINEBI报表开发工程师考试</h3><p>15日：通过fcp报表开发工程师考试(成绩86)</p>
-<p>![image-20240212212854789](&#x2F;Users&#x2F;qc&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240212212854789.png)</p>
-<h3 id="1-2-3-11月-确认怀孕"><a href="#1-2-3-11月-确认怀孕" class="headerlink" title="1.2.3 11月 确认怀孕"></a>1.2.3 11月 确认怀孕</h3><p><strong>17日：确认怀孕</strong></p>
-<p>![image-20240212213012076](&#x2F;Users&#x2F;qc&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240212213012076.png)</p>
-<h2 id="1-3-吉红英"><a href="#1-3-吉红英" class="headerlink" title="1.3 吉红英"></a>1.3 吉红英</h2><h3 id="1-3-1-3月-参加国家1级office考试"><a href="#1-3-1-3月-参加国家1级office考试" class="headerlink" title="1.3.1 3月 参加国家1级office考试"></a>1.3.1 3月 参加国家1级office考试</h3><p><strong>26日：参加国家1级office考试</strong></p>
-<p><strong>![image-20240212213302271](&#x2F;Users&#x2F;qc&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240212213302271.png)</strong></p>
-<h3 id="1-3-2-4月-拿到鸿达电镀offer"><a href="#1-3-2-4月-拿到鸿达电镀offer" class="headerlink" title="1.3.2 4月 拿到鸿达电镀offer"></a>1.3.2 4月 拿到鸿达电镀offer</h3><h3 id="1-3-3-5月-通过国家一级计算机考试"><a href="#1-3-3-5月-通过国家一级计算机考试" class="headerlink" title="1.3.3 5月 通过国家一级计算机考试"></a>1.3.3 5月 通过国家一级计算机考试</h3><p>![image-20240212213128485](&#x2F;Users&#x2F;qc&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240212213128485.png)</p>
-<h3 id="1-3-4-6月-学会使用打印机"><a href="#1-3-4-6月-学会使用打印机" class="headerlink" title="1.3.4 6月 学会使用打印机"></a>1.3.4 6月 学会使用打印机</h3><h3 id="1-3-5-10月-离开鸿达电镀"><a href="#1-3-5-10月-离开鸿达电镀" class="headerlink" title="1.3.5 10月 离开鸿达电镀"></a>1.3.5 10月 离开鸿达电镀</h3><h3 id="1-3-6-11月-加入阿尔法电镀（同月离开）"><a href="#1-3-6-11月-加入阿尔法电镀（同月离开）" class="headerlink" title="1.3.6 11月 加入阿尔法电镀（同月离开）"></a>1.3.6 11月 加入阿尔法电镀（同月离开）</h3><h2 id="1-4-陈秀明"><a href="#1-4-陈秀明" class="headerlink" title="1.4  陈秀明"></a>1.4  陈秀明</h2><h3 id="1-4-1-6月-能够默写中英文字母"><a href="#1-4-1-6月-能够默写中英文字母" class="headerlink" title="1.4.1 6月 能够默写中英文字母"></a>1.4.1 6月 能够默写中英文字母</h3><p>24日：抄写中英文字母打卡</p>
-<p>![image-20240212213726693](&#x2F;Users&#x2F;qc&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240212213726693.png)</p>
-<h3 id="1-4-2-7月-进入英文打字第一关"><a href="#1-4-2-7月-进入英文打字第一关" class="headerlink" title="1.4.2 7月 进入英文打字第一关"></a>1.4.2 7月 进入英文打字第一关</h3><p>1日：英文打字第一关37字&#x2F;分钟</p>
-<p>![image-20240212213828518](&#x2F;Users&#x2F;qc&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240212213828518.png)</p>
-<h3 id="1-4-3-9月-在云南撮合一对婚姻"><a href="#1-4-3-9月-在云南撮合一对婚姻" class="headerlink" title="1.4.3 9月 在云南撮合一对婚姻"></a>1.4.3 9月 在云南撮合一对婚姻</h3><p>22日 飞去云南，撮合一对婚姻，报酬2万</p>
-<p>![image-20240212213912225](&#x2F;Users&#x2F;qc&#x2F;Library&#x2F;Application Support&#x2F;typora-user-images&#x2F;image-20240212213912225.png)</p>
-<p>1.4.4 12月 通过英文打字第一关</p>
-<p>31日：英文打字第一关70&#x2F;min，过关</p>
-<h2 id="1-5-总结"><a href="#1-5-总结" class="headerlink" title="1.5 总结"></a>1.5 总结</h2><p>陈千找到了一份好的工作，从月薪8000跃迁至月薪22000；</p>
-<p>娇娇通过了2门帆软职业资格证书考试，并怀上了宝宝；</p>
-<p>妈妈通过国家一级计算机考试，并成为了一名仓管；</p>
-<p>爸爸学会了英文字母，撮合了一段婚姻；</p>
-<p>2024年大家的期望与目标</p>
-<p>陈千：</p>
+        <p><div class='inner-toc'><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%91%98%E8%A6%81"><span class="toc-text">一、摘要</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%A0%A1%E9%AA%8C%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-text">二、服务端校验客户端</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%A0%A1%E9%AA%8C%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="toc-text">三、客户端校验服务端</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">四、总结</span></a></li></ol></div></p>
+<h1 id="一、摘要"><a href="#一、摘要" class="headerlink" title="一、摘要"></a>一、摘要</h1><p>在逆向app时，如果app存在双向证书校验，指服务端校验服务端证书和客户端校验服务端</p>
 <ol>
-<li>成功转正</li>
-<li>有大型&#x2F;困难项目(3)经验</li>
-<li>每个月不允许说超过3回离婚（对娇娇同样生效）</li>
+<li>前者需导出app的证书，无论是抓包还是爬虫发起请求，都需要携带上此证书，否则会发包被拒</li>
+<li>后者可通过hook java层的<code>com.android.org.conscrypt.Platform.checkServerTrusted</code>方法，将校验逻辑改为空，即可绕过<br>本文使用r0capture导出app客户端证书，过掉服务端校验，使用fridah-hook修改java层方法过掉客户端校验。</li>
 </ol>
-<p>妈妈：</p>
+<h1 id="二、服务端校验客户端"><a href="#二、服务端校验客户端" class="headerlink" title="二、服务端校验客户端"></a>二、服务端校验客户端</h1><p>目标app是东呈青猫会，如果安卓直接抓包，app显示：<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215152433.png" alt="20250215152433"><br>报文显示：<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215173643.png" alt="20250215173643"><br>首先，启动frida-server,<br>r0capture下载地址：<a target="_blank" rel="noopener" href="https://github.com/r0ysue/r0capture">https://github.com/r0ysue/r0capture</a><br>下载完后，修改一下r0capture.py脚本<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215152812.png" alt="20250215152812"><br>这样做的目的是</p>
 <ol>
-<li>理想的工作：<ol>
-<li>8个小时</li>
-<li>3500～4000</li>
-<li>有空调</li>
+<li>去掉文件写入log，避免产生大量log文件、</li>
+<li>直接允许python脚本，更方便（命令行允许发现终端无法中止，只能关闭）</li>
 </ol>
-</li>
-<li>9月份 通过计算机2级考试 一个星期2套</li>
-</ol>
-<p>娇娇：</p>
-<ol>
-<li>顺利生产</li>
-<li>每个月读3本书 来自于帆书推荐</li>
-<li>每天打坐15min</li>
-</ol>
-<p>爸爸：</p>
-<ol>
-<li>每天锻炼半个小时：金刚功</li>
-<li>9月份冲击计算机1级考试</li>
-<li>撮合一～二单</li>
+<p>这里使用了wait参数，给与了0.5s的值是因为，app可能在一开始java层就进行了证书校验，如果我们hook的过早，frida注入的痕迹会被其检测到，所以等待0.5s，让app加载完成后再hook。<br>导出的客户端证书默认路径在<code>/sdcard/download/xx.p12</code>, 密码默认是<code>r0ysue</code><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215153557.png" alt="20250215153557"><br>使用adb命令导出到pc，<code>adb pull /sdcar./donnload/xx.p12 /</code></p>
+<p>reqable安装客户端证书<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215153835.png" alt="20250215153835"><br>然后再抓包：<br>还是抓包失败。</p>
+<h1 id="三、客户端校验服务端"><a href="#三、客户端校验服务端" class="headerlink" title="三、客户端校验服务端"></a>三、客户端校验服务端</h1><p>checkServerTrusted方法的主要作用是验证服务器证书链的有效性。当客户端与服务器建立安全连接时，服务器会发送其证书链给客户端。客户端通过调用checkServerTrusted方法来验证这些证书是否可信，从而确保服务器的身份是可靠的。如果证书链验证失败，则会抛出CertificateException异常，导致连接失败‌。</p>
+<pre><code>setTimeout(() =&gt; &#123;
+    Java.perform(function () &#123;
+        function hook_ssl() &#123;
+            Java.perform(function () &#123;
+                var ClassName = &quot;com.android.org.conscrypt.Platform&quot;;
+                var Platform = Java.use(ClassName);
+                var targetMethod = &quot;checkServerTrusted&quot;;
+                var len = Platform[targetMethod].overloads.length;
+                console.log(len);
+                for (var i = 0; i &lt; len; ++i) &#123;
+                    Platform[targetMethod].overloads[i].implementation = function () &#123;
+                        console.log(&quot;class:&quot;, ClassName, &quot;target:&quot;, targetMethod, &quot; i:&quot;, i, arguments);
+                        //printStack(ClassName + &quot;.&quot; + targetMethod);
+                    &#125;
+                &#125;
+            &#125;);
+            console.log(&quot;hook_ssl&quot;)
+        &#125;
+        hook_ssl()
+    &#125;)
+&#125;, 500)
+</code></pre>
+<p>保存为cert.js<br>这里延迟0.5s还是因为避免过早注入导致会相应进程检测到注入痕迹，app设计时并不会频繁检测，会导致资源占用，影响用户体验。<br>运行<code>frida -U -f com.dossen.app -l cert.js</code></p>
+<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215155517.png" alt="20250215155517"><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215155549.png" alt="20250215155549"><br>抓包成功。</p>
+<h1 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h1><ol>
+<li>客户端校验服务端证书，使用frida hook checkServerTrusted方法，使其不抛出异常，绕过客户端证书校验。</li>
+<li>服务端校验客户端证书，使用r0capture工具导出客户端证书，交与抓包软件或代码使用，绕过服务端证书校验。</li>
+<li>通过延迟0.5s，避免过早注入导致会相应进程检测到注入痕迹。</li>
 </ol>
 
       

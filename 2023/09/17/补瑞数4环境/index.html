@@ -2,46 +2,31 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>半自动补瑞数4环境全流程 | 跃迁blog</title>
+  <title>补瑞数4环境 | 跃迁blog</title>
   <meta name="keywords" content=" javascript , python , web逆向 , 瑞数 ">
-  <meta name="description" content="半自动补瑞数4环境全流程 | 跃迁blog">
+  <meta name="description" content="补瑞数4环境 | 跃迁blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="[TOC] 一、摘要预先善其事，必先利其器。本文介绍了对pixle3刷机，并配置好逆向环境的过程。其中刷机采用安卓定制系统，root采用apatch，代码注入采用frida，抓包采用reqable。 二、刷机参考文章：https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;1EySfXSucGdiuEBTfLsymA?官方安装包地址：https:&#x2F;&#x2F;developers.google.com&#x2F;and">
+<meta name="description" content="[TOC] 一、摘要在逆向app时，如果app存在双向证书校验，指服务端校验服务端证书和客户端校验服务端  前者需导出app的证书，无论是抓包还是爬虫发起请求，都需要携带上此证书，否则会发包被拒 后者可通过hook java层的com.android.org.conscrypt.Platform.checkServerTrusted方法，将校验逻辑改为空，即可绕过本文使用r0capture导出ap">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安卓app刷机+逆向环境配置">
-<meta property="og:url" content="http://example.com/2025/02/03/%E5%AE%89%E5%8D%93app%E5%88%B7%E6%9C%BA+%E9%80%86%E5%90%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:title" content="安卓双向证书校验绕过">
+<meta property="og:url" content="http://example.com/2025/02/15/%E5%AE%89%E5%8D%93%E5%8F%8C%E5%90%91%E8%AF%81%E4%B9%A6%E6%A0%A1%E9%AA%8C%E7%BB%95%E8%BF%87/index.html">
 <meta property="og:site_name" content="跃迁blog">
-<meta property="og:description" content="[TOC] 一、摘要预先善其事，必先利其器。本文介绍了对pixle3刷机，并配置好逆向环境的过程。其中刷机采用安卓定制系统，root采用apatch，代码注入采用frida，抓包采用reqable。 二、刷机参考文章：https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;s&#x2F;1EySfXSucGdiuEBTfLsymA?官方安装包地址：https:&#x2F;&#x2F;developers.google.com&#x2F;and">
+<meta property="og:description" content="[TOC] 一、摘要在逆向app时，如果app存在双向证书校验，指服务端校验服务端证书和客户端校验服务端  前者需导出app的证书，无论是抓包还是爬虫发起请求，都需要携带上此证书，否则会发包被拒 后者可通过hook java层的com.android.org.conscrypt.Platform.checkServerTrusted方法，将校验逻辑改为空，即可绕过本文使用r0capture导出ap">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212226.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212145.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212029.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212458.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212629.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/%E5%B0%86%E9%95%9C%E5%83%8F%E5%8C%85%E4%B8%AD%E7%9A%84boot.im.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203213654.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203213808.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203213854.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203214524.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203214912.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203214953.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203215227.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203215604.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203215804.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203220044.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203220744.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203221130.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203221444.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203222058.png">
-<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203222427.png">
-<meta property="article:published_time" content="2025-02-03T12:00:00.000Z">
-<meta property="article:modified_time" content="2025-02-03T21:52:38.000Z">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215152433.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215173643.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215152812.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215153557.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215153835.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215155517.png">
+<meta property="og:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215155549.png">
+<meta property="article:published_time" content="2025-02-15T06:32:00.000Z">
+<meta property="article:modified_time" content="2025-02-15T10:56:30.818Z">
 <meta property="article:author" content="跃迁">
-<meta property="article:tag" content="安卓app逆向">
 <meta property="article:tag" content="frida">
-<meta property="article:tag" content="pixle3">
+<meta property="article:tag" content="安卓逆向">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250203212226.png">
+<meta name="twitter:image" content="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250215152433.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -118,7 +103,7 @@
     <li>
         <div class="all active" data-rel="全部文章">全部文章
             
-                <small>(16)</small>
+                <small>(17)</small>
             
         </div>
     </li>
@@ -145,7 +130,7 @@
         <div data-rel="爬虫">
             
             爬虫
-            <small>(15)</small>
+            <small>(16)</small>
         </div>
         
     </li>
@@ -171,7 +156,7 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="16">
+<input type="hidden" id="yelog_site_posts_number" value="17">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -219,6 +204,10 @@
         
             <li class="article-tag-list-item">
                 <i class="iconfont icon-tag"></i><a>阿里系</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>安卓逆向</a>
             </li>
         
             <li class="article-tag-list-item">
@@ -302,6 +291,15 @@
         
         
         <a  class="全部文章 爬虫 "
+           href="/2025/02/15/%E5%AE%89%E5%8D%93%E5%8F%8C%E5%90%91%E8%AF%81%E4%B9%A6%E6%A0%A1%E9%AA%8C%E7%BB%95%E8%BF%87/"
+           data-tag="frida,安卓逆向"
+           data-author="" >
+            <span class="post-title" title="安卓双向证书校验绕过">安卓双向证书校验绕过</span>
+            <span class="post-date" title="2025-02-15 14:32:00">2025/02/15</span>
+        </a>
+        
+        
+        <a  class="全部文章 爬虫 "
            href="/2025/02/03/%E5%AE%89%E5%8D%93app%E5%88%B7%E6%9C%BA+%E9%80%86%E5%90%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"
            data-tag="安卓app逆向,frida,pixle3"
            data-author="" >
@@ -339,10 +337,10 @@
         
         
         <a  class="全部文章 爬虫 "
-           href="/2023/09/17/%E5%8D%8A%E8%87%AA%E5%8A%A8%E8%A1%A5%E7%91%9E%E6%95%B04%E7%8E%AF%E5%A2%83%E5%85%A8%E6%B5%81%E7%A8%8B/"
+           href="/2023/09/17/%E8%A1%A5%E7%91%9E%E6%95%B04%E7%8E%AF%E5%A2%83/"
            data-tag="javascript,python,web逆向,瑞数"
            data-author="" >
-            <span class="post-title" title="半自动补瑞数4环境全流程">半自动补瑞数4环境全流程</span>
+            <span class="post-title" title="补瑞数4环境">补瑞数4环境</span>
             <span class="post-date" title="2023-09-17 16:34:23">2023/09/17</span>
         </a>
         
@@ -454,9 +452,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-半自动补瑞数4环境全流程" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-补瑞数4环境" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">半自动补瑞数4环境全流程</h1>
+        <h1 class="article-title">补瑞数4环境</h1>
     
     <div class="article-meta">
         
@@ -487,7 +485,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2025-02-04 14:46:02'>2023-09-17 16:34</time>
+            发布时间 : <time class="date" title='最后更新: 2025-02-15 14:52:02'>2023-09-17 16:34</time>
         
     </div>
     <div class="article-meta">
@@ -509,7 +507,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%9B%AE%E6%A0%87%E7%A1%AE%E5%AE%9A"><span class="toc-text">二、目标确定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%89%8D%E6%9C%9F%E5%B7%A5%E4%BD%9C"><span class="toc-text">三、前期工作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%AE%9A%E4%BD%8D%E6%8E%A5%E5%8F%A3"><span class="toc-text">3.1 定位接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%B2%BE%E7%AE%80%E5%8F%82%E6%95%B0"><span class="toc-text">3.2 精简参数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B"><span class="toc-text">四、逆向工程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-FSSBBIl1UgzbN7N80S"><span class="toc-text">4.1 FSSBBIl1UgzbN7N80S</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-FSSBBIl1UgzbN7N80T"><span class="toc-text">4.2 FSSBBIl1UgzbN7N80T</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%E5%AE%9A%E4%BD%8Djs%E5%8A%A0%E5%AF%86%E5%85%A5%E5%8F%A3"><span class="toc-text">4.2.1 定位js加密入口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%E5%89%8D%E7%BD%AE%E5%87%86%E5%A4%87"><span class="toc-text">4.2.2 前置准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-%E8%AE%A9%E4%BB%A3%E7%A0%81%E8%B7%91%E9%80%9A"><span class="toc-text">4.2.3 让代码跑通</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E8%B0%83%E5%90%8C%E7%AC%AC1%E6%AC%A1cookie"><span class="toc-text">4.2.4 调同第1次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E8%B0%83%E5%90%8C%E7%AC%AC2%E6%AC%A1cookie"><span class="toc-text">4.2.4 调同第2次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-5-%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E9%80%BB%E8%BE%91"><span class="toc-text">4.2.5 实现异步逻辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-6-%E8%B0%83%E5%90%8C%E7%AC%AC3%E6%AC%A1cookie"><span class="toc-text">4.2.6 调同第3次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-7-%E8%B0%83%E5%90%8C%E7%AC%AC4%E6%AC%A1cookie"><span class="toc-text">4.2.7 调同第4次cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-1-%E5%AD%97%E4%BD%93%E6%8C%87%E7%BA%B9"><span class="toc-text">4.2.7.1 字体指纹</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-2-%E6%8F%92%E4%BB%B6%E6%A3%80%E6%B5%8B-plugins%E5%92%8CmimeTypes"><span class="toc-text">4.2.7.2 插件检测(plugins和mimeTypes)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-3-%E6%89%B9%E9%87%8F%E7%8E%AF%E5%A2%83%E5%B8%83%E5%B0%94%E6%A3%80%E6%B5%8B"><span class="toc-text">4.2.7.3 批量环境布尔检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-4-canvas-2d%E6%8C%87%E7%BA%B9%E6%A3%80%E6%B5%8B"><span class="toc-text">4.2.7.4 canvas_2d指纹检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-5-canvas-webgl%E6%8C%87%E7%BA%B9"><span class="toc-text">4.2.7.5 canvas_webgl指纹</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-6-%E6%9C%80%E5%90%8E%E7%9A%84%E5%B0%8F%E7%8E%AF%E5%A2%83"><span class="toc-text">4.2.7.6 最后的小环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-7-%E5%B0%8F%E7%BB%93"><span class="toc-text">4.2.7.7 小结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-MmEwMD-url%E7%AD%BE%E5%90%8D"><span class="toc-text">4.3 MmEwMD(url签名)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-a%E6%A0%87%E7%AD%BE%E6%A3%80%E6%B5%8B"><span class="toc-text">4.3.1 a标签检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-JSESSIONID1"><span class="toc-text">4.4 JSESSIONID1</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%AF%B7%E6%B1%82%E6%B5%8B%E8%AF%95"><span class="toc-text">五、请求测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">六、总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E9%99%84%E5%BD%95"><span class="toc-text">七、附录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1-%E8%A1%A5%E7%8E%AF%E5%A2%83%E6%BA%90%E7%A0%81"><span class="toc-text">7.1 补环境源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2-python%E8%AF%B7%E6%B1%82%E6%BA%90%E7%A0%81"><span class="toc-text">7.2 python请求源码</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%91%98%E8%A6%81"><span class="toc-text">一、摘要</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%9B%AE%E6%A0%87%E7%A1%AE%E5%AE%9A"><span class="toc-text">二、目标确定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%89%8D%E6%9C%9F%E5%B7%A5%E4%BD%9C"><span class="toc-text">三、前期工作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%AE%9A%E4%BD%8D%E6%8E%A5%E5%8F%A3"><span class="toc-text">3.1 定位接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%B2%BE%E7%AE%80%E5%8F%82%E6%95%B0"><span class="toc-text">3.2 精简参数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B"><span class="toc-text">四、逆向工程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-FSSBBIl1UgzbN7N80S"><span class="toc-text">4.1 FSSBBIl1UgzbN7N80S</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-FSSBBIl1UgzbN7N80T"><span class="toc-text">4.2 FSSBBIl1UgzbN7N80T</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%E5%AE%9A%E4%BD%8Djs%E5%8A%A0%E5%AF%86%E5%85%A5%E5%8F%A3"><span class="toc-text">4.2.1 定位js加密入口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%E5%89%8D%E7%BD%AE%E5%87%86%E5%A4%87"><span class="toc-text">4.2.2 前置准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-%E8%AE%A9%E4%BB%A3%E7%A0%81%E8%B7%91%E9%80%9A"><span class="toc-text">4.2.3 让代码跑通</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E8%B0%83%E5%90%8C%E7%AC%AC1%E6%AC%A1cookie"><span class="toc-text">4.2.4 调同第1次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E8%B0%83%E5%90%8C%E7%AC%AC2%E6%AC%A1cookie"><span class="toc-text">4.2.4 调同第2次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-5-%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E9%80%BB%E8%BE%91"><span class="toc-text">4.2.5 实现异步逻辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-6-%E8%B0%83%E5%90%8C%E7%AC%AC3%E6%AC%A1cookie"><span class="toc-text">4.2.6 调同第3次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-7-%E8%B0%83%E5%90%8C%E7%AC%AC4%E6%AC%A1cookie"><span class="toc-text">4.2.7 调同第4次cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-1-%E5%AD%97%E4%BD%93%E6%8C%87%E7%BA%B9"><span class="toc-text">4.2.7.1 字体指纹</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-2-%E6%8F%92%E4%BB%B6%E6%A3%80%E6%B5%8B-plugins%E5%92%8CmimeTypes"><span class="toc-text">4.2.7.2 插件检测(plugins和mimeTypes)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-3-%E6%89%B9%E9%87%8F%E7%8E%AF%E5%A2%83%E5%B8%83%E5%B0%94%E6%A3%80%E6%B5%8B"><span class="toc-text">4.2.7.3 批量环境布尔检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-4-canvas-2d%E6%8C%87%E7%BA%B9%E6%A3%80%E6%B5%8B"><span class="toc-text">4.2.7.4 canvas_2d指纹检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-5-canvas-webgl%E6%8C%87%E7%BA%B9"><span class="toc-text">4.2.7.5 canvas_webgl指纹</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-6-%E6%9C%80%E5%90%8E%E7%9A%84%E5%B0%8F%E7%8E%AF%E5%A2%83"><span class="toc-text">4.2.7.6 最后的小环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-7-%E5%B0%8F%E7%BB%93"><span class="toc-text">4.2.7.7 小结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-MmEwMD-url%E7%AD%BE%E5%90%8D"><span class="toc-text">4.3 MmEwMD(url签名)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-a%E6%A0%87%E7%AD%BE%E6%A3%80%E6%B5%8B"><span class="toc-text">4.3.1 a标签检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-JSESSIONID1"><span class="toc-text">4.4 JSESSIONID1</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%AF%B7%E6%B1%82%E6%B5%8B%E8%AF%95"><span class="toc-text">五、请求测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">六、总结</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -525,12 +523,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><div class='inner-toc'><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%9B%AE%E6%A0%87%E7%A1%AE%E5%AE%9A"><span class="toc-text">二、目标确定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%89%8D%E6%9C%9F%E5%B7%A5%E4%BD%9C"><span class="toc-text">三、前期工作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%AE%9A%E4%BD%8D%E6%8E%A5%E5%8F%A3"><span class="toc-text">3.1 定位接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%B2%BE%E7%AE%80%E5%8F%82%E6%95%B0"><span class="toc-text">3.2 精简参数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B"><span class="toc-text">四、逆向工程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-FSSBBIl1UgzbN7N80S"><span class="toc-text">4.1 FSSBBIl1UgzbN7N80S</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-FSSBBIl1UgzbN7N80T"><span class="toc-text">4.2 FSSBBIl1UgzbN7N80T</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%E5%AE%9A%E4%BD%8Djs%E5%8A%A0%E5%AF%86%E5%85%A5%E5%8F%A3"><span class="toc-text">4.2.1 定位js加密入口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%E5%89%8D%E7%BD%AE%E5%87%86%E5%A4%87"><span class="toc-text">4.2.2 前置准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-%E8%AE%A9%E4%BB%A3%E7%A0%81%E8%B7%91%E9%80%9A"><span class="toc-text">4.2.3 让代码跑通</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E8%B0%83%E5%90%8C%E7%AC%AC1%E6%AC%A1cookie"><span class="toc-text">4.2.4 调同第1次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E8%B0%83%E5%90%8C%E7%AC%AC2%E6%AC%A1cookie"><span class="toc-text">4.2.4 调同第2次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-5-%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E9%80%BB%E8%BE%91"><span class="toc-text">4.2.5 实现异步逻辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-6-%E8%B0%83%E5%90%8C%E7%AC%AC3%E6%AC%A1cookie"><span class="toc-text">4.2.6 调同第3次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-7-%E8%B0%83%E5%90%8C%E7%AC%AC4%E6%AC%A1cookie"><span class="toc-text">4.2.7 调同第4次cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-1-%E5%AD%97%E4%BD%93%E6%8C%87%E7%BA%B9"><span class="toc-text">4.2.7.1 字体指纹</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-2-%E6%8F%92%E4%BB%B6%E6%A3%80%E6%B5%8B-plugins%E5%92%8CmimeTypes"><span class="toc-text">4.2.7.2 插件检测(plugins和mimeTypes)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-3-%E6%89%B9%E9%87%8F%E7%8E%AF%E5%A2%83%E5%B8%83%E5%B0%94%E6%A3%80%E6%B5%8B"><span class="toc-text">4.2.7.3 批量环境布尔检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-4-canvas-2d%E6%8C%87%E7%BA%B9%E6%A3%80%E6%B5%8B"><span class="toc-text">4.2.7.4 canvas_2d指纹检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-5-canvas-webgl%E6%8C%87%E7%BA%B9"><span class="toc-text">4.2.7.5 canvas_webgl指纹</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-6-%E6%9C%80%E5%90%8E%E7%9A%84%E5%B0%8F%E7%8E%AF%E5%A2%83"><span class="toc-text">4.2.7.6 最后的小环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-7-%E5%B0%8F%E7%BB%93"><span class="toc-text">4.2.7.7 小结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-MmEwMD-url%E7%AD%BE%E5%90%8D"><span class="toc-text">4.3 MmEwMD(url签名)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-a%E6%A0%87%E7%AD%BE%E6%A3%80%E6%B5%8B"><span class="toc-text">4.3.1 a标签检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-JSESSIONID1"><span class="toc-text">4.4 JSESSIONID1</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%AF%B7%E6%B1%82%E6%B5%8B%E8%AF%95"><span class="toc-text">五、请求测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">六、总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E9%99%84%E5%BD%95"><span class="toc-text">七、附录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1-%E8%A1%A5%E7%8E%AF%E5%A2%83%E6%BA%90%E7%A0%81"><span class="toc-text">7.1 补环境源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2-python%E8%AF%B7%E6%B1%82%E6%BA%90%E7%A0%81"><span class="toc-text">7.2 python请求源码</span></a></li></ol></li></ol></div></p>
-<h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><p>想拿瑞数做逆向分析案例由来已久（盛名之下）,但一直不知道如何下笔, 之前通过补环境框架和手动补环境虽然通过了瑞数环境检测，但拿来写博客还是压力山大。</p>
-<p>先说手动补环境,需要扣eval层代码,流程太多,导致写起来也会太多,而且中间全是干巴巴的跟栈调试, 于读者而言未免太过枯燥；然后是补环境框架，这其实没什么可写的, 环境全在框架里, 代码一跑就通, 如何搭建补环境框架拿又是另外一码事了；</p>
-<p>最终在一个机缘巧合之下(灵光一现)萌生了这种半自动扣法。其原理是借助Proxy将常用浏览器全局对象,一共6个(window,navigator,location,document,localStorage,sessionStorage)全部挂上代理,并hook <code>console.log</code>方法（有关hook的使用,可见<a target="_blank" rel="noopener" href="https://blog.cthousand.cn/2023/06/23/document-cookie%E7%9A%84hook%E5%8F%8A%E5%BC%95%E7%94%B3/">document.cookie的hook及引申</a>, 把日志写到文件里去形成一份代理日志, 利用代理日志去补环境。</p>
-<p>这里面的精髓在于递归代理，也就是说由以上6个对象衍生出来的对象也会被自动套上代理，如对象有动作也会被记录到代理日志当中。</p>
-<p>这种方式的优势在于, 即无需在源代码前牢底坐穿只为获得一丁点的环境, 也不需从0开始构建一套补环境框架, 笔者最终代理日志约在3000行左右, 那么废话不多说, 准备发车(文末贴源码)。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/6cc88da2e0844f3894c5876ed41033c1.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="代理日志总行数"></p>
+        <p><div class='inner-toc'><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%91%98%E8%A6%81"><span class="toc-text">一、摘要</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%9B%AE%E6%A0%87%E7%A1%AE%E5%AE%9A"><span class="toc-text">二、目标确定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%89%8D%E6%9C%9F%E5%B7%A5%E4%BD%9C"><span class="toc-text">三、前期工作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%AE%9A%E4%BD%8D%E6%8E%A5%E5%8F%A3"><span class="toc-text">3.1 定位接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%B2%BE%E7%AE%80%E5%8F%82%E6%95%B0"><span class="toc-text">3.2 精简参数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B"><span class="toc-text">四、逆向工程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-FSSBBIl1UgzbN7N80S"><span class="toc-text">4.1 FSSBBIl1UgzbN7N80S</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-FSSBBIl1UgzbN7N80T"><span class="toc-text">4.2 FSSBBIl1UgzbN7N80T</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%E5%AE%9A%E4%BD%8Djs%E5%8A%A0%E5%AF%86%E5%85%A5%E5%8F%A3"><span class="toc-text">4.2.1 定位js加密入口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%E5%89%8D%E7%BD%AE%E5%87%86%E5%A4%87"><span class="toc-text">4.2.2 前置准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-%E8%AE%A9%E4%BB%A3%E7%A0%81%E8%B7%91%E9%80%9A"><span class="toc-text">4.2.3 让代码跑通</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E8%B0%83%E5%90%8C%E7%AC%AC1%E6%AC%A1cookie"><span class="toc-text">4.2.4 调同第1次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E8%B0%83%E5%90%8C%E7%AC%AC2%E6%AC%A1cookie"><span class="toc-text">4.2.4 调同第2次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-5-%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E9%80%BB%E8%BE%91"><span class="toc-text">4.2.5 实现异步逻辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-6-%E8%B0%83%E5%90%8C%E7%AC%AC3%E6%AC%A1cookie"><span class="toc-text">4.2.6 调同第3次cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-7-%E8%B0%83%E5%90%8C%E7%AC%AC4%E6%AC%A1cookie"><span class="toc-text">4.2.7 调同第4次cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-1-%E5%AD%97%E4%BD%93%E6%8C%87%E7%BA%B9"><span class="toc-text">4.2.7.1 字体指纹</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-2-%E6%8F%92%E4%BB%B6%E6%A3%80%E6%B5%8B-plugins%E5%92%8CmimeTypes"><span class="toc-text">4.2.7.2 插件检测(plugins和mimeTypes)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-3-%E6%89%B9%E9%87%8F%E7%8E%AF%E5%A2%83%E5%B8%83%E5%B0%94%E6%A3%80%E6%B5%8B"><span class="toc-text">4.2.7.3 批量环境布尔检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-4-canvas-2d%E6%8C%87%E7%BA%B9%E6%A3%80%E6%B5%8B"><span class="toc-text">4.2.7.4 canvas_2d指纹检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-5-canvas-webgl%E6%8C%87%E7%BA%B9"><span class="toc-text">4.2.7.5 canvas_webgl指纹</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-6-%E6%9C%80%E5%90%8E%E7%9A%84%E5%B0%8F%E7%8E%AF%E5%A2%83"><span class="toc-text">4.2.7.6 最后的小环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-7-7-%E5%B0%8F%E7%BB%93"><span class="toc-text">4.2.7.7 小结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-MmEwMD-url%E7%AD%BE%E5%90%8D"><span class="toc-text">4.3 MmEwMD(url签名)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-1-a%E6%A0%87%E7%AD%BE%E6%A3%80%E6%B5%8B"><span class="toc-text">4.3.1 a标签检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-JSESSIONID1"><span class="toc-text">4.4 JSESSIONID1</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%AF%B7%E6%B1%82%E6%B5%8B%E8%AF%95"><span class="toc-text">五、请求测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">六、总结</span></a></li></ol></div></p>
+<h1 id="一、摘要"><a href="#一、摘要" class="headerlink" title="一、摘要"></a>一、摘要</h1><p>本文借助Proxy将常用浏览器全局对象,一共6个(window,navigator,location,document,localStorage,sessionStorage)全部挂上代理,并hook <code>console.log</code>方法（有关hook的使用,可见<a target="_blank" rel="noopener" href="https://blog.cthousand.cn/2023/06/23/document-cookie%E7%9A%84hook%E5%8F%8A%E5%BC%95%E7%94%B3/">document.cookie的hook及引申</a>, 把日志写到文件里去形成一份代理日志。</p>
+<p>通过递归代理，由以上6个对象衍生出来的对象也会被自动套上代理，如衍生对象有动作也会被记录到代理日志当中，利用代理日志去补环境，从而过掉瑞数4反爬防护。</p>
 <h1 id="二、目标确定"><a href="#二、目标确定" class="headerlink" title="二、目标确定"></a>二、目标确定</h1><p>地址:aHR0cDovL3d3dy5mYW5nZGkuY29tLmNuL2luZGV4Lmh0bWw&#x3D;<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/471c5c725ab949eca6f619ab4b7452e5.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="爬取"></p>
 <h1 id="三、前期工作"><a href="#三、前期工作" class="headerlink" title="三、前期工作"></a>三、前期工作</h1><h2 id="3-1-定位接口"><a href="#3-1-定位接口" class="headerlink" title="3.1 定位接口"></a>3.1 定位接口</h2><p>通过开发者工具定位到了接口:<code>./service/index/getHouseNews.action</code><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/6b637710002e47edb2a16aed359d48a6.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="定位接口"></p>
 <h2 id="3-2-精简参数"><a href="#3-2-精简参数" class="headerlink" title="3.2 精简参数"></a>3.2 精简参数</h2><p>请求返回400, 经过调试, 每次请求时有2个参数都在动态变化(这两个参数使用一次就不能再用了)<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230917/0291ffd5dc274aa9a7bde3f6f05f7c2b.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg" alt="精简参数但请求失败"></p>
@@ -1093,966 +1088,8 @@ function async_pool_exec(async_exec_pool) &#123;
 <ol>
 <li>加深了对浏览器环境检测的了解，尤其是第四次cookie生成中的5个加密组件:字体指纹、插件环境、api环境、canvas_2d指纹和webgl指纹，以及url签名加密过程中对于 <code>a</code>标签检测的理解。</li>
 <li>了解了如何写伪异步(其实还是同步)来模拟浏览器端的异步执行流程。</li>
-<li>熟悉了利用代理日志嗅探缺失环境的思维模式，比手动补环境快，比补环境框架灵活，毕竟从刀剑(手动补)到火炮(补环境框架)之间也需要一把半自动手枪(代理日志)代为过渡。</li>
+<li>熟悉了利用代理日志嗅探缺失环境的思路。</li>
 </ol>
-<h1 id="七、附录"><a href="#七、附录" class="headerlink" title="七、附录"></a>七、附录</h1><h2 id="7-1-补环境源码"><a href="#7-1-补环境源码" class="headerlink" title="7.1 补环境源码"></a>7.1 补环境源码</h2><pre><code class="javascript">let fs = require(&#39;fs&#39;)
-const parse = require(&#39;html-dom-parser&#39;);
-//初始化全局环境
-//自定义对象
-yueqian = &#123;
-    proxy_filters_custom: [&#39;$_ts&#39;],
-    symbolProxy: Symbol(&quot;proxy&quot;),
-    symbolRawFatherObj: Symbol(&#39;fatherObj&#39;),//用于更改apply行为内部this指向到原生对象,而非Proxy对象
-    symbolRawSelfObj: Symbol(&#39;selfObj&#39;),//用于更改construct行为内部this指向到原生对象,而非Proxy对象
-    symbolObjName: Symbol(&#39;name&#39;),//用于表示被创建的元素名称,方便在内存中通过此属性精准定位到
-    symbolRawName: Symbol(&#39;rawName&#39;),//用于表示被创建的元素名称,方便在内存中通过此属性精准定位到
-    eles: [],//创建的需要保存的元素,包扩document.write创建的
-    font_pool: [
-        &quot;Verdana&quot;,
-        &quot;Helvetica Neue LT Pro 35 Thin&quot;,
-        &quot;tahoma&quot;,
-        &quot;Kannada Sangam MN&quot;,
-        &quot;verdana&quot;,
-        &quot;Telugu Sangam MN&quot;,
-        &quot;times new roman&quot;,
-        &quot;Courier New&quot;,
-        &quot;helvetica&quot;,
-        &quot;LG-FZKaTong-M19-V2.2&quot;,
-        &quot;Georgia&quot;,
-        &quot;georgia&quot;,
-        &quot;Malayalam Sangam MN&quot;,
-        &quot;courier new&quot;,
-        &quot;sans-serif&quot;,
-        &quot;monaco&quot;,
-        &quot;Arial&quot;,
-        &quot;Noto Sans Myanmar&quot;,
-        &quot;Myanmar Sangam MN&quot;,
-        &quot;Apple Color Emoji&quot;,
-        &quot;arial&quot;,
-        &quot;Devanagari Sangam MN&quot;,
-        &quot;Gujarati Sangam MN&quot;,
-        &quot;cursive&quot;,
-        &quot;baskerville&quot;,
-        &quot;Noto Sans Kannada&quot;,
-        &quot;fantasy&quot;,
-        &quot;Tamil Sangam MN&quot;,
-        &quot;palatino&quot;,
-        &quot;courier&quot;,
-        &quot;Oriya Sangam MN&quot;,
-        &quot;Bangla Sangam MN&quot;,
-        &quot;Gurmukhi Sangam MN&quot;,
-        &quot;monospace&quot;,
-        &quot;Times New Roman&quot;
-    ],
-    create_ele_seq: 0, //用来区别创建元素,例如创建多个div标签,在日志中凭此区分(用于proxy日志中的objName)
-    func_ret_seq: 0, //用来区别Func返回对象,在日志中凭此区分(用于proxy日志中的objName)
-    canvas_2d_toDateUrl: &#39;data:image/png;base64,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&#39;,
-    canvas_webgl_toDateUrl: &#39;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACWCAYAAABkW7XSAAAAAXNSR0IArs4c6QAADRxJREFUeF7tnV2IZEcVx0/1jOQhiPoQxISIAUOECKtEgiJCD4oiCioiIhEUVFBQ8AMR/GD64seDoogEFBSFCOpDwI8HRR8yLQpKJDtxZ8kmO2tm3WEnuosuSXQXM2Gv3O6edM9Mf9zuvlV1TtVvXvfeqlP//8kvVaerbjnhDwVQAAWMKOCMxEmYKIACKCAAiyRAARQwowDAMmMVgaIACgAscgAFUMCMAgDLjFUEigIoALDIARRAATMKACwzVhEoCqAAwCIHUAAFzCgAsMxYRaAogAIAixxAARQwowDAMmMVgaIACgAscgAFUMCMAgDLjFUEigIoALDIgcYVKEtpi0jbOek03jgNZq0AwMrafj+DHwBrQ0TWnJOun15oNUcFAFaOrnse8/VSNpz0Zlld52TNc3c0n5ECACsjs0MNdQRYVZcFS8NQyqffD8BK3+PgI7xeSnkksYBWcBfS7BBgpelrtFHtl9Jekd6S8Ogf9axorqTTMcBKx0sVI9kvpbMisj4msahnqXDIdhAAy7Z/6qJ/tpSNVrWlYXxkLA3VOWYrIIBlyy/10T5bStkSmXZZANBS76LeAAGWXm/MRVbVr5z0ZlhTbzdxjstPzJmrJGCApcSIFMKoCyz2Z6XgdpwxAKw4uifZ6/5gw+isGdZg8CwNk8wCv4MCWH71zar1/cH+q5rAqrQBWlllyPKDBVjLa0gLInKtlPbqYP/VHMAS6lmkzzwKAKx51OLZiQosCizqWSTVPAoArHnU4tmJCjwzqF9VCTXPDIt6Fkk1jwIAax61eNYXsKhnkVu1FABYtWTioVkK/G9kw+gCM6xe89SzZqnMvwMscmBpBar6VWtkw+iiwKKetbQVyTcAsJK32P8Arw3ODx6AaglgsTT0b5fpHgCWaft0BN8wsICWDltVRgGwVNpiK6hrg/pVQzMs6lm27A8aLcAKKnd6nVX1KxnUr5oEFrvg08uVJkYEsJpQMeM2/ltKpyWyXsGqYWCxNMw4ryYNHWCRFEspcHXkwLMHYAGtpdxJ72WAlZ6nQUd0deTAsydgsT8rqKO6OwNYuv1RHd3TIxdOeFoSHoyfrzqozoRwwQGscFon11NAYLE0TC57FhsQwFpMN94Skf+MXDjheYbFTIuM6ykAsEiEhRWIACzqWQu7lcaLACsNH4OPoloOjl44EWiGxdIwuNO6OgRYuvwwE01EYAEtM1nSfKAAq3lNs2jxqTEHnn1ta5ggKL8cZpFphwcJsDI0vYkhKwAW9awmjDTWBsAyZpiWcJ8ac+A58AyLpaGWZAgYB8AKKHYqXV0ZbBg9WmiPACyglUpS1RwHwKopFI8NFXiylI4bc+A5ErCqwNacky4epa8AwErf48ZHWNWvRHqfRT70hYaIwKKe1bjLOhsEWDp9UR3VkxMOPMcEFt/PUp0yjQUHsBqTMo+GqvpVdeHEwf2Do5CKDCzqWRmkIMDKwOQmh6gcWNSzmjRbYVsAS6EpmkO6MuXAs4IZVk867jfUnEHLxQawltMvu7evHLkwVdmS8MAPdsEnmpkAK1FjfQzrcint1SMXpioFFvUsHwmgoE2ApcAEKyEYAxb1LCuJNUecAGsOsXJ/9N8jF04o/ZXwmEXUs9LKWoCVlp9eR2MRWOzP8poSwRsHWMElt9vhv2YceNbyK+EYhSnC2027Q5EDrESM9D2Mqn5VbRiddhxHMbCoZ/lOkEDtA6xAQlvv5vLIB/sm/TKoHFhd52TNug+5xw+wcs+AmuNPAFhsdajptebHAJZmdxTFdnmkfmV0hnWgJvUsRXk1bygAa17FMny+ql/JSP3KOLCoZxnOYYBl2LxQof+zlE5r5IN9CQCLelao5Gm4H4DVsKApNndpZMOo4V8Jj1rD0tBgsgIsg6aFDvnSkQ/2JTDDop4VOoka6g9gNSRkqs08MbhwYvQoTkLAop5lLHEBljHDQoebAbCoZ4VOqiX6A1hLiJfDq/8Y88G+xGZYlY3Us4wkM8AyYlSsMDMBFtCKlWBz9guw5hQsp8er5aAb88G+BGdYPVv5FI3+7AZY+j2KFuET+9J2rf6B54SL7kN9nXRdi/OG0RKuRscAq4ZIuT6y90wPVr0LU7MAVmV0KYW7QTq5eq593ABLu0MR49u7miGwDqB1I9CKmHoTuwZYGl1REtPe01KO29meag1rVHb3/N6kkj9lCmCKMkO0hLN7RdorbvwH+3IAloh03QupZ2nJx4M4AJY2R5TEc/GydJyT9VxnWD0bqnrWTSwNlaRkLwyApckNRbHsXZIN6X8WWbIquh/3oHAvBlpaUhNgaXFCWRwXL0o56SqvTJaEzznibuF/7FrSE2BpcUJRHLu70m71PynTm11lPsOqnOm6l1LP0pCiAEuDC8pi2N3p35ADsA4ZU7jbWBrGTlWAFdsBhf3vbvf3XwGsY+YU7nagFTNlAVZM9ZX2vftof/8VwDpukHsF9ayYaQuwYqqvsO+dLWmvDvZfAayxBnXdK6lnxUpdgBVLeaX97mxKe3XMgedszhLW86VwJ1ga1pOq2acAVrN6mm/twslesf3YgWeAdcTaalPpXUArdMIDrNCKK+/vwoMAq65F7m7qWXW1auo5gNWUkom08/c/jT/wzAxrrMGFex2zrJCpD7BCqq28r50/9Pdfzbp7MLed7jNsK9wbgFao1AZYoZQ20M/57nA5yLaGOQyr6llrQGsOxRZ+FGAtLF16L55/QDbchAPPLAmn+l24NwKsEP9FAKwQKhvp4/xvJx94BlgTTSzcW4BVqBQHWKGUVt7Pzm+k7aYceAZYY7Y1vA1QhU5rgBVacaX9/e2X0llxsj5pdzvAGhhX1aveAahipTHAiqW8sn4f//n0A88ASwr3LkAVO20BVmwHlPT/+P3TDzxnC6xqRvUeQKUkTdmpq8WImHFs/3R44QRLwpGl3/sAVcy8HNc3MyxtjkSIZ/vH0l6ZceA5oxlW4e4BVBHSsFaXAKuWTGk/dO4+2WgN9l9lPMMqKpfdB4CV5mwHWJrdCRTbuR9lDqyqTvUhQBUo3ZbqBmAtJZ/9l7e/3/sU8szzg4kuCQv3EUBlKYsBliW3PMS6/d0sgVW4jwEqD+nkvUmA5V1i3R2cvbe//2rWFxqSmGFVS79PACrdGTk9OoBl2b0GYj/77QyAVYHqU4CqgXSJ3gTAim5B3ADOfnP4wb4637mqOxNTkliF+wygipthzfauJK+aHRSt1VPgzDekvVIOC+7JAKuaUX0OUNXLAltPASxbfjUa7WNflY5zsn4wazIPrFL6e6m+AKwaTRRFjQEsRWaEDuXsl2VDRgruxoFVuC8BqtA5FLo/gBVacUX9PbZ++IN9JoHlpHAdQKUorbyGArC8yqu38TNf7F84Me92BUVF98J9BVDpzTA/kQEsP7qqb/XM56XTKg9/sM/EDKuaUX0NUKlPME8BAixPwmpv9sxnj3+wTzWwKlB9HVBpzyvf8QEs3worbf/Mp49/sE8psAr3LUClNI2ChwWwgksev8OtT0p79Xp//5XiGlbhvgOo4meLrggAli4/gkSz9XFprw42jKoDlhvspboXWAVJBmOdACxjhjUR7iMfHd7wrAxYhfseoGrC41TbAFipOjtlXI98WB2wCvcDQJVhKs49ZIA1t2S2X9j6oLRbbvwH+4IX3atf/n4IqGxnVNjoAVZYvaP3tvV+BcCqQHUfoIqeDAYDAFgGTVsm5NP3yIYbXDgR4VfCwv0EUC3jX+7vAqzMMuD0e4f1q2DAqmZUPwNUmaWal+ECLC+y6m309LsPH3j2+ithBar7AZXebLAXGcCy59nCEW+9s3/hxCikfADLiRS92dsvgNXCZvHiWAUAVkaJ8de3S2dFDh94bhpY0pLieb8CVBmlVdChAqygcsft7NRbjx94bgxYToobfg2o4jqcfu8AK32PnxvhqTcfP/C8LLCq5d+NvwNUGaVR1KECrKjyh+t8803SXhlz4HlRYIlI8YIHAFU4B+mpUgBgZZIHm+3hDTlLFd2dFC/qAqpM0kbdMAGWOkv8BPTw64cXpi4ELCfFTX8EVH7codW6CgCsukoZf+7h1y4GrKpG9ZI/Ayrj9icTPsBKxsrJA9l8jbTdhAPPE2tYg+9S3fIgsMogRcwMEWCZsWrxQDdfNSewnBS3ngRUiyvOm74UAFi+lFXU7uaJyQeej9SzittOASpF1hHKEQUAVgYpsXnndGC5lhS3nwZUGaSC+SECLPMWzh7A5h0TDjw7Ke54FFDNVpAntCgAsLQ44SmOv7xc2qvHDzwXd54DVJ4kp1mPCgAsj+JqaPqhl0mnNTjwXG1ROHEeUGnwhRgWUwBgLaabmbdO3iobzsnvX30BUJkxjUAnKgCwEk+Oh26Wzl17wCpxm7MZHsDKxmoGigL2FQBY9j1kBCiQjQIAKxurGSgK2FcAYNn3kBGgQDYKAKxsrGagKGBfAYBl30NGgALZKACwsrGagaKAfQX+D71uELW5j8nEAAAAAElFTkSuQmCC&#39;,
-    webgl_WebGLShaderPrecisionFormat: &#123;
-        &#39;35633_36337&#39;: &#123; rangeMin: 127, rangeMax: 127, precision: 23 &#125;,
-        &#39;35633_36336&#39;: &#123; rangeMin: 127, rangeMax: 127, precision: 23 &#125;,
-        &#39;35633_36341&#39;: &#123; rangeMin: 31, rangeMax: 30, precision: 0 &#125;,
-        &#39;35633_36340&#39;: &#123; rangeMin: 31, rangeMax: 30, precision: 0 &#125;,
-        &#39;35633_36339&#39;: &#123; rangeMin: 31, rangeMax: 30, precision: 0 &#125;,
-        &#39;35632_36338&#39;: &#123; rangeMin: 127, rangeMax: 127, precision: 23 &#125;,
-        &#39;35632_36337&#39;: &#123; rangeMin: 127, rangeMax: 127, precision: 23 &#125;,
-        &#39;35632_36336&#39;: &#123; rangeMin: 127, rangeMax: 127, precision: 23 &#125;,
-        &#39;35632_36341&#39;: &#123; rangeMin: 31, rangeMax: 30, precision: 0 &#125;,
-        &#39;35632_36340&#39;: &#123; rangeMin: 31, rangeMax: 30, precision: 0 &#125;,
-        &#39;35632_36339&#39;: &#123; rangeMin: 31, rangeMax: 30, precision: 0 &#125;,
-        &#39;35633_36338&#39;: &#123; precision: 23, rangeMax: 127, rangeMin: 127 &#125;
-    &#125;,
-    webgl_getSupportedExtensions: [
-        &quot;ANGLE_instanced_arrays&quot;,
-        &quot;EXT_blend_minmax&quot;,
-        &quot;EXT_color_buffer_half_float&quot;,
-        &quot;EXT_disjoint_timer_query&quot;,
-        &quot;EXT_float_blend&quot;,
-        &quot;EXT_frag_depth&quot;,
-        &quot;EXT_shader_texture_lod&quot;,
-        &quot;EXT_texture_compression_rgtc&quot;,
-        &quot;EXT_texture_filter_anisotropic&quot;,
-        &quot;EXT_sRGB&quot;,
-        &quot;KHR_parallel_shader_compile&quot;,
-        &quot;OES_element_index_uint&quot;,
-        &quot;OES_fbo_render_mipmap&quot;,
-        &quot;OES_standard_derivatives&quot;,
-        &quot;OES_texture_float&quot;,
-        &quot;OES_texture_float_linear&quot;,
-        &quot;OES_texture_half_float&quot;,
-        &quot;OES_texture_half_float_linear&quot;,
-        &quot;OES_vertex_array_object&quot;,
-        &quot;WEBGL_color_buffer_float&quot;,
-        &quot;WEBGL_compressed_texture_s3tc&quot;,
-        &quot;WEBGL_compressed_texture_s3tc_srgb&quot;,
-        &quot;WEBGL_debug_renderer_info&quot;,
-        &quot;WEBGL_debug_shaders&quot;,
-        &quot;WEBGL_depth_texture&quot;,
-        &quot;WEBGL_draw_buffers&quot;,
-        &quot;WEBGL_lose_context&quot;,
-        &quot;WEBGL_multi_draw&quot;
-    ]
-&#125;
-//全局配置
-yueqian.log = false //配置是否需要把日志输出到文件中,为true表示是
-yueqian.hook_random = false //配置是否要固定随机值和时间戳,为true表示是
-//过滤日志输出
-yueqian.proxy_filters_init = [&#39;document&#39;, &#39;navigator&#39;, &#39;location&#39;, &#39;localStorage&#39;, &#39;sessionStorage&#39;, &#39;eval&#39;, &#39;Math&#39;, &#39;constructor&#39;, &#39;__proto__&#39;, &#39;toString&#39;, &#39;setTimeout&#39;, &#39;setInterval&#39;, &#39;escape&#39;, &#39;Number&#39;, &#39;decodeURIComponent&#39;, &#39;JSON&#39;, &#39;RegExp&#39;, &#39;addEventListener&#39;, &#39;removeItem&#39;, &#39;setItem&#39;, &#39;getElementsByTagName&#39;, &#39;clearInterval&#39;, &#39;getItem&#39;, &#39;toJSON&#39;, &#39;visibility&#39;, yueqian.symbolObjName, yueqian.symbolProxy, yueqian.symbolRawFatherObj, yueqian.symbolRawSelfObj]
-//日志输出到文件
-!function () &#123;
-    if (yueqian.log === true) &#123; //配置是否将日志写到文件
-        let _log = console.log
-        fs.writeFileSync(__dirname + &#39;/proxy_log.txt&#39;, &#39;&#39;)
-        console.log = function () &#123;
-            let log = &#39;&#39;
-            for (let i = 0; i &lt; arguments.length; i++) &#123;
-                log += (arguments[i].toString() + &#39; &#39;)
-            &#125;
-            log += &#39;\n&#39;
-            fs.appendFileSync(__dirname + &#39;/proxy_log.txt&#39;, log)
-            _log(...arguments)
-        &#125;
-    &#125;
-&#125;()
-//hook随机
-!function () &#123;
-    if (yueqian.hook_random === true) &#123;
-        performance = &#123;&#125;
-        Performance = function () &#123; &#125;
-        Object.setPrototypeOf(performance, Performance.prototype)
-        Date.now = function () &#123; return 1666666666666 &#125;;
-        Date.parse = function () &#123; return 1666666666666 &#125;;
-        Date.prototype.valueOf = function () &#123; return 1666666666666 &#125;;
-        Date.prototype.getTime = function () &#123; return 1666666666666 &#125;;
-        Date.prototype.toString = function () &#123; return 1666666666666 &#125;;
-        Performance.prototype.now = function () &#123; return 51523 &#125;
-        Math.random = function () &#123; return 0.5 &#125;;
-    &#125;
-&#125;()
-//异步事件环境
-let async_seq = 0; //记录push的先后次序
-asyncEvents = &#123; //放置异步任务
-    addEventListener: &#123;&#125;,
-    setTI: [], //setTimout和setInterval放在一个列表中
-&#125;
-let init_events_pool = &#123;
-    load: &#123;&#125;, //放置异步事件,主要是addlistener事件,回调函数会默认传一个event,到时候就从这里去
-    other: &#123;&#125;, //把load事情单独拿出来,是因为事件之间携带的信息不同,要有所区分
-&#125;
-let async_exec_pool = [] //异步执行池
-//初始化网页环境
-let meta_ele = &#123;
-    content: &#39;yueqian_content&#39;,
-    parentNode: &#123;
-        removeChild: function () &#123; &#125;
-    &#125;
-&#125;
-//setInterval,setTimeout
-setInterval = function (func, time, ...params) &#123;
-    let seq = async_seq++
-    let event = &#123;
-        out_type: &#39;setInterval&#39;,
-        func: func,
-        time: time,
-        seq: seq,
-        params: params
-    &#125;
-    let type = Object.prototype.toString.call(params)
-    console.log(`setInterval $&#123;func.name&#125;|$&#123;time&#125; args_type:$&#123;type&#125; 正在注册`)
-    asyncEvents.setTI.push(event)
-    return seq
-&#125;
-setTimeout = function (func, time, ...params) &#123;
-    let seq = async_seq++
-    let event = &#123;
-        out_type: &#39;setTimeout&#39;,
-        func: func,
-        time: time,
-        seq: seq,
-        params: params
-    &#125;
-    let type = Object.prototype.toString.call(params)
-    console.log(`setTimeout $&#123;func.name&#125;|$&#123;time&#125; args_type:$&#123;type&#125; 正在注册`)
-    asyncEvents.setTI.push(event)
-    return seq
-&#125;
-//addEventListener
-addEventListener = function (event, func) &#123;
-    if (event !== &#39;unload&#39;) &#123;
-        console.log(`$&#123;this&#125; &gt; addEventListener &gt;$&#123;event&#125; &gt;$&#123;func.name&#125; 正在注册`)
-        let time = 20000 //除load外所有事件默认执行时机设置成20s
-        if (event === &#39;load&#39;) &#123;
-            time = 0
-        &#125;
-        let eventObj = &#123;
-            out_type: &#39;addEventListener&#39;,
-            type: event,
-            func: func,
-            self: this,
-            seq: async_seq++,
-            time: time //用于pool统一排序,time大于20s的预先丢弃
-        &#125;
-        if (!asyncEvents.addEventListener[event]) &#123;
-            asyncEvents.addEventListener[event] = [] //如果事先没有这个事件的键那么就注册一个空列表
-        &#125;
-        asyncEvents.addEventListener[event].push(eventObj)
-    &#125;
-&#125;
-//浏览器环境
-//screen
-screen = &#123;
-&#125;
-Screen = function () &#123; &#125;
-Object.assign(Screen.prototype, &#123;
-    &quot;availWidth&quot;: 1440,
-    &quot;availHeight&quot;: 900,
-    &quot;width&quot;: 1440,
-    &quot;height&quot;: 900,
-    &quot;colorDepth&quot;: 30,
-    &quot;pixelDepth&quot;: 30,
-    &quot;availLeft&quot;: 0,
-    &quot;availTop&quot;: 0,
-    [Symbol.toStringTag]: &#39;[object Screen]&#39;,
-&#125;)
-Object.setPrototypeOf(screen, Screen.prototype)
-//document
-document = &#123;
-&#125;
-HTMLDocument = function () &#123; &#125;
-Object.assign(HTMLDocument.prototype, &#123;
-    &quot;URL&quot;: &quot;http://www.fangdi.com.cn/index.html&quot;,
-    &quot;documentURI&quot;: &quot;http://www.fangdi.com.cn/index.html&quot;,
-    &quot;compatMode&quot;: &quot;CSS1Compat&quot;,
-    &quot;characterSet&quot;: &quot;UTF-8&quot;,
-    &quot;charset&quot;: &quot;UTF-8&quot;,
-    &quot;inputEncoding&quot;: &quot;UTF-8&quot;,
-    &quot;contentType&quot;: &quot;text/html&quot;,
-    &quot;xmlStandalone&quot;: false,
-    &quot;domain&quot;: &quot;www.fangdi.com.cn&quot;,
-    &quot;referrer&quot;: &quot;http://www.fangdi.com.cn/index.html&quot;,
-    &quot;cookie&quot;: &quot;www.fangdi.com_http_ic=www.fangdi.com.cn_80_RS; www.fangdi.com.cn=www.fangdi.com.cn_rs4; FSSBBIl1UgzbN7N80T=4L6xRQ9Y61iDzp38BrjpUd0HsME20q_xXr.PMYnlCZV517lcYa5Mpvt68B1FxCcFjpIFlpZ7MzRXYVpdq35hDjTxtzNKmGYu9xHcVLCOez0YadFglvIh8kEuxx6rn2tF1auZ_YPI7OtSgkratoNmCv3cC3LZbnCmgfeQG33e4bnZeniv5gtyBsKwDhndPJqH4d.tEe6qaUngw5ItU.iYgCAE7Xzv_ZD_06oty7RP8nvEDW1RXiJNrMlSABgXRSpoeAvvqKg47u7WU8eA8fId.rjKpyRuZxsEttEZGRxURe.pbHKT.53ueaeZMhJePIU63Kba&quot;,
-    &quot;lastModified&quot;: &quot;09/11/2023 23:54:54&quot;,
-    &quot;readyState&quot;: &quot;complete&quot;,
-    &quot;title&quot;: &quot;网上房地产&quot;,
-    &quot;dir&quot;: &quot;&quot;,
-    &quot;designMode&quot;: &quot;off&quot;,
-    &quot;fgColor&quot;: &quot;&quot;,
-    &quot;linkColor&quot;: &quot;&quot;,
-    &quot;vlinkColor&quot;: &quot;&quot;,
-    &quot;alinkColor&quot;: &quot;&quot;,
-    &quot;bgColor&quot;: &quot;&quot;,
-    &quot;hidden&quot;: true,
-    &quot;visibilityState&quot;: &quot;hidden&quot;,
-    &quot;wasDiscarded&quot;: false,
-    &quot;prerendering&quot;: false,
-    &quot;webkitVisibilityState&quot;: &quot;hidden&quot;,
-    &quot;webkitHidden&quot;: true,
-    &quot;fullscreenEnabled&quot;: true,
-    &quot;fullscreen&quot;: false,
-    &quot;webkitIsFullScreen&quot;: false,
-    &quot;webkitFullscreenEnabled&quot;: true,
-    &quot;pictureInPictureEnabled&quot;: true,
-    &quot;childElementCount&quot;: 1,
-    &quot;adoptedStyleSheets&quot;: [],
-    cookie: &#39;&#39;,
-    [Symbol.toStringTag]: &#39;[object HTMLDocument]&#39;,
-    createElement: function (labelName) &#123;
-        let result = &#123;&#125;
-        let objName = `doc_cre_$&#123;labelName&#125;$&#123;yueqian.create_ele_seq++&#125;`
-        if (labelName === &#39;div&#39;) &#123;
-            result = &#123;
-                getElementsByTagName: () =&gt; &#123; return [] &#125;,
-                style: &#123;&#125;,
-                innerHTML: &#39;&#39;,
-                children: [] //innerHTML创造的元素要放到children中
-            &#125;
-        &#125; else if (labelName === &#39;canvas&#39;) &#123;
-            result = &#123;
-                getContext: function (arg) &#123;
-                    if (arg === &#39;2d&#39;) &#123;
-                        return &#123;
-                            fillRect: function () &#123; &#125;,
-                            fillText: function () &#123; &#125;,
-                        &#125;
-                    &#125; else if (arg === &#39;webgl&#39;) &#123;
-                        return &#123;
-                            createBuffer: () =&gt; &#123;
-                                return &#123;
-                                    itemSize: 3,
-                                    numItems: 3
-                                &#125;
-                            &#125;,
-                            bindBuffer: () =&gt; &#123; return &#123;&#125; &#125;,
-                            ARRAY_BUFFER: 34962,
-                            bufferData: () =&gt; &#123; return &#123;&#125; &#125;,
-                            STATIC_DRAW: 35044,
-                            createProgram: () =&gt; &#123;
-                                return &#123;
-                                    vertexPosAttrib: 0,
-                                    offsetUniform: &#123;&#125;,
-                                &#125;
-                            &#125;,
-                            createShader: () =&gt; &#123; return &#123;&#125; &#125;,
-                            VERTEX_SHADER: 35633,
-                            shaderSource: () =&gt; &#123; return &#123;&#125; &#125;,
-                            compileShader: () =&gt; &#123; return &#123;&#125; &#125;,
-                            FRAGMENT_SHADER: 35632,
-                            attachShader: () =&gt; &#123; return &#123;&#125; &#125;,
-                            linkProgram: () =&gt; &#123; return &#123;&#125; &#125;,
-                            useProgram: () =&gt; &#123; return &#123;&#125; &#125;,
-                            getAttribLocation: () =&gt; &#123; return &#123;&#125; &#125;,
-                            getUniformLocation: () =&gt; &#123; return &#123;&#125; &#125;,
-                            enableVertexAttribArray: () =&gt; &#123; return &#123;&#125; &#125;,
-                            FLOAT: 5126,
-                            vertexAttribPointer: () =&gt; &#123; return &#123;&#125; &#125;,
-                            uniform2f: () =&gt; &#123; return &#123;&#125; &#125;,
-                            drawArrays: () =&gt; &#123; return &#123;&#125; &#125;,
-                            TRIANGLE_STRIP: 5,
-                            canvas: &#123;&#125;,
-                            getSupportedExtensions: () =&gt; &#123;
-                                return yueqian.webgl_getSupportedExtensions
-                            &#125;,
-                            getExtension: () =&gt; &#123; return &#123;&#125; &#125;,
-                            getShaderPrecisionFormat: () =&gt; &#123; return &#123;&#125; &#125;,
-                            HIGH_FLOAT: 36338,
-                            MEDIUM_FLOAT: 36337,
-                            LOW_FLOAT: 36336,
-                            HIGH_INT: 36341,
-                            MEDIUM_INT: 36340,
-                            LOW_INT: 36339,
-
-                        &#125;
-                    &#125;
-                &#125;,
-                toDataURL: function () &#123; &#125; //注意这个方式是canvas对象的方法,而不是getContext对象的
-            &#125;
-        &#125;
-        // console.log(`document createElement [$&#123;objName&#125;] [$&#123;result&#125;]`)
-        Object.defineProperty(result, yueqian.symbolObjName, &#123; value: objName &#125;)
-        result = yueqian.proxy(result, objName)
-        yueqian.eles.push(result)
-        return result
-    &#125;,
-    getElementsByTagName: function (labelName) &#123;
-        let result = []
-        if (labelName === &#39;meta&#39;) &#123;
-            result = [meta_ele]
-        &#125; else if (labelName === &#39;script&#39;) &#123;
-            result = [
-                &#123;
-                    parentNode: &#123;
-                        removeChild: function () &#123; &#125;
-                    &#125;,
-                    getAttribute: function () &#123; &#125;
-                &#125;
-            ]
-        &#125;
-        // console.log(`document getElementsByTagName [$&#123;labelName&#125;] [$&#123;result&#125;]`)
-        return result
-    &#125;,
-    addEventListener: addEventListener,
-    exitFullscreen: function () &#123; &#125;,
-    documentElement: &#123;
-        style: &#123;&#125;,
-        getAttribute: function () &#123; &#125;,
-        &#39;onresize&#39;: &#123;&#125;
-    &#125;,
-    write: function (str) &#123;
-        // console.log(`document.write正在执行 parms:[$&#123;str&#125;]`)
-        let html2obj = parse(str);
-        let label = html2obj[0][&#39;name&#39;]
-        let objName = `doc_write_$&#123;label&#125;`
-        let type = html2obj[0][&#39;attribs&#39;][&#39;type&#39;]
-        let id = html2obj[0][&#39;attribs&#39;][&#39;id&#39;]
-        let name = html2obj[0][&#39;attribs&#39;][&#39;name&#39;]
-        let value = html2obj[0][&#39;attribs&#39;][&#39;value&#39;]
-        let result = &#123;
-            label: label,
-            type: type,
-            id: id,
-            name: name,
-            value: value,
-        &#125;
-        Object.defineProperty(result, yueqian.symbolObjName, &#123; value: objName &#125;)
-        result = yueqian.proxy(result, objName)
-        yueqian.eles.push(result)
-    &#125;,
-    getElementById: function () &#123;
-        let result = null
-        // console.log(`document.getElementById [$&#123;id&#125;] return [$&#123;result&#125;]`)
-        return result
-    &#125;,
-    body: &#123;
-        tagName: &#39;BODY&#39;,
-        getAttribute: function (str) &#123;
-            let result = null
-            // console.log(`document.body.getAttribute($&#123;str&#125;) return [$&#123;result&#125;]`)
-            return result
-        &#125;,
-        firstChild: &#123;
-            nodeType: 3,
-            firstChild: null,
-            nextSibling: &#123;&#125;, //这里借助Proxy.get 进行动态返回,以objName和nextSibling名为凭证
-        &#125;,
-        appendChild: function () &#123; &#125;,
-        removeChild: function () &#123; &#125;,
-        &#39;onmouseenter&#39;: &#123;&#125;,
-        &#39;style&#39;: &#123;
-            &#39;backgroundBlendMode&#39;: &#123;&#125;,
-            &#39;lineBreak&#39;: &#123;&#125;,
-            &#39;minWidth&#39;: &#123;&#125;,
-            &#39;textAlignLast&#39;: &#123;&#125;
-        &#125;
-    &#125;,
-    &#39;onmousemove&#39;: &#123;&#125;,
-    &#39;onselectionchange&#39;: &#123;&#125;,
-    &#39;scrollingElement&#39;: &#123; &#39;style&#39;: &#123; &#39;fontVariantNumeric&#39;: &#123;&#125; &#125; &#125;
-&#125;)
-Object.setPrototypeOf(document, HTMLDocument.prototype)
-//navigator
-navigator = &#123;
-&#125;
-Navigator = function () &#123; &#125;
-Object.assign(Navigator.prototype, &#123;
-    &quot;vendorSub&quot;: &quot;&quot;,
-    &quot;productSub&quot;: &quot;20030107&quot;,
-    &quot;vendor&quot;: &quot;Google Inc.&quot;,
-    &quot;maxTouchPoints&quot;: 0,
-    &quot;pdfViewerEnabled&quot;: true,
-    &quot;hardwareConcurrency&quot;: 8,
-    &quot;cookieEnabled&quot;: true,
-    &quot;appCodeName&quot;: &quot;Mozilla&quot;,
-    &quot;appName&quot;: &quot;Netscape&quot;,
-    &quot;appVersion&quot;: &quot;5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36&quot;,
-    &quot;platform&quot;: &quot;MacIntel&quot;,
-    &quot;product&quot;: &quot;Gecko&quot;,
-    &quot;userAgent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36&quot;,
-    &quot;language&quot;: &quot;zh-CN&quot;,
-    &quot;languages&quot;: [
-        &quot;zh-CN&quot;
-    ],
-    &quot;onLine&quot;: true,
-    &quot;webdriver&quot;: false,
-    [Symbol.toStringTag]: &#39;[object Navigator]&#39;,
-    webkitPersistentStorage: function () &#123; &#125;,
-    mimeTypes: &#123;
-        length: 2,
-        0: &#123; type: &#39;application/pdf&#39; &#125;,
-        1: &#123; type: &#39;text/pdf&#39; &#125;,
-    &#125;,
-    connection: &#123;&#125;,
-    plugins: &#123;
-        0: &#123; name: &#39;PDF Viewer&#39; &#125;,
-        1: &#123; name: &#39;Chrome PDF Viewer&#39; &#125;,
-        2: &#123; name: &#39;Chromium PDF Viewer&#39; &#125;,
-        3: &#123; name: &#39;Microsoft Edge PDF Viewer&#39; &#125;,
-        4: &#123; name: &#39;WebKit built-in PDF&#39; &#125;,
-        length: 5
-    &#125;,
-&#125;)
-Object.setPrototypeOf(navigator, Navigator.prototype)
-//location
-location = &#123;
-    &quot;href&quot;: &quot;http://www.fangdi.com.cn/index.html&quot;,
-    &quot;origin&quot;: &quot;http://www.fangdi.com.cn&quot;,
-    &quot;protocol&quot;: &quot;http:&quot;,
-    &quot;host&quot;: &quot;www.fangdi.com.cn&quot;,
-    &quot;hostname&quot;: &quot;www.fangdi.com.cn&quot;,
-    &quot;port&quot;: &quot;&quot;,
-    &quot;pathname&quot;: &quot;/index.html&quot;,
-    &quot;search&quot;: &quot;&quot;,
-    &quot;hash&quot;: &quot;&quot;,
-    replace: () =&gt; &#123; &#125;,
-&#125;;
-Location = function () &#123; &#125;
-Object.assign(Location.prototype, &#123;
-    [Symbol.toStringTag]: &#39;[object Location]&#39;
-&#125;)
-Object.setPrototypeOf(location, Location.prototype)
-//localStorage
-localStorage = &#123;
-&#125;
-Storage = function () &#123; &#125;
-Object.assign(Storage.prototype, &#123;
-    setItem: function (name, value) &#123;
-        // console.log(&#39;window &gt; localStorage &gt; setItem &gt; &#39;, name, value)
-        this[name] = value
-    &#125;,
-    getItem: function (name) &#123;
-        // console.log(&#39;window &gt; localStorage &gt; getItem &gt; &#39;, name)
-        return this[name]
-    &#125;,
-    removeItem: function (name) &#123;
-        // console.log(&#39;window &gt; localStorage &gt; removeItem &gt; &#39;, name)
-        delete this[name]
-    &#125;,
-    [Symbol.toStringTag]: &#39;[object Storage]&#39;
-&#125;)
-Object.setPrototypeOf(localStorage, Storage.prototype)
-//sessionStorage
-sessionStorage = &#123;
-&#125;
-Object.setPrototypeOf(sessionStorage, Storage.prototype)
-//window
-//xhr环境
-XMLHttpRequest = function () &#123; &#125;
-XMLHttpRequest.prototype.open = function (method, url) &#123;
-    console.log(`window.XMLHttpRequest.open正在调用,url是$&#123;url&#125;`)
-    return url
-&#125;
-window = globalThis
-Object.assign(window, &#123;
-    name: &#39;&#39;,
-&#125;)
-Window = function () &#123; &#125;
-Object.assign(Window.prototype, &#123;
-    [Symbol.toStringTag]: &#39;[object Window]&#39;,
-    DOMParser: function () &#123; &#125;,
-    fetch: function () &#123; &#125;,
-    indexedDB: &#123;
-        open: function () &#123; &#125;
-    &#125;,
-    chrome: &#123; &#39;app&#39;: &#123; &#39;InstallState&#39;: &#123;&#125; &#125;, &#39;csi&#39;: &#123;&#125; &#125;,
-    TEMPORARY: 0,
-    clientInformation: navigator,
-    //浏览器api 布尔检测
-    &#39;CDATASection&#39;: &#123; &#39;prototype&#39;: &#123; &#39;remove&#39;: &#123;&#125; &#125; &#125;,
-    &#39;HTMLFrameSetElement&#39;: &#123; &#39;prototype&#39;: &#123; &#39;hasPointerCapture&#39;: &#123;&#125;, &#39;webkitRequestFullScreen&#39;: &#123;&#125; &#125; &#125;,
-    &#39;MediaEncryptedEvent&#39;: &#123;&#125;,
-    &#39;Notification&#39;: &#123;&#125;,
-    &#39;OffscreenCanvasRenderingContext2D&#39;: &#123;&#125;,
-    &#39;Path2D&#39;: &#123; &#39;prototype&#39;: &#123; &#39;addPath&#39;: &#123;&#125; &#125; &#125;,
-    &#39;PerformancePaintTiming&#39;: &#123;&#125;,
-    &#39;ScreenOrientation&#39;: &#123;&#125;,
-    &#39;SourceBuffer&#39;: &#123; &#39;prototype&#39;: &#123; &#39;changeType&#39;: &#123;&#125; &#125; &#125;,
-    &#39;SpeechSynthesisUtterance&#39;: &#123;&#125;,
-    &#39;TextTrackList&#39;: &#123; &#39;prototype&#39;: &#123; &#39;getTrackById&#39;: &#123;&#125; &#125; &#125;,
-    &#39;external&#39;: &#123; &#39;IsSearchProviderInstalled&#39;: &#123;&#125; &#125;,
-    &#39;onerror&#39;: &#123;&#125;,
-    &#39;onmessage&#39;: &#123;&#125;,
-    &#39;openDatabase&#39;: &#123;&#125;,
-    &#39;webkitRequestFileSystem&#39;: &#123;&#125;,
-    Audio: &#123;&#125;,
-&#125;)
-Object.setPrototypeOf(window, Window.prototype)
-
-//代理部分
-yueqian.proxy = function (obj, objName) &#123;
-    // 代理前需要注意,一些configuable为false的对象不可被代理,需要滤过
-    let propertyDes = obj[yueqian.symbolRawFatherObj] &amp;&amp; Object.getOwnPropertyDescriptor(obj[yueqian.symbolRawFatherObj], obj[yueqian.symbolRawName])
-    let configurable = propertyDes &amp;&amp; propertyDes[&#39;configurable&#39;]
-    if (configurable === false) &#123;
-        return obj
-    &#125;
-    //对于有proxy symbol标记的,返回这个标记中存储的值 1)确保每个对象只被代理一次,2)过window.Top===window类似检测,由于window.Top还是返回window,这句话可以保证不重复代理,直接嫁接到window本身
-    if (Object.hasOwnProperty.call(obj, yueqian.symbolProxy)) &#123;
-        return obj[yueqian.symbolProxy]
-    &#125;
-    let handler = &#123;
-        get: function (target, prop, receiver) &#123;// 三个参数
-            // if(prop===&#39;innerText&#39;)&#123;debugger&#125;
-            let result;
-            //动态修改返回结果
-            if (objName === &#39;document.body.firstChild&#39; &amp;&amp; prop === &#39;nextSibling&#39;) &#123;
-                result = yueqian.eles.find((ele) =&gt; &#123; return ele.id === &#39;__onload__&#39; &#125;)
-                result[&#39;nodeType&#39;] = 1
-                result[&#39;tagName&#39;] = &#39;INPUT&#39;
-                result[&#39;nextSibling&#39;] = &#123;
-                    nodeType: 3,
-                    nextSibling: &#123;
-                        nodeType: 1,
-                        firstChild: &#123;&#125;,
-                        tagName: &#39;SCRIPT&#39;,
-                        getAttribute: function (str) &#123; if (str === &#39;r&#39;) &#123; return &#39;m&#39; &#125; else &#123; return null &#125; &#125;,
-                        parentElement: &#123;
-                            removeChild: function () &#123; &#39;doc_write_input.nextSibling.nextSibling.parentElement.removeChild 正在执行&#39; &#125;
-                        &#125;
-                    &#125;
-                &#125;
-                result[&#39;getAttribute&#39;] = function (str) &#123;
-                    console.log(`doc_write_input.getAttribute($&#123;str&#125;) return null`)
-                    return null
-                &#125;
-                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[&#39;doc_write_input&#39;]&#125;`);
-                return result
-            &#125; else if (objName === &#39;doc_cre_div1.children.0&#39; &amp;&amp; prop === &#39;offsetHeight&#39; &amp;&amp; yueqian.font_pool.indexOf(target.style.fontFamily) !== -1) &#123;
-                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[99]&#125;`);
-                return 99
-            &#125; else if (objName === &#39;doc_cre_div1.children.0&#39; &amp;&amp; prop === &#39;offsetWidth&#39; &amp;&amp; yueqian.font_pool.indexOf(target.style.fontFamily) !== -1) &#123;
-                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[999]&#125;`);
-                return 999
-            &#125; else if (objName === &#39;doc_cre_div1.children.0&#39; &amp;&amp; prop === &#39;offsetWidth&#39;) &#123;
-                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[1134]&#125;`);
-                return 1134
-            &#125; else if (objName === &#39;doc_cre_div1.children.0&#39; &amp;&amp; prop === &#39;offsetHeight&#39;) &#123;
-                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[131]&#125;`);
-                return 131
-            &#125; else if (objName === &#39;doc_cre_canvas3.getContext_obj6&#39; &amp;&amp; prop === &#39;canvas&#39;) &#123;
-                let result = yueqian.eles.find((ele) =&gt; &#123; return ele[yueqian.symbolObjName] === &#39;doc_cre_canvas3&#39; &#125;)
-                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[$&#123;result&#125;&#125;`);
-                return result
-            &#125;
-            result = Reflect.get(target, prop, receiver); //通过反射拿到结果
-            //过滤输出一些属性
-            if ((yueqian.proxy_filters_init.indexOf(prop) !== -1) || typeof prop === &#39;symbol&#39; || (yueqian.proxy_filters_custom.indexOf(prop) !== -1)) &#123;
-                return result;
-            &#125;
-            let type = Object.prototype.toString.call(result);
-            if (result instanceof Object) &#123;
-                //将原生父对象(相对于result)的地址存到result的symbol属性中,方便在apply行为中更改this指向
-                Object.defineProperty(result, yueqian.symbolRawFatherObj, &#123;
-                    value: target
-                &#125;)
-                //将原生对象地址存到result的symbol属性中,方便在construct行为中更改this指向
-                Object.defineProperty(result, yueqian.symbolRawSelfObj, &#123;
-                    value: result
-                &#125;)
-                //将对象名字存到result的symbol属性中,在过滤不可配置属性时(Object.hasOwnProperty)作为prop字符串
-                Object.defineProperty(result, yueqian.symbolRawName, &#123;
-                    value: prop
-                &#125;)
-                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],type:[$&#123;type&#125;]&#125;`);
-                // 递归代理
-                result = yueqian.proxy(result, `$&#123;objName&#125;.$&#123;prop.toString()&#125;`);
-            &#125; else if (typeof result === &quot;symbol&quot;) &#123;
-                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[$&#123;result.toString()&#125;]&#125;`);
-            &#125; else &#123;
-                console.log(`&#123;get|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],ret:[$&#123;result&#125;]&#125;`);
-            &#125;
-            return result;
-        &#125;,
-        set: function (target, prop, value, receiver) &#123;
-            //定向拦截,do something
-            if (value === &#39;&lt;span style=&quot;font-family:mmllii;font-size:114px&quot;&gt;mmmmmmmmmmmlliii&lt;/span&gt;&#39;) &#123;
-                let html2obj = parse(value)
-                let label = html2obj[0][&#39;name&#39;]
-                let style = &#123;&#125; //style和其他的属性有些不同看上去是个字符串,但其实是个对象
-                let innerText = html2obj[0][&#39;children&#39;][0][&#39;data&#39;]
-                let span = &#123;
-                    label: label,
-                    style: style,
-                    innerText: innerText,
-                &#125;
-                target[&#39;children&#39;].push(span)
-                console.log(`&#123;set|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],value:[$&#123;value&#125;]&#125;`)
-                return span
-            &#125; else if (objName.indexOf(&#39;doc_cre_a&#39;) !== -1 &amp;&amp; prop === &#39;href&#39;) &#123;
-                Object.assign(target, location)
-                if (value.indexOf(&#39;http&#39;) === -1) &#123;
-                    target.href = location.origin + value.replace(&#39;./&#39;, &#39;/&#39;)
-                    target.pathname = value.replace(&#39;./&#39;, &#39;/&#39;)
-                &#125; else &#123;
-                    target.href = value
-                    target.pathname = value.replace(location.origin, &#39;&#39;)
-                &#125;
-                console.log(`&#123;set|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],value:[$&#123;value&#125;]&#125;`)
-                return value
-            &#125;
-            let result;
-            result = Reflect.set(target, prop, value, receiver);
-            //过滤输出一些属性
-            if ((yueqian.proxy_filters_init.indexOf(prop) !== -1) || typeof prop === &#39;symbol&#39; || (yueqian.proxy_filters_custom.indexOf(prop) !== -1)) &#123;
-                return result;
-            &#125;
-            let type = Object.prototype.toString.call(value);
-            if (value instanceof Object) &#123;
-                console.log(`&#123;set|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],value_type:[$&#123;type&#125;]&#125;`);
-            &#125; else if (typeof value === &quot;symbol&quot;) &#123;
-                console.log(`&#123;set|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],value:[$&#123;value.toString()&#125;]&#125;`);
-            &#125; else &#123;
-                let value_length = value &amp;&amp; value.length
-                console.log(`&#123;set|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;prop.toString()&#125;],value:[$&#123;value&#125;]&#125; length:$&#123;value_length&#125;`)
-                // if (prop === &#39;cookie&#39; &amp;&amp; value.indexOf(&#39;FSSBBIl1UgzbN7N80T&#39;) !== -1) &#123; debugger &#125;
-                // if (prop === &#39;$_fb&#39;) &#123; debugger &#125;
-            &#125;
-            return result;
-        &#125;,
-        deleteProperty: function (target, propKey) &#123;
-            let result = Reflect.deleteProperty(target, propKey);
-            //过滤输出一些属性
-            if ((yueqian.proxy_filters_init.indexOf(propKey) !== -1) || typeof propKey === &#39;symbol&#39;) &#123;
-                return result;
-            &#125;
-            console.log(`&#123;deleteProperty|obj:[$&#123;objName&#125;] -&gt; prop:[$&#123;propKey.toString()&#125;], result:[$&#123;result&#125;]&#125;`);
-            return result;
-        &#125;,
-        apply: function (target, thisArg, argumentsList) &#123;
-            // target: 函数对象
-            // thisArg: 调用函数的this指针
-            // argumentsList: 数组， 函数的入参组成的一个列表
-            let arg = Object.prototype.toString.call(argumentsList[0]);
-            if (typeof argumentsList[0] === &#39;string&#39;) &#123;
-                arg = argumentsList[0].slice(0, 30)
-            &#125;
-            let result;
-            //动态拦截并修改函数返回值
-            if (objName === &#39;doc_cre_canvas2.toDataURL&#39;) &#123;
-                result = yueqian.canvas_2d_toDateUrl
-            &#125; else if (objName === &#39;doc_cre_canvas3.toDataURL&#39;) &#123;
-                result = yueqian.canvas_webgl_toDateUrl
-            &#125; else if (objName === &#39;document.getElementById&#39; &amp;&amp; argumentsList[0] === &#39;__onload__&#39;) &#123;
-                result = yueqian.eles.find((ele) =&gt; &#123; return ele[yueqian.symbolObjName] === &#39;doc_write_input&#39; &#125;)
-            &#125; else if (objName === &#39;doc_cre_canvas3.getContext_obj6.getShaderPrecisionFormat&#39; &amp;&amp; yueqian.webgl_WebGLShaderPrecisionFormat[`$&#123;argumentsList[0]&#125;_$&#123;argumentsList[1]&#125;`]) &#123;
-                result = yueqian.webgl_WebGLShaderPrecisionFormat[`$&#123;argumentsList[0]&#125;_$&#123;argumentsList[1]&#125;`]
-            &#125; else &#123;
-                thisArg = target[yueqian.symbolRawFatherObj] //更改apply的this指向为原生对象(内置对象的this指向必须为原生对象,不可以是代理对象)
-                result = Reflect.apply(target, thisArg, argumentsList);
-            &#125;
-            let type = Object.prototype.toString.call(result);
-            if (result instanceof Object) &#123;
-                let result_objName = `$&#123;objName&#125;_obj$&#123;yueqian.func_ret_seq++&#125;`
-                result = yueqian.proxy(result, result_objName) //让function返回的对象也自动套上代理
-                console.log(`&#123;apply|function:[$&#123;objName&#125;], arg:$&#123;arg&#125;, type:[$&#123;type&#125;]&#125;`);
-            &#125; else if (typeof result === &quot;symbol&quot;) &#123;
-                console.log(`&#123;apply|function:[$&#123;objName&#125;], arg:$&#123;arg&#125;, result:[$&#123;result.toString()&#125;]&#125;`);
-            &#125; else if (typeof result === &quot;string&quot;) &#123;
-                console.log(`&#123;apply|function:[$&#123;objName&#125;], arg:$&#123;arg&#125;, result:[$&#123;result.slice(0, 50)&#125;]&#125;`);
-            &#125; else &#123;
-                console.log(`&#123;apply|function:[$&#123;objName&#125;], arg:$&#123;arg&#125;, result:[$&#123;result&#125;]&#125;`);
-            &#125;
-            return result;
-        &#125;,
-        construct: function (target, argArray, newTarget) &#123;
-            // target: 函数对象
-            // argArray： 参数列表
-            // newTarget：代理对象
-            let result;
-            newTarget = target[yueqian.symbolRawSelfObj] //更改this指向为原生对象(内置对象的this指向必须为原生对象,不可以是代理对象)
-            result = Reflect.construct(target, argArray, newTarget);
-            let type = Object.prototype.toString.call(result);
-            result = yueqian.proxy(result, objName)
-            console.log(`&#123;construct|function:[$&#123;objName&#125;], type:[$&#123;type&#125;]&#125;`);
-            return result;
-        &#125;,
-
-    &#125;;
-    let proxyObj = new Proxy(obj, handler);
-    //防止重复代理，导致代理被用嵌套对比的方式检测出来
-    Object.defineProperty(obj, yueqian.symbolProxy, &#123;
-        configurable: true,
-        enumerable: false,
-        writable: false,
-        value: proxyObj
-    &#125;)
-    return proxyObj
-&#125;
-window.self = window.top = window = yueqian.proxy(window, &#39;window&#39;)
-//以下也需要代理,因为如果代码中不加window,默认是从globalThis中获取的,而globalThis并不是一个代理对象,代理日志是无法捕捉到的
-document = yueqian.proxy(document, &#39;document&#39;)
-navigator = yueqian.proxy(navigator, &#39;navigator&#39;)
-location = yueqian.proxy(location, &#39;location&#39;)
-localStorage = yueqian.proxy(localStorage, &#39;localStorage&#39;);
-sessionStorage = yueqian.proxy(sessionStorage, &#39;sessionStorage&#39;)
-
-//异步环境
-//异步池排列逻辑,每执行完一个异步事件对异步池重新排列(因为异步任务有可能还会注册异步任务)
-function async_pool_get() &#123;
-    //每次执行前,排列异步池事件,逻辑:setTimeout/setInterval time 0权重最大,先于load执行,每执行完一个从池中删除
-    let setTIEventPool = asyncEvents.setTI;
-    async_exec_pool = async_exec_pool.concat(setTIEventPool)
-    //清空池
-    asyncEvents.setTI = []
-
-    delete asyncEvents.addEventListener[&#39;unload&#39;] //删除unload事件
-
-    let otherListeners = asyncEvents.addEventListener
-    for (const listenersKey in otherListeners) &#123;
-        let other_listenPool = otherListeners[listenersKey]
-        async_exec_pool = async_exec_pool.concat(other_listenPool)
-        asyncEvents.addEventListener[listenersKey] = []
-    &#125;
-    let new_async_exec_pool = []
-    //pool中time大于1000的全部丢弃,丢弃阈值由浏览器端调试结论决定,这里笔者调试结论为1s
-    for (let i = 0; i &lt; async_exec_pool.length; i++) &#123;
-        let event = async_exec_pool[i]
-        let time = event.time
-        if (time &lt;= 1000) &#123;
-            new_async_exec_pool.push(event)
-        &#125;
-    &#125;
-    //对pool进行排序 load在监听事件中理应是先的,但不排除非先清空,到时候具体问题具体分析,这里先手动给load time设置为1
-    new_async_exec_pool.sort((a, b) =&gt; &#123;
-        if (a[&#39;time&#39;] &lt; b[&#39;time&#39;]) &#123;
-            return -1
-        &#125; else if (a[&#39;time&#39;] &gt; b[&#39;time&#39;]) &#123;
-            return 1
-        &#125;
-        if (a[&#39;seq&#39;] &lt; b[&#39;seq&#39;]) &#123;
-            return -1
-        &#125; else if (a[&#39;seq&#39;] &gt; b[&#39;seq&#39;]) &#123;
-            return 1
-        &#125;
-        return 0
-    &#125;)
-
-    return new_async_exec_pool
-&#125;
-function async_pool_exec(async_exec_pool) &#123;
-    if (async_exec_pool.length === 0) &#123;
-        return //池空则不执行
-    &#125;
-    //遍历执行pool,用shift取
-    let pool_event = async_exec_pool.shift()
-    let pool_event_out_type = pool_event[&#39;out_type&#39;]
-    if (pool_event_out_type === &#39;addEventListener&#39;) &#123;
-        let inner_type = pool_event[&#39;type&#39;]
-        let self = pool_event[&#39;self&#39;]
-        let func = pool_event[&#39;func&#39;]
-        if (inner_type === &#39;load&#39;) &#123;
-            console.log(`$&#123;this&#125; $&#123;pool_event_out_type&#125; $&#123;inner_type&#125; 事件正在执行 &gt; $&#123;func.name&#125;`)
-            let loadEvent = init_events_pool.load
-            func.call(self, loadEvent)
-        &#125; else &#123;
-            //除load事件外,其余事件均以观察为主,如果调式发现确实用到,则取消注释
-            /*             let loadEvent=init_events_pool.other
-                        func.call(self, loadEvent)
-                        console.log(`$&#123;pool_event_out_type&#125; $&#123;inner_type&#125; 正在执行 &gt; $&#123;func.name&#125;`) */
-        &#125;
-    &#125; else if ([&#39;setInterval&#39;, &#39;setTimeout&#39;].indexOf(pool_event_out_type) !== -1) &#123;
-        let func = pool_event[&#39;func&#39;]
-        let params = pool_event[&#39;params&#39;]
-        let time = pool_event[&#39;time&#39;]
-        console.log(`$&#123;pool_event_out_type&#125;|$&#123;time&#125; 事件正在执行 &gt; $&#123;func.name&#125;`)
-        func.call(window, ...params)
-    &#125; else &#123;
-        console.log(`$&#123;pool_event_out_type&#125; 未实现`)
-    &#125;
-    return async_exec_pool
-&#125;
-
-//调用入口
-function main(path) &#123;
-    //外链js
-    &#39;yueqian_outjs&#39;
-    //自执行函数
-    &#39;yueqian_script0&#39;
-    &#39;yueqian_script1&#39;
-    &#39;yueqian_script2&#39;
-    //异步执行
-    while (async_exec_pool) &#123;
-        async_exec_pool = async_pool_get()
-        async_exec_pool = async_pool_exec(async_exec_pool)
-    &#125;
-    //触发xhr.open()获取签名
-    let yq_xml = new XMLHttpRequest
-    let url = yq_xml.open(&#39;POST&#39;, path)
-    let cookie_80T = document.cookie.split(&#39;FSSBBIl1UgzbN7N80T=&#39;)[1].split(&#39;; &#39;)[0]
-    // 创建一个新的URL对象,获取URL中的参数
-    let urlObject = new URL(url);
-    let params = new URLSearchParams(urlObject.search);
-    let param_MmEwMD = params.get(&#39;MmEwMD&#39;);
-    let res = &#123;
-        coo_80t: cookie_80T,
-        para_mm: param_MmEwMD
-    &#125;
-    return JSON.stringify(res)
-&#125;
-</code></pre>
-<h2 id="7-2-python请求源码"><a href="#7-2-python请求源码" class="headerlink" title="7.2 python请求源码"></a>7.2 python请求源码</h2><pre><code class="python">import requests
-from parsel import Selector
-import json
-import execjs
-
-
-class FangdiSpider:
-    def __init__(self) -&gt; None:
-        self.encjs = open(&#39;./enc.js&#39;).read()
-
-    def get_index_1(self):
-        headers = &#123;
-            &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36&quot;
-        &#125;
-        url = &quot;http://www.fangdi.com.cn/index.html&quot;
-        response = requests.get(url, headers=headers, verify=False)
-        print(response)
-        s = Selector(text=response.text)
-        content = s.xpath(&#39;//meta[@content][2]/@content&#39;).get()
-        self.encjs = self.encjs.replace(&#39;yueqian_content&#39;, content)
-        yueqian_content_script0 = s.xpath(
-            &quot;//script[@r=&#39;m&#39;]/text()&quot;).getall()[0]
-        self.encjs = self.encjs.replace(
-            &#39;\&#39;yueqian_script0\&#39;&#39;, yueqian_content_script0)
-        yueqian_content_script1 = s.xpath(
-            &quot;//script[@r=&#39;m&#39;]/text()&quot;).getall()[1]
-        self.encjs = self.encjs.replace(
-            &#39;\&#39;yueqian_script1\&#39;&#39;, yueqian_content_script1)
-        yueqian_content_script2 = s.xpath(
-            &quot;//script[@r=&#39;m&#39;]/text()&quot;).getall()[2]
-        self.encjs = self.encjs.replace(
-            &#39;\&#39;yueqian_script2\&#39;&#39;, yueqian_content_script2)
-        cookie = response.cookies.get_dict()
-        coo_80s = cookie[&#39;FSSBBIl1UgzbN7N80S&#39;]
-        return coo_80s
-
-    def get_outjs(self, N80S):
-        headers = &#123;
-            &quot;Referer&quot;: &quot;http://www.fangdi.com.cn/index.html&quot;,
-            &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36&quot;
-        &#125;
-        cookies = &#123;
-            &quot;FSSBBIl1UgzbN7N80S&quot;: N80S,
-            &quot;www.fangdi.com_http_ic&quot;: &quot;www.fangdi.com.cn_80_RS&quot;
-        &#125;
-        url = &quot;http://www.fangdi.com.cn/4QbVtADbnLVIc/c.FxJzG50F.dfe1675.js&quot;
-        response = requests.get(url, headers=headers,
-                                cookies=cookies)
-        print(response)
-        self.encjs = self.encjs.replace(&#39;\&#39;yueqian_outjs\&#39;&#39;, response.text)
-
-    def get_index_2(self, N80S, N80T):
-        cookies = &#123;
-            &#39;FSSBBIl1UgzbN7N80S&#39;: N80S,
-            &#39;www.fangdi.com_http_ic&#39;: &#39;www.fangdi.com.cn_80_RS&#39;,
-            &#39;FSSBBIl1UgzbN7N80T&#39;: N80T,
-        &#125;
-        headers = &#123;
-            &#39;Referer&#39;: &#39;http://www.fangdi.com.cn/index.html&#39;,
-            &#39;User-Agent&#39;: &#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36&#39;,
-        &#125;
-
-        response = requests.get(
-            &#39;http://www.fangdi.com.cn/index.html&#39;, cookies=cookies, headers=headers)
-        print(response)
-        cookies = response.cookies.get_dict()
-        coo_sessId1 = cookies[&#39;JSESSIONID1&#39;]
-        return coo_sessId1
-
-    def get_house_news(self, coo_80s, coo_80t, para_mm, coo_sessId1):
-        headers = &#123;
-            &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36&quot;,
-            &quot;Referer&quot;: &quot;http://www.fangdi.com.cn/index.html&quot;,
-        &#125;
-        url = &quot;http://www.fangdi.com.cn/service/index/getHouseNews.action&quot;
-        params = &#123;
-            &quot;MmEwMD&quot;: para_mm
-        &#125;
-        cookies = &#123;
-            &#39;www.fangdi.com_http_ic&#39;: &#39;www.fangdi.com.cn_80_RS&#39;,
-            &#39;FSSBBIl1UgzbN7N80S&#39;: coo_80s,
-            &#39;JSESSIONID1&#39;: coo_sessId1,
-            &#39;www.fangdi.com.cn&#39;: &#39;www.fangdi.com.cn_rs4&#39;,
-            &#39;FSSBBIl1UgzbN7Nenable&#39;: &#39;true&#39;,
-            &#39;FSSBBIl1UgzbN7N80T&#39;: coo_80t,
-        &#125;
-        response = requests.post(url, headers=headers,
-                                 params=params, cookies=cookies)
-        print(response)
-        print(response.text)
-
-    def main(self):
-        coo_80s = self.get_index_1()
-        self.get_outjs(coo_80s)
-        enc_info = execjs.compile(self.encjs).call(
-            &#39;main&#39;, &#39;./service/index/getHouseNews.action&#39;)
-        coo_80t, para_mm = json.loads(enc_info).values()
-        coo_sessId1 = self.get_index_2(coo_80s, coo_80t)
-        self.get_house_news(coo_80s, coo_80t, para_mm, coo_sessId1)
-
-
-if __name__ == &quot;__main__&quot;:
-    spider = FangdiSpider()
-    spider.main()
-</code></pre>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，如有问题请邮件至2454612285@qq.com。 </span>
