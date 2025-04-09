@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>js逆向中hook与反hook之间的对抗 | 跃迁blog</title>
-  <meta name="keywords" content=" hook ">
-  <meta name="description" content="js逆向中hook与反hook之间的对抗 | 跃迁blog">
+  <title>编译frida-server隐藏特征 | 跃迁blog</title>
+  <meta name="keywords" content=" frida , 逆向工程 ">
+  <meta name="description" content="编译frida-server隐藏特征 | 跃迁blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="香格里拉会ios逆向">
@@ -462,34 +462,28 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-hook与反hook之间的对抗" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-编译frida-server隐藏特征" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">js逆向中hook与反hook之间的对抗</h1>
+        <h1 class="article-title">编译frida-server隐藏特征</h1>
     
     <div class="article-meta">
         
         
         
-        <span class="book">
-            <i class="iconfont icon-category"></i>
-            
-            
-            <a  data-rel="爬虫">爬虫</a>
-            
-        </span>
-        
         
         <span class="tag">
             <i class="iconfont icon-tag"></i>
             
-            <a class="color5">hook</a>
+            <a class="color1">frida</a>
+            
+            <a class="color5">逆向工程</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2023-06-20 16:44:38'>2023-06-20 15:46</time>
+            发布时间 : <time class="date" title='最后更新: 2025-04-09 09:13:49'>2025-02-19 23:23</time>
         
     </div>
     <div class="article-meta">
@@ -511,7 +505,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="toc-text">一、前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-hook%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">1.1 hook是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-hook%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">1.2 hook的作用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BB%A5hookbtoa%E4%B8%BA%E4%BE%8B%E5%81%9A%E4%B8%80%E6%AC%A1%E5%AF%B9%E6%8A%97%E6%BC%94%E4%B9%A0"><span class="toc-text">二、以hookbtoa为例做一次对抗演习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E7%AC%AC%E4%B8%80%E5%9B%9E%E5%90%88"><span class="toc-text">2.1 第一回合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E7%AC%AC%E4%BA%8C%E5%9B%9E%E5%90%88"><span class="toc-text">2.2 第二回合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E7%AC%AC%E4%B8%89%E5%9B%9E%E5%90%88"><span class="toc-text">2.3 第三回合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E7%AC%AC%E5%9B%9B%E5%9B%9E%E5%90%88"><span class="toc-text">2.4 第四回合</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%8F%8D%E5%8F%8Dhook%E5%B0%81%E8%A3%85%E6%88%90%E6%96%B9%E6%B3%95"><span class="toc-text">三、反反hook封装成方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%B5%8B%E8%AF%95"><span class="toc-text">四、测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">五、总结</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E8%AF%91frida-server%E9%9A%90%E8%97%8F%E7%89%B9%E5%BE%81"><span class="toc-text">编译frida-server隐藏特征</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84frida%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95"><span class="toc-text">常见的frida检测方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#D-Bus"><span class="toc-text">D-Bus</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E5%90%8D"><span class="toc-text">进程名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3"><span class="toc-text">默认端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E8%B7%AF%E5%BE%84"><span class="toc-text">默认路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#maps"><span class="toc-text">maps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Btcp%E8%BF%9E%E6%8E%A5%E4%BF%A1%E6%81%AF"><span class="toc-text">查看tcp连接信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%89%AB%E6%8F%8F%E5%BA%93%E7%89%B9%E5%BE%81"><span class="toc-text">内存扫描库特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#status%E6%96%87%E4%BB%B6%E7%89%B9%E5%BE%81"><span class="toc-text">status文件特征</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83"><span class="toc-text">编译环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E6%AD%A5%E9%AA%A4"><span class="toc-text">编译步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%8B%E8%BD%BDfrida%E6%BA%90%E7%A0%81"><span class="toc-text">1. 下载frida源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85node-js"><span class="toc-text">2. 安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85Android-NDK"><span class="toc-text">3. 安装Android NDK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BC%96%E8%AF%91Frida"><span class="toc-text">4.编译Frida</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1%E6%AD%A3%E5%B8%B8%E7%BC%96%E8%AF%91Frida"><span class="toc-text">4.1正常编译Frida</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2%E9%AD%94%E6%94%B9%E7%BC%96%E8%AF%91Frida"><span class="toc-text">4.2魔改编译Frida</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E6%B5%8B%E8%AF%95%E6%95%88%E6%9E%9C"><span class="toc-text">5测试效果</span></a></li></ol></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -527,119 +521,237 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><h2 id="1-1-hook是什么"><a href="#1-1-hook是什么" class="headerlink" title="1.1 hook是什么"></a>1.1 hook是什么</h2><p>在js逆向中,重新定义函数,使得调用位置走我们重新定义的函数,改变执行流程, 通常我们叫它钩子技术。</p>
-<h2 id="1-2-hook的作用"><a href="#1-2-hook的作用" class="headerlink" title="1.2 hook的作用"></a>1.2 hook的作用</h2><ol>
-<li>输出分析日志</li>
-<li>定位关键点</li>
-<li>改变执行结果</li>
-</ol>
-<h1 id="二、以hookbtoa为例做一次对抗演习"><a href="#二、以hookbtoa为例做一次对抗演习" class="headerlink" title="二、以hookbtoa为例做一次对抗演习"></a>二、以hook<code>btoa</code>为例做一次对抗演习</h1><h2 id="2-1-第一回合"><a href="#2-1-第一回合" class="headerlink" title="2.1 第一回合"></a>2.1 第一回合</h2><p><strong>hook方:</strong></p>
-<pre><code class="javascript">let _btoa = btoa;
-btoa = function (str) &#123;
-    console.log(&#39;待编码的str&#39;, str)
-    result = _btoa(str)
-    console.log(&#39;编码后的结果&#39;, result)
-    return result
+        <p><div class='inner-toc'><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E8%AF%91frida-server%E9%9A%90%E8%97%8F%E7%89%B9%E5%BE%81"><span class="toc-text">编译frida-server隐藏特征</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84frida%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95"><span class="toc-text">常见的frida检测方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#D-Bus"><span class="toc-text">D-Bus</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E5%90%8D"><span class="toc-text">进程名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3"><span class="toc-text">默认端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E8%B7%AF%E5%BE%84"><span class="toc-text">默认路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#maps"><span class="toc-text">maps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Btcp%E8%BF%9E%E6%8E%A5%E4%BF%A1%E6%81%AF"><span class="toc-text">查看tcp连接信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%89%AB%E6%8F%8F%E5%BA%93%E7%89%B9%E5%BE%81"><span class="toc-text">内存扫描库特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#status%E6%96%87%E4%BB%B6%E7%89%B9%E5%BE%81"><span class="toc-text">status文件特征</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83"><span class="toc-text">编译环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E6%AD%A5%E9%AA%A4"><span class="toc-text">编译步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%8B%E8%BD%BDfrida%E6%BA%90%E7%A0%81"><span class="toc-text">1. 下载frida源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85node-js"><span class="toc-text">2. 安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85Android-NDK"><span class="toc-text">3. 安装Android NDK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BC%96%E8%AF%91Frida"><span class="toc-text">4.编译Frida</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1%E6%AD%A3%E5%B8%B8%E7%BC%96%E8%AF%91Frida"><span class="toc-text">4.1正常编译Frida</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2%E9%AD%94%E6%94%B9%E7%BC%96%E8%AF%91Frida"><span class="toc-text">4.2魔改编译Frida</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E6%B5%8B%E8%AF%95%E6%95%88%E6%9E%9C"><span class="toc-text">5测试效果</span></a></li></ol></li></ol></li></ol></div></p>
+<h1 id="编译frida-server隐藏特征"><a href="#编译frida-server隐藏特征" class="headerlink" title="编译frida-server隐藏特征"></a>编译frida-server隐藏特征</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在逆向分析安卓应用的时候，经常会遇到frida-server的检测，frida-server的检测方式有很多种，比如检测进程名、检测端口等等，本文主要介绍如何编译frida-server隐藏特征，使其在运行时不容易被检测到。<br>frida项目：<a target="_blank" rel="noopener" href="https://github.com/frida/frida">https://github.com/frida/frida</a><br>patch项目：<a target="_blank" rel="noopener" href="https://github.com/taisuii/rusda">https://github.com/taisuii/rusda</a></p>
+<h2 id="常见的frida检测方法"><a href="#常见的frida检测方法" class="headerlink" title="常见的frida检测方法"></a>常见的frida检测方法</h2><h3 id="D-Bus"><a href="#D-Bus" class="headerlink" title="D-Bus"></a>D-Bus</h3><p>fridaserver是使用 D-Bus 协议通信，通过为每个开放端口发送 D-Bus 的认证消息，哪个端口回复了哪个就是 fridaserver，但是此方法需要的时间会比较长，并且其他的服务也可能回复D-Bus的认证消息，所以此方法并不是很准确。</p>
+<pre><code>for(i = 0 ; i &lt;= 65535 ; i++) &#123;
+    sock = socket(AF_INET , SOCK_STREAM , 0);
+    sa.sin_port = htons(i);
+    if (connect(sock , (struct sockaddr*)&amp;sa , sizeof sa) != -1) &#123;
+        __android_log_print(ANDROID_LOG_VERBOSE, APPNAME,  &quot;FRIDA DETECTION [1]: Open Port: %d&quot;, i);
+        memset(res, 0 , 7);
+        // send a D-Bus AUTH message. Expected answer is “REJECT&quot;
+        send(sock, &quot;\x00&quot;, 1, NULL);
+        send(sock, &quot;AUTH\r\n&quot;, 6, NULL);
+        usleep(100);
+        if (ret = recv(sock, res, 6, MSG_DONTWAIT) != -1) &#123;
+            if (strcmp(res, &quot;REJECT&quot;) == 0) &#123;
+               /* Frida server detected. Do something… */
+            &#125;
+        &#125;
+    &#125;
+    close(sock);
 &#125;
 </code></pre>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/0f0798b62cb14f60a09add62254b59f2.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br><strong>反hook方</strong></p>
-<pre><code class="javascript">if (btoa.toString() !== &#39;function btoa() &#123; [native code] &#125;&#39;) &#123;
-    console.log(&#39;你方已被识别出来&#39;)
+<h3 id="进程名"><a href="#进程名" class="headerlink" title="进程名"></a>进程名</h3><p>进程名方式检测在高版本Android上是无法使用的，由于系统安全性和权限限制的增强，应用程序无法通过遍历系统进程名来检测特定的调试器进程，目前使用这种方式检测frida的基本上已经没有了，这种检测方案基本上是没有意义的。</p>
+<pre><code>// Android5.1以上无效
+public boolean checkRunningProcesses() &#123;
+  boolean returnValue = false;
+  // Get currently running application processes
+  List&lt;RunningServiceInfo&gt; list = manager.getRunningServices(300);
+  if(list != null)&#123;
+    String tempName;
+    for(int i=0;i&lt;list.size();++i)&#123;
+      tempName = list.get(i).process;
+      if(tempName.contains(&quot;fridaserver&quot;)) &#123;
+        returnValue = true;
+      &#125;
+    &#125;
+  &#125;
+  return returnValue;
 &#125;
 </code></pre>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/075e0a1200f942bc9619eb90b21cd33c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>可以看出调用<code>btoa</code>的<code>toString</code>方法得到函数字符串形式，用于和真实函数字符串比对，可以检测出函数被hook。</p>
-<h2 id="2-2-第二回合"><a href="#2-2-第二回合" class="headerlink" title="2.2 第二回合"></a>2.2 第二回合</h2><p><strong>hook方:</strong></p>
-<pre><code class="javascript">btoa.toString = function () &#123;
-    return &#39;function btoa() &#123; [native code] &#125;&#39;
+<h3 id="默认端口"><a href="#默认端口" class="headerlink" title="默认端口"></a>默认端口</h3><p>frida默认端口27047，通过检测默认端口是否开放来检测frida是否开启，在启动时指定端口可绕过。</p>
+<pre><code>boolean is_frida_server_listening() &#123;
+    struct sockaddr_in sa;
+    memset(&amp;sa, 0, sizeof(sa));
+    sa.sin_family = AF_INET;
+    sa.sin_port = htons(27047);
+    inet_aton(&quot;127.0.0.1&quot;, &amp;(sa.sin_addr));
+    int sock = socket(AF_INET , SOCK_STREAM , 0);
+    if (connect(sock , (struct sockaddr*)&amp;sa , sizeof sa) != -1) &#123;
+      
+    &#125;
 &#125;
 </code></pre>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/f83cd2e669d84ce1a3861375229019cf.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>hook方直接修改<code>btoa.toString</code>方法调用的返回结果，伪装成功。</p>
-<p><strong>反hook方:</strong></p>
-<pre><code class="javascript">if (Function.prototype.toString.call(btoa) !== &#39;function btoa() &#123; [native code] &#125;&#39;) &#123;
-    console.log(&#39;你方已被识别出来&#39;)
-&#125;
+<h3 id="默认路径"><a href="#默认路径" class="headerlink" title="默认路径"></a>默认路径</h3><p>frida默认会在&#x2F;data&#x2F;local&#x2F;tmp&#x2F;re.frida.server&#x2F;frida-agent-64.so中存放frida-agent(负责注入相关)，可以查找此路径下是否存在对应文件，可通过更改frida源码将frida名字改为其他名字，或者将frida-agent-64.so文件放到其他路径下绕过。</p>
+<pre><code>new File(&quot;/data/local/tmp/re.frida.server/frida-agent-64.so&quot;).exists()
 </code></pre>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/5fb25d7af74142b88bf5f5627130841a.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>反hook方不直接调用btoa的toString方法，而改为从Function原型链上的toString调用，并用call方法改变了对象指向为btoa，成功检测出hook痕迹。</p>
-<h2 id="2-3-第三回合"><a href="#2-3-第三回合" class="headerlink" title="2.3 第三回合"></a>2.3 第三回合</h2><p><strong>hook方:</strong></p>
-<pre><code class="javascript">Function.prototype.toString = function () &#123;
-    return `function $&#123;this.name&#125; () &#123; [native code] &#125;`
-&#125;
-</code></pre>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/fa38536154d44846b498d633e982bb42.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>hook方修改<code>Function.prototype.toString</code>方法，并且其还特别”贴心”的使用模版字符串，让返回字符串的函数名指向调用方，伪装成功。</p>
-<p><strong>反hook方:</strong></p>
-<pre><code class="javascript">if (Function.prototype.toString.toString() !== &#39;function () &#123; [native code] &#125;&#39;) &#123;
-    console.log(&#39;你方已被识别出来&#39;)
-&#125;
-</code></pre>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/37caccf6f3a2407a9cbde0506c8a4b2f.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>反hook方检测<code>Function.prototype.toString.toString</code>方法有无被修改，成功检测出hook痕迹。</p>
-<h2 id="2-4-第四回合"><a href="#2-4-第四回合" class="headerlink" title="2.4 第四回合"></a>2.4 第四回合</h2><p><strong>hook方:</strong></p>
-<pre><code class="javascript">Function.prototype.toString.toString = function () &#123;
-    return `function () &#123; [native code] &#125;`
-&#125;
-</code></pre>
-<p><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/641c9772a7b74ece9586ad0d13b3107c.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br>hook方法重写了<code>Function.prototype.toString.toString</code>方法，伪装成功～</p>
-<p><strong>反hook方:</strong></p>
-<pre><code class="javascript">//能不能别搞我了？有那时间干点正事不行吗？
-</code></pre>
-<p>至此，hook方暂时取得本次对抗的胜利。</p>
-<p>总结一下双方的对抗过程：</p>
+<h3 id="maps"><a href="#maps" class="headerlink" title="maps"></a>maps</h3><p>在Android系统中，&#x2F;proc&#x2F;[pid]&#x2F;maps 文件是一个重要的系统文件，用于记录进程的内存映射信息<br>包括：</p>
 <ol>
-<li>hook方修改指定函数的方法体，在其中加了一些自己的代码。反hook方则利用函数(函数也是对象)自身的toString方法查看函数有无被修改。</li>
-<li>hook方修改函数的toString调用返回值，反hook方法用Function原型链上的toString检查。</li>
-<li>hook方修改Function原型链上的toString，反hook方用Function原型链上的toString的toString检查。</li>
-<li>最后hook方修改Function原型链上的toString的toString方法绕过检查。</li>
+<li>内存段的地址范围：表示内存段的起始地址和结束地址。</li>
+<li>权限：表示该内存段的读（r）、写（w）、执行（x）权限。</li>
+<li>偏移量：表示该内存段在文件中的偏移位置。</li>
+<li>设备号和inode号：用于标识该内存段对应的文件。</li>
+<li>路径名：表示该内存段对应的文件路径<br>frida在注入App后会在maps中显示frida的frida-agent.so的内存信息，可以通过搜索特征字符串来检测frida, 可以通过修改frida的名称来绕过。</li>
 </ol>
-<p>对于hook方来说，每次为了hook一个方法，做这么多伪装多有些方便，那么可否封装一下，在需要hook某个方法的时候，直接调用封装好的反反hook方法绕过toString检测？这是合理且可行的要求。</p>
-<h1 id="三、反反hook封装成方法"><a href="#三、反反hook封装成方法" class="headerlink" title="三、反反hook封装成方法"></a>三、反反hook封装成方法</h1><pre><code class="javascript">!function () &#123;
-    const $toString = Function.prototype.toString;
-    const symbol = Symbol()
-    const myToString = function () &#123;
-        return typeof this === &#39;function&#39; &amp;&amp; this[symbol] || $toString.call(this);
+<pre><code>char line[512];
+FILE* fp;
+fp = fopen(&quot;/proc/self/maps&quot;, &quot;r&quot;);
+if (fp) &#123;
+    while (fgets(line, 512, fp)) &#123;
+        if (strstr(line, &quot;frida&quot;)) &#123;
+           
+        &#125;
     &#125;
-
-    function set_native(func, key, value) &#123;
-        Object.defineProperty(func, key, &#123;
-            enumerable: false,
-            configurable: true,
-            writable: true,
-            value: value
-        &#125;)
+    fclose(fp);
+    &#125; else &#123;
+       
     &#125;
-
-    delete Function.prototype.toString;
-    set_native(Function.prototype, &#39;toString&#39;, myToString);
-    set_native(Function.prototype.toString, symbol, &quot;function toString() &#123; [native code] &#125;&quot;);
-    globalThis.setNative = function (func, funcname) &#123;
-        set_native(func, symbol, `function $&#123;funcname || func.name || &#39;&#39;&#125;() &#123; [native code] &#125;`);
-    &#125;
-&#125;()
+&#125;
 </code></pre>
-<ol>
-<li>为什么要用自执行函数包裹起来？</li>
-</ol>
-<ul>
-<li>为了防止内部变量污染外部变量，比如<code>set_native</code>，如果外部也有这么一个同步函数，那么产生覆盖效果。</li>
+<h3 id="查看tcp连接信息"><a href="#查看tcp连接信息" class="headerlink" title="查看tcp连接信息"></a>查看tcp连接信息</h3><p>frida-server启动后&#x2F;proc&#x2F;net&#x2F;tcp和&#x2F;proc&#x2F;net&#x2F;tcp6中会有特殊标识:69a2，可以通过搜索tcp中的该字符串来检测frida是否启动, Frida Server 默认监听的端口是 27042，其对应的十六进制字符串是 :69a2。如果修改 Frida Server 的监听端口，那么 &#x2F;proc&#x2F;net&#x2F;tcp 和 &#x2F;proc&#x2F;net&#x2F;tcp6 中就不会出现 :69a2。</p>
+<pre><code>public static boolean mCheckFridaTcp()&#123;
+  String[] stringArrayTcp6;
+  String[] stringArrayTcp;
+  String tcpStringTcp6 = mReadFile(&quot;/proc/net/tcp6&quot;);
+  String tcpStringTcp = mReadFile(&quot;/proc/net/tcp&quot;);
+  boolean isFridaExits = false;
+  if(null != tcpStringTcp6 &amp;&amp; !&quot;&quot;.equals(tcpStringTcp6))&#123;
+    stringArrayTcp6 = tcpStringTcp6.split(&quot;\n&quot;);
+    for(String sa : stringArrayTcp6)&#123;
+      if(sa.toLowerCase().contains(&quot;:69a2&quot;))&#123;
+        Log.e(TAG,&quot;tcp文件中发现Frida特征&quot;);
+        isFridaExits = true;
+      &#125;
+    &#125;
+  &#125;
+  if(null != tcpStringTcp &amp;&amp; !&quot;&quot;.equals(tcpStringTcp))&#123;
+    stringArrayTcp = tcpStringTcp.split(&quot;\n&quot;);
+    for(String sa : stringArrayTcp)&#123;
+      if(sa.toLowerCase().contains(&quot;:69a2&quot;))&#123;
+        Log.e(TAG,&quot;tcp文件中发现Frida特征&quot;);
+        isFridaExits = true;
+      &#125;
+    &#125;
+  &#125;
+  return isFridaExits;
+</code></pre>
+<h3 id="内存扫描库特征"><a href="#内存扫描库特征" class="headerlink" title="内存扫描库特征"></a>内存扫描库特征</h3><p>其实也是maps中的特征信息，可通过编译时修改LIBFRIDA的名称绕过。</p>
+<pre><code>static char keyword[] = &quot;LIBFRIDA&quot;;
+num_found = 0;
+int scan_executable_segments(char * map) &#123;
+    char buf[512];
+    unsigned long start, end;
+    sscanf(map, &quot;%lx-%lx %s&quot;, &amp;start, &amp;end, buf);
+    if (buf[2] == &#39;x&#39;) &#123;
+        return (find_mem_string(start, end, (char*)keyword, 8) == 1);
+    &#125; else &#123;
+        return 0;
+    &#125;
+&#125;
+void scan() &#123;
+    if ((fd = open(AT_FDCWD, &quot;/proc/self/maps&quot;, O_RDONLY, 0)) &gt;= 0) &#123;
+    while ((read_one_line(fd, map, MAX_LINE)) &gt; 0) &#123;
+        if (scan_executable_segments(map) == 1) &#123;
+            num_found++;
+        &#125;
+    &#125;
+    if (num_found &gt; 1) &#123;
+        
+    &#125;
+</code></pre>
+<h3 id="status文件特征"><a href="#status文件特征" class="headerlink" title="status文件特征"></a>status文件特征</h3><p>frida注入App后在App的&#x2F;proc&#x2F;self&#x2F;task&#x2F;pid&#x2F;status文件中会存在一些frida的特征信息,如gmain、pool-frida、gdbus，可以通过这些特征进行检测，同样可通过改名解决。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250221001342.png" alt="20250221001342"></p>
+<pre><code>if (strstr(line, &quot;frida&quot;) || strstr(line, &quot;gum-js&quot;) || strstr(line, &quot;gmain&quot;)) &#123;
+  fclose(fp);
+  rst = filepath;
+  strcat(rst, &quot;==&gt;&quot;);
+  strcat(rst, line);
+  return rst;
+&#125;
+</code></pre>
+<p>以上检测方法检测皆使用系统函数读取文件和进行检测，实际应用中有很多检测方案会自己通过汇编实现读取文件或者比对方法，此时就需要对具体情况进行具体分析</p>
+<h2 id="编译环境"><a href="#编译环境" class="headerlink" title="编译环境"></a>编译环境</h2><ul>
+<li>Ubuntu 22.04</li>
+<li>frida 16.6.6</li>
+<li>ndk v22.12.0</li>
+<li>node v22.12.0</li>
 </ul>
-<ol start="2">
-<li>为什么要用<code>symbol</code>作为属性名？</li>
-</ol>
-<ul>
-<li>symbol一但用Symbol创造出来，就具有独一无二的特性，能够有效的避免与对象中其它属性成员的命名冲突。</li>
-</ul>
-<ol start="3">
-<li><code>globalThis</code>是什么意思？</li>
-</ol>
-<ul>
-<li>在nodejs中，等同于<code>global</code>，在window中，等同于<code>window</code>,这里的作用是将<code>setNative</code>这个对象指向的函数导出来外部作用域中。</li>
-</ul>
-<ol start="4">
-<li>能简单说一下这段代码的逻辑吗？</li>
-</ol>
-<ul>
-<li>首先，为传入的函数定义一个叫symbol的属性，这个属性的值是<code>function $&#123;funcname || func.name || &#39;&#39;&#125;() &#123; [native code] &#125;</code><br>，其中funcname是传进来的参数，如果不传，会自动调用<code>func. name</code>获取；其次重写<code>Function.prototype</code><br>的toString属性，让其返回调用对象的symbol属性值，如此，每次调用函数toString方法都会返回事先定义好的symbol属性值；最后，手动为<code>Function.prototype. toString</code>定义一个symbol属性，返回<code>&quot;function toString() &#123; [native code] &#125;&quot;</code>，如此，即使用toSting检测<code>Function.prototype. toString</code>有无被重写，也只会得到指定内容，至此toString型的反反hook检测封装完成。</li>
-</ul>
-<h1 id="四、测试"><a href="#四、测试" class="headerlink" title="四、测试"></a>四、测试</h1><p><strong>未启用<code>setNative</code>时：</strong><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/23bda9ee76ea478aa06edfcf1c475c11.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"><br><strong>启用<code>setNative</code>后：</strong><br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20230620/99473cdcc4364de5a981ce34532ea969.png?x-oss-process=image/auto-orient,1/interlace,1/quality,q_100/format,jpg"></p>
-<h1 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h1><p>本文先介绍了hook的原理和作用，其次用<code>btoa</code>为例列举了hook与反hook之间的对抗情形，最后将hook的反反检测手段封装成一个方法并进行测试，测试结果表明，该方法可以有效的对抗toString型的反hook检测。</p>
+<h2 id="编译步骤"><a href="#编译步骤" class="headerlink" title="编译步骤"></a>编译步骤</h2><pre><code># 在Ubuntu上安装编译所需的依赖包：
+sudo apt update
+sudo apt-get install build-essential git lib32stdc++-9-dev libc6-dev-i386
+pip3 install lief # 用来修改二进制文件
+</code></pre>
+<h3 id="1-下载frida源码"><a href="#1-下载frida源码" class="headerlink" title="1. 下载frida源码"></a>1. 下载frida源码</h3><pre><code class="shell">cd ~
+mkdir build &amp; cd build
+mkdir fs
+git clone --recurse-submodules -b 16.2.1 https://github.com/frida/frida
+cd frida
+</code></pre>
+<h3 id="2-安装node-js"><a href="#2-安装node-js" class="headerlink" title="2. 安装node.js"></a>2. 安装node.js</h3><pre><code># 构造下载URL
+NODE_TAR_URL=&quot;https://nodejs.org/dist/v22.12.0/node-v22.12.0-linux-x64.tar.xz&quot;
+wget $NODE_TAR_URL
+
+# 解压Node.js安装包到用户目录
+tar -xf node-v22.12.0-linux-x64.tar.xz -C $HOME/bin
+rm -r node-v22.12.0-linux-x64.tar.xz
+
+# 设置环境变量
+echo &quot;export NODE_HOME=\$HOME/bin/node-v22.12.0-linux-x64&quot; &gt;&gt; ~/.bashrc
+echo &quot;export PATH=\$NODE_HOME/bin:\$PATH&quot; &gt;&gt; ~/.bashrc
+source ~/.bashrc
+
+# 验证安装
+node -v
+</code></pre>
+<h3 id="3-安装Android-NDK"><a href="#3-安装Android-NDK" class="headerlink" title="3. 安装Android NDK"></a>3. 安装Android NDK</h3><pre><code># 查看所需的NDK版本
+cat releng/setup-env.sh | grep &quot;ndk_required=&quot;
+# 输出示例：ndk_required=25
+wget https://dl.google.com/android/repository/android-ndk-r25c-linux.zip
+unzip android-ndk-r25c-linux.zip -d $HOME/bin/
+rm -r android-ndk-r25c-linux.zip
+
+# 设置环境变量
+echo &quot;export ANDROID_NDK_ROOT=\$HOME/bin/android-ndk-r25c&quot; &gt;&gt; ~/.bashrc
+echo &quot;export PATH=\$ANDROID_NDK_ROOT:\$PATH&quot; &gt;&gt; ~/.bashrc
+source ~/.bashrc
+
+# 验证安装
+ndk-build -v
+</code></pre>
+<h3 id="4-编译Frida"><a href="#4-编译Frida" class="headerlink" title="4.编译Frida"></a>4.编译Frida</h3><h4 id="4-1正常编译Frida"><a href="#4-1正常编译Frida" class="headerlink" title="4.1正常编译Frida"></a>4.1正常编译Frida</h4><pre><code class="shell">cd ~/build/fs/frida
+make core-android-arm64 -j8
+</code></pre>
+<p>-j8是为了加快编译速度，具体数值可以根据cpu核心数调整，笔者的习惯是1:1。<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250220013809.png" alt="20250220013809"></p>
+<h4 id="4-2魔改编译Frida"><a href="#4-2魔改编译Frida" class="headerlink" title="4.2魔改编译Frida"></a>4.2魔改编译Frida</h4><pre><code>pip install lief # 安装lief库，用来修改二进制文件
+</code></pre>
+<p>patch项目：<a target="_blank" rel="noopener" href="https://github.com/taisuii/rusda">https://github.com/taisuii/rusda</a></p>
+<p>rusda项目是frida-server的魔改版本，通过修改frida-server的源码，使其在运行时不容易被检测到。</p>
+<pre><code>cd ~/build/fs/
+git clone https://github.com/taisuii/rusda
+# 应用补丁文件
+cd ~/build/fs/frida/frida-core
+for patch in ~/build/fs/rusda/frida-core/*.patch; do
+    git apply &quot;$patch&quot;
+done
+cd ~/build/fs/frida/frida-gum
+for patch in ~/build/fs/rusda/frida-gum/*.patch; do
+    git apply &quot;$patch&quot;
+done
+# 把python脚本移过去
+cp ~/build/fs/rusda/frida-core/src/topatch.py  ~/build/fs/frida/frida-core/src
+</code></pre>
+<p>开始编译</p>
+<pre><code class="shell">cd ~/build/fs/frida
+ad
+</code></pre>
+<p>等待编译完成，下图可见编译好的frida-server的path是&#x2F;home&#x2F;ubuntu&#x2F;build&#x2F;fs&#x2F;frida&#x2F;build&#x2F;frida-android-arm64&#x2F;bin<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250409011552.png" alt="20250409011552"></p>
+<p>将frida-server拷贝到手机上</p>
+<pre><code>adb push frida-server /data/local/tmp
+adb shell
+su
+cd  /data/local/tmp
+chmod +x frida-server
+./frida-server 
+</code></pre>
+<p>也可根据patch手动修改。</p>
+<h3 id="5测试效果"><a href="#5测试效果" class="headerlink" title="5测试效果"></a>5测试效果</h3><p>以东呈青猫会app为例，首先启动原版的frida-server<br>注入如下脚本</p>
+<pre><code>Java.perform(function () &#123;
+    console.log(111)
+&#125;)
+</code></pre>
+<p>frida -U -f com.dossen.app -l test.js<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250409091059.png" alt="20250409091059"><br>提示：Process terminated</p>
+<p>启动自编译的魔改frida-server<br><img src="https://cthousand-pic-save.oss-cn-hangzhou.aliyuncs.com/images/20250409091302.png" alt="20250409091302"><br>此时并未发现注入进程终端，说明魔改成功绕过了东城青猫会的检测。</p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，如有问题请邮件至2454612285@qq.com。 </span>
